@@ -21,12 +21,18 @@ module.exports = [
                     done(true, {
                         message: err.message
                     });
-                }
-                else {
-                    done(false, {
-                        message: 'Successfully retrieved sticker',
-                        sticker: sticker
-                    });
+                } else {
+                    if (sticker) {
+                        done(false, {
+                            message: 'Successfully retrieved sticker',
+                            sticker: sticker
+                        });
+                    } else {
+                        done(false, {
+                            message: 'No sticker found',
+                            sticker: sticker
+                        });
+                    }
                 }
             });
         }

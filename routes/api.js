@@ -6,17 +6,29 @@ var add = function (filename) {
         if (routes.hasOwnProperty(path)) {
             var method = routes[path].method.toLowerCase();
             var called = routes[path].export;
+            var route = function(req, res) {
+                called(req, function (err, payload) {
+                    if (err) {
+                        payload.state = 'error';
+                        res.status(400).json(payload);
+                    }
+                    else {
+                        payload.state = 'success';
+                        res.status(200).json(payload);
+                    }
+                });
+            };
             if (method === 'get') {
-                router.get(path, called);
+                router.get(path, route);
             }
             else if (method === 'post') {
-                router.post(path, called);
+                router.post(path, route);
             }
             else if (method === 'put') {
-                router.put(path, called);
+                router.put(path, route);
             }
             else if (method === 'delete') {
-                router.delete(path, called);
+                router.delete(path, route);
             }
         }
     }

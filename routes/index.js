@@ -1,7 +1,7 @@
 const routes = require('express').Router();
 
 var add = function (routes) {
-    for (var path in routes.paths) {
+    for (var path in routes) {
         if (routes.hasOwnProperty(path)) {
             var method = routes[path].method.toLowerCase();
             var called = routes[path].export;

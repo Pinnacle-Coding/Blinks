@@ -39,7 +39,7 @@ you want to.
 /**
 
 BLINKS.IO API ROUTES
-=============
+====================
 
 1. Trending Stickers = /api/stickers?type=trending
 2. Trending Searches = /api/searches?type=trending

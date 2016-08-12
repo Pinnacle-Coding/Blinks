@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.ObjectId;
 var Sticker = mongoose.model('Sticker');
 
 module.exports = [
@@ -10,7 +11,7 @@ module.exports = [
             var query = {
                 name: query_id
             };
-            if (mongoose.ObjectId.isValid(query_id)) {
+            if (ObjectId.isValid(query_id)) {
                 query = {
                     _id: query_id
                 }

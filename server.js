@@ -22,9 +22,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.get('/', function(request, response) {
-  response.render('pages/index');
-});
+const routes = require('./routes');
+app.use('/', routes);
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

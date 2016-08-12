@@ -27,13 +27,13 @@ module.exports = [
                 } else {
                     if (sticker) {
                         done(false, {
-                            message: 'Successfully retrieved sticker',
+                            message: 'Sticker found',
                             sticker: sticker
                         });
                     } else {
                         done(false, {
                             message: 'No sticker found',
-                            sticker: sticker
+                            sticker: undefined
                         });
                     }
                 }

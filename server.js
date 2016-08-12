@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-const routes = require('./routes');
-app.use('/', routes);
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

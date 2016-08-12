@@ -1,10 +1,11 @@
-module.exports = {
-    '/': {
-        method: 'GET',
-        export: function (req, done) {
+module.exports = [
+    {
+        path: '/stickers',
+        method: 'POST',
+        handler: function (req, done) {
             done(false, {
                 message: 'Connected!'
             });
         }
     }
-}
+]

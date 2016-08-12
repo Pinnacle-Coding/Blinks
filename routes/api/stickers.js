@@ -14,7 +14,7 @@ module.exports = [
                     }
                 ]
             };
-            if (/^[0-9a-f]{24}$/.test(query_id) {
+            if (/^[0-9a-f]{24}$/.test(query_id)) {
                 query['$or'].push({
                     _id: query_id
                 });

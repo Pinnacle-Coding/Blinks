@@ -33,7 +33,7 @@ module.exports = [
                     } else {
                         done(false, {
                             message: 'No sticker found',
-                            sticker: undefined
+                            sticker: sticker
                         });
                     }
                 }

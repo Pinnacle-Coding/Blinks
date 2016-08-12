@@ -8,6 +8,7 @@ var Text = mongoose.model('Text', new mongoose.Schema({
     hash: String
 }));
 mongoose.connect('mongodb://dmhacker:insaneMembrane1@ds153735.mlab.com:53735/blinks');
+require('./models/models.js');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -24,8 +25,6 @@ app.use(bodyParser.json());
 app.get('/', function(request, response) {
   response.render('pages/index');
 });
-
-
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

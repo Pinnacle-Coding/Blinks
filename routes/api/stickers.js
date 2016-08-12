@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var ObjectId = mongoose.Schema.ObjectId;
 var Sticker = mongoose.model('Sticker');
 
 module.exports = [
@@ -9,12 +8,16 @@ module.exports = [
         handler: function (req, done) {
             var query_id = req.params.id
             var query = {
-                name: query_id
+                $or: [
+                    {
+                        name: query_id
+                    }
+                ]
             };
-            if (ObjectId.isValid(query_id)) {
-                query = {
+            if (/^[0-9a-f]{24}$/.test(query_id) {
+                query['$or'].push({
                     _id: query_id
-                }
+                });
             }
             Sticker.findOne(query).exec(function (err, sticker) {
                 if (err) {

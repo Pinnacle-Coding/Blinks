@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
-var add = function (routes) {
+var add = function (filename) {
+    var routes = require(filename);
     for (var path in routes) {
         if (routes.hasOwnProperty(path)) {
             var method = routes[path].method.toLowerCase();
@@ -21,9 +22,9 @@ var add = function (routes) {
     }
 }
 
-add(require('./stickers'));
-add(require('./packs'));
-add(require('./authors'));
-add(require('./tags'));
+add('./stickers');
+add('./packs');
+add('./authors');
+add('./tags');
 
 module.exports = router;

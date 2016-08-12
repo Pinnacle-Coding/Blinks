@@ -1,4 +1,4 @@
-const routes = require('express').Router();
+const router = require('express').Router();
 
 var add = function (routes) {
     for (var path in routes) {
@@ -6,16 +6,16 @@ var add = function (routes) {
             var method = routes[path].method.toLowerCase();
             var called = routes[path].export;
             if (method === 'get') {
-                routes.get(path, called);
+                router.get(path, called);
             }
             else if (method === 'post') {
-                routes.post(path, called);
+                router.post(path, called);
             }
             else if (method === 'put') {
-                routes.put(path, called);
+                router.put(path, called);
             }
             else if (method === 'delete') {
-                routes.delete(path, called);
+                router.delete(path, called);
             }
         }
     }
@@ -26,4 +26,4 @@ add(require('./packs'));
 add(require('./authors'));
 add(require('./tags'));
 
-module.exports = routes;
+module.exports = router;

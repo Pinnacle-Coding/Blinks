@@ -29,14 +29,14 @@ mongoose.model('Sticker', new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Author'
     },
+    tags: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Tag'
+    }],
     pack: {
         type: mongoose.Schema.ObjectId,
         ref: 'Pack'
-    },
-    stickers: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Sticker'
-    }]
+    }
 }));
 
 mongoose.model('Tag', new mongoose.Schema({

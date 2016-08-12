@@ -2,7 +2,6 @@
 
 HOW THIS API WORKS
 ==================
-by David Hacker
 
 1. Create a file. The different files are purely for organization.
 2. In the file, write:
@@ -34,6 +33,23 @@ payload to be sent back to the user.
 
 5. You're done! This API will automatically load the file and setup the routes for you. You can also add as many files as
 you want to.
+
+*/
+
+/**
+
+BLINKS.IO API ROUTES
+=============
+
+1. Trending Stickers = /api/stickers?type=trending
+2. Trending Searches = /api/searches?type=trending
+3. Suggested Searches = /api/searches?type=suggested&search={{string}}
+4. Sticker Search = /api/search/:term
+5. All Packs = /api/packs?page={{integer}}&count={{integer}}
+   - count is the number of packs per page
+6. Trending Packs = /api/packs?type=trending&page={{integer}}&count={{integer}}
+7. Pack Detail Info = /api/pack/:id
+8. Artist Detail Info = /api/author/:id
 
 */
 

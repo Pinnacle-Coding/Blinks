@@ -39,5 +39,26 @@ module.exports = [
                 }
             });
         }
+    },
+    {
+        path: '/stickers',
+        method: 'GET',
+        handler: function (req, done) {
+
+        }
+    },
+    {
+        path: '/stickers',
+        method: 'POST',
+        handler: function (req, done) {
+
+        }
+    },
+    {
+        path: '/sticker/:id',
+        method: 'PUT',
+        handler: function (req, done) {
+
+        }
     }
 ]

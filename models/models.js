@@ -19,7 +19,13 @@ mongoose.model('Pack', new mongoose.Schema({
     stickers: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Sticker'
-    }]
+    }],
+    hits: {
+        all: Number,
+        daily: Number,
+        weekly: Number,
+        monthly: Number
+    }
 }));
 
 mongoose.model('Sticker', new mongoose.Schema({
@@ -36,6 +42,12 @@ mongoose.model('Sticker', new mongoose.Schema({
     pack: {
         type: mongoose.Schema.ObjectId,
         ref: 'Pack'
+    },
+    hits: {
+        all: Number,
+        daily: Number,
+        weekly: Number,
+        monthly: Number
     }
 }));
 
@@ -45,4 +57,14 @@ mongoose.model('Tag', new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Sticker'
     }]
+}));
+
+mongoose.model('Search', new mongoose.Schema({
+    term: String,
+    hits: {
+        all: Number,
+        daily: Number,
+        weekly: Number,
+        monthly: Number
+    }
 }));

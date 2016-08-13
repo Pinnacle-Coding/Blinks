@@ -8,7 +8,7 @@ var Tag = mongoose.model('Tag');
 
 module.exports = {
     run: function() {
-        var UPDATE_HITS_FILE = 'update-hits.json';
+        var UPDATE_HITS_FILE = './update-hits.json';
         fs.access(UPDATE_HITS_FILE, fs.F_OK, function(err) {
             var today = new Date();
             var dates;

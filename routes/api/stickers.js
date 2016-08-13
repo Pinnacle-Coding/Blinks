@@ -57,6 +57,7 @@ module.exports = [
         handler: function (req, done) {
             var query = {};
             var tasks = [];
+            console.log(req.query.tag);
             if (req.query.tag) {
                 tasks.push(function (callback) {
                     Tag.findOne({
@@ -87,6 +88,7 @@ module.exports = [
                         message: err.message
                     });
                 } else {
+                    console.log(JSON.stringify(results));
                     if (results) {
                         if (results.error) {
                             done(true, {

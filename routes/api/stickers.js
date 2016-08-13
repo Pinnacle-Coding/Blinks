@@ -8,7 +8,7 @@ module.exports = [
         path: '/sticker/:id',
         method: 'GET',
         handler: function (req, done) {
-            var query_id = req.params.id
+            var query_id = req.params.id;
             var query = {
                 $or: [
                     {
@@ -17,7 +17,7 @@ module.exports = [
                 ]
             };
             if (/^[0-9a-f]{24}$/.test(query_id)) {
-                query['$or'].push({
+                query.$or.push({
                     _id: query_id
                 });
             }
@@ -59,7 +59,7 @@ module.exports = [
         handler: function (req, done) {
             var query = {};
             var tasks = [];
-            var tag_error = undefined;
+            var tag_error;
             if (req.query.tag) {
                 tasks.push(function (callback) {
                     Tag.findOne({
@@ -116,7 +116,7 @@ module.exports = [
                                 'hits.weekly': -1,
                                 'hits.monthly': -1,
                                 'hits.total': -1
-                            }
+                            };
                         }
                         var page = req.query.page ? req.query.page : 0;
                         var count = req.query.count ? req.query.count : 20;
@@ -175,4 +175,4 @@ module.exports = [
 
         }
     }
-]
+];

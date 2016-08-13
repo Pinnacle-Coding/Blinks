@@ -6,7 +6,7 @@ module.exports = [
         path: '/tag/:id',
         method: 'GET',
         handler: function (req, done) {
-            var query_id = req.params.id
+            var query_id = req.params.id;
             var query = {
                 $or: [
                     {
@@ -15,7 +15,7 @@ module.exports = [
                 ]
             };
             if (/^[0-9a-f]{24}$/.test(query_id)) {
-                query['$or'].push({
+                query.$or.push({
                     _id: query_id
                 });
             }
@@ -53,7 +53,7 @@ module.exports = [
             if (req.query.contains) {
                 query = {
                     name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
-                }
+                };
             }
             var sort = {};
             if (req.query.type && req.query.type === 'trending') {
@@ -62,7 +62,7 @@ module.exports = [
                     'hits.weekly': -1,
                     'hits.monthly': -1,
                     'hits.total': -1
-                }
+                };
             }
             Tag.find(query).populate({
                 path: 'stickers',
@@ -108,4 +108,4 @@ module.exports = [
 
         }
     }
-]
+];

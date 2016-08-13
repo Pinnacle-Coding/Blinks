@@ -7,7 +7,7 @@ var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 
 module.exports = {
-    run: function() {
+    run: function(callback) {
         var UPDATE_HITS_FILE = './update-hits.json';
         fs.access(UPDATE_HITS_FILE, fs.F_OK, function(err) {
             var today = new Date();
@@ -126,6 +126,7 @@ module.exports = {
                     } else {
                         console.log("Dates for future updates saved to " + UPDATE_HITS_FILE);
                     }
+                    callback();
                 });
             });
         });

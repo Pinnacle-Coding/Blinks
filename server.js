@@ -28,7 +28,10 @@ app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
-var cron = require('./cron.js')
-setInterval(function() {
-    cron.run();
-}, 1000 * 60 * 60);
+var cron = require('./cron.js');
+var timeoutCallback = function() {
+    setTimeout(function() {
+        cron.run(timeoutCallback);
+    }, 1000 * 60 * 60);
+};
+cron.run(timeoutCallback);

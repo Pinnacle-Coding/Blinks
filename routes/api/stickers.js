@@ -57,6 +57,7 @@ module.exports = [
         handler: function (req, done) {
             var query = {};
             var tasks = [];
+            var tag_error = undefined;
             if (req.query.tag) {
                 tasks.push(function (callback) {
                     Tag.findOne({
@@ -65,19 +66,19 @@ module.exports = [
                         }
                     }).exec(function (err, tag) {
                         if (err) {
-                            callback({
+                            tag_error = {
                                 error: err
-                            });
+                            };
                         } else {
                             if (tag) {
                                 query.tags = tag._id;
-                                callback(null);
                             } else {
-                                callback({
+                                tag_error = {
                                     error: false
-                                });
+                                };
                             }
                         }
+                        callback(null);
                     });
                 });
             }
@@ -87,11 +88,10 @@ module.exports = [
                         message: err.message
                     });
                 } else {
-                    console.log(JSON.stringify(results));
-                    if (results && results.length) {
-                        if (results[0].error) {
+                    if (tag_error) {
+                        if (tag_error.error) {
                             done(true, {
-                                message: results[0].error.message
+                                message: tag_error.error.message
                             });
                         } else {
                             done(false, {

@@ -10,9 +10,9 @@ BLINKS.IO API ROUTES
    - 'count' is the number of items per page
 5. All Packs = /api/packs?page={{integer}}&count={{integer}} [DONE]
 6. Trending Packs = /api/packs?type=trending&page={{integer}}&count={{integer}} [DONE]
-7. Pack Detail Info = /api/pack/:id
+7. Pack Detail Info = /api/pack/:id [DONE]
    - 'id' can be the name of a pack as well
-8. Artist Detail Info = /api/author/:id
+8. Artist Detail Info = /api/author/:id [DONE]
    - 'id' can be the name of an author as well
 
 */

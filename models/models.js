@@ -56,11 +56,7 @@ mongoose.model('Tag', new mongoose.Schema({
     stickers: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Sticker'
-    }]
-}));
-
-mongoose.model('Search', new mongoose.Schema({
-    term: String,
+    }],
     hits: {
         total: Number,
         daily: Number,

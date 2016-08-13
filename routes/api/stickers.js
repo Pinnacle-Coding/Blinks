@@ -36,17 +36,10 @@ module.exports = [
                         message: err.message
                     });
                 } else {
-                    if (sticker) {
-                        done(false, {
-                            message: 'Sticker found',
-                            sticker: sticker
-                        });
-                    } else {
-                        done(false, {
-                            message: 'No sticker found',
-                            sticker: sticker
-                        });
-                    }
+                    done(false, {
+                        message: (sticker) ? 'Sticker found' : 'No sticker found',
+                        sticker: sticker
+                    });
                 }
             });
         }
@@ -62,7 +55,7 @@ module.exports = [
                 tasks.push(function (callback) {
                     Tag.findOne({
                         name: {
-                            $regex: new RegExp('^' + req.query.tag + '$', 'i')
+                            $regex: new RegExp(req.query.tag, 'i')
                         }
                     }).exec(function (err, tag) {
                         if (err) {
@@ -76,7 +69,7 @@ module.exports = [
                                 tag.hits.weekly += 1;
                                 tag.hits.monthly += 1;
                                 tag.hits.total += 1;
-                                tag.save(function(err, tag) {
+                                tag.save(function (err, tag) {
 
                                 });
                             } else {
@@ -147,16 +140,11 @@ module.exports = [
                                             });
                                         });
                                     }
-                                    done(false, {
-                                        message: 'Stickers found',
-                                        stickers: stickers
-                                    });
-                                } else {
-                                    done(false, {
-                                        message: 'No stickers found',
-                                        stickers: []
-                                    });
                                 }
+                                done(false, {
+                                    message: (stickers && stickers.length) ? 'Stickers found' : 'No stickers found',
+                                    stickers: stickers
+                                });
                             }
                         });
                     }

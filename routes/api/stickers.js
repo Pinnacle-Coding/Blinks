@@ -59,11 +59,14 @@ module.exports = [
             var tasks = [];
             if (req.query.tag) {
                 tasks.push(function (callback) {
+                    console.log(req.query.tag);
                     Tag.findOne({
                         name: {
                             $regex: new RegExp('^' + req.query.tag + '$', 'i')
                         }
                     }).exec(function (err, tag) {
+                        console.log(err);
+                        console.log(tag);
                         if (err) {
                             callback({
                                 error: err

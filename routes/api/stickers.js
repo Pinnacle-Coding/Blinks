@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var async = require('async');
 var Sticker = mongoose.model('Sticker');
+var Tag = mongoose.model('Tag');
 
 module.exports = [
     {

@@ -6,7 +6,46 @@ module.exports = [
         path: '/pack/:id',
         method: 'GET',
         handler: function (req, done) {
+            var query_id = req.params.id
+            var query = {
+                $or: [
+                    {
+                        name: query_id
+                    }
+                ]
+            };
+            if (/^[0-9a-f]{24}$/.test(query_id)) {
+                query['$or'].push({
+                    _id: query_id
+                });
+            }
+            Pack.findOne(query).populate({
+                path: 'stickers',
+                select: 'name image'
+            }).populate({
+                path: 'author',
+                select: 'name location image'
+            }).exec(function (err, pack) {
+                if (err) {
+                    done(true, {
+                        message: err.message
+                    });
+                } else {
+                    if (pack) {
+                        pack.hits.total += 1;
+                        pack.hits.daily += 1;
+                        pack.hits.weekly += 1;
+                        pack.hits.monthly += 1;
+                        pack.save(function (err, sticker) {
 
+                        });
+                    }
+                    done(false, {
+                        message: (sticker) ? 'Pack found' : 'No pack found',
+                        pack: pack
+                    });
+                }
+            });
         }
     },
     {

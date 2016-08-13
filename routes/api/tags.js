@@ -6,7 +6,43 @@ module.exports = [
         path: '/tag/:id',
         method: 'GET',
         handler: function (req, done) {
+            var query_id = req.params.id
+            var query = {
+                $or: [
+                    {
+                        name: query_id
+                    }
+                ]
+            };
+            if (/^[0-9a-f]{24}$/.test(query_id)) {
+                query['$or'].push({
+                    _id: query_id
+                });
+            }
+            Tag.findOne(query).populate({
+                path: 'stickers',
+                select: 'name image'
+            }).exec(function (err, tag) {
+                if (err) {
+                    done(true, {
+                        message: err.message
+                    });
+                } else {
+                    if (tag) {
+                        tag.hits.total += 1;
+                        tag.hits.daily += 1;
+                        tag.hits.weekly += 1;
+                        tag.hits.monthly += 1;
+                        tag.save(function (err, sticker) {
 
+                        });
+                    }
+                    done(false, {
+                        message: (tag) ? 'Tag found' : 'No tag found',
+                        tag: tag
+                    });
+                }
+            });
         }
     },
     {

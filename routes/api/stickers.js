@@ -26,7 +26,7 @@ module.exports = [
                 select: 'name'
             }).populate({
                 path: 'author',
-                select: 'name'
+                select: 'name location image'
             }).populate({
                 path: 'pack',
                 select: 'name'
@@ -36,6 +36,15 @@ module.exports = [
                         message: err.message
                     });
                 } else {
+                    if (sticker) {
+                        sticker.hits.total += 1;
+                        sticker.hits.daily += 1;
+                        sticker.hits.weekly += 1;
+                        sticker.hits.monthly += 1;
+                        sticker.save(function (err, sticker) {
+
+                        });
+                    }
                     done(false, {
                         message: (sticker) ? 'Sticker found' : 'No sticker found',
                         sticker: sticker

@@ -72,6 +72,13 @@ module.exports = [
                         } else {
                             if (tag) {
                                 query.tags = tag._id;
+                                tag.hits.daily += 1;
+                                tag.hits.weekly += 1;
+                                tag.hits.monthly += 1;
+                                tag.hits.total += 1;
+                                tag.save(function(err, tag) {
+
+                                });
                             } else {
                                 tag_error = {
                                     error: false

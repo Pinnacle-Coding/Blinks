@@ -16,7 +16,7 @@ module.exports = [
             var query = {};
             if (req.query.contains) {
                 query = {
-                    name: new RegExp('\\b'+req.query.contains+'\\w+', 'i')
+                    name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
                 }
             }
             var sort = {};
@@ -28,13 +28,28 @@ module.exports = [
                     'hits.total': -1
                 }
             }
-            Tag.find(query).sort(sort).limit(20).skip(0).exec(function (err, tags) {
+            Tag.find(query).populate({
+                path: 'stickers',
+                select: 'name image'
+            }).sort(sort).limit(20).skip(0).exec(function (err, tags) {
                 if (err) {
                     done(true, {
                         message: err.message
                     });
-                }
-                else {
+                } else {
+                    if (tags && tags.length) {
+                        if (!req.query.type || req.query.type !== 'trending') {
+                            tags.forEach(function (tag) {
+                                tag.hits.daily += 1;
+                                tag.hits.weekly += 1;
+                                tag.hits.monthly += 1;
+                                tag.hits.total += 1;
+                                tag.save(function (err, tag) {
+
+                                });
+                            });
+                        }
+                    }
                     done(false, {
                         message: (tags && tags.length) ? 'Tags found' : 'No tags found',
                         tags: tags

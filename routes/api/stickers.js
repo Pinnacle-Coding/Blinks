@@ -125,7 +125,7 @@ module.exports = [
                                     message: err.message
                                 });
                             } else {
-                                if (stickers) {
+                                if (stickers && stickers.length) {
                                     // We don't count trending searches as hits
                                     // because that would continue to reinforce the top searches
                                     if (!req.query.type || req.query.type !== 'trending') {

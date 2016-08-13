@@ -4,11 +4,11 @@ BLINKS.IO API ROUTES
 ====================
 
 1. Trending Stickers = /api/stickers?type=trending [DONE]
-2. Trending Searches = /api/tags?type=trending
-3. Suggested Searches = /api/tags?contains={{string}}
+2. Trending Searches = /api/tags?type=trending [DONE]
+3. Suggested Searches = /api/tags?contains={{string}} [DONE]
 4. Sticker Search = /api/stickers?tag={{string}}&page={{integer}}&count={{integer}} [DONE]
+   - 'count' is the number of items per page
 5. All Packs = /api/packs?page={{integer}}&count={{integer}}
-   - count is the number of packs per page
 6. Trending Packs = /api/packs?type=trending&page={{integer}}&count={{integer}}
 7. Pack Detail Info = /api/pack/:id
 8. Artist Detail Info = /api/author/:id

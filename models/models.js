@@ -62,7 +62,7 @@ mongoose.model('Tag', new mongoose.Schema({
 mongoose.model('Search', new mongoose.Schema({
     term: String,
     hits: {
-        all: Number,
+        total: Number,
         daily: Number,
         weekly: Number,
         monthly: Number

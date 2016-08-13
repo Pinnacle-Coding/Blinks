@@ -13,8 +13,8 @@
         "ejs": "2.4.1",
         "express": "4.13.3",
         "mongoose": "^4.5.0",
-        "body-parser": "^1.15.1"
-
+        "body-parser": "^1.15.1",
+        "async": "2.0.1"
     },
     "repository": {
         "type": "git",

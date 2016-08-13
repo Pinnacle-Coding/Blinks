@@ -98,14 +98,18 @@ module.exports = [
         path: '/tags',
         method: 'POST',
         handler: function (req, done) {
-
+          done(false, {
+            message: 'Not implemented'
+          });
         }
     },
     {
         path: '/tag/:id',
         method: 'PUT',
         handler: function (req, done) {
-
+          done(false, {
+            message: 'Not implemented'
+          });
         }
     }
 ];

@@ -7,7 +7,13 @@ mongoose.model('Author', new mongoose.Schema({
     packs: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Pack'
-    }]
+    }],
+    hits: {
+        all: Number,
+        daily: Number,
+        weekly: Number,
+        monthly: Number
+    }
 }));
 
 mongoose.model('Pack', new mongoose.Schema({

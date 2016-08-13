@@ -71,6 +71,7 @@ module.exports = [
                         } else {
                             if (tag) {
                                 query.tags = tag._id;
+                                callback(null);
                             } else {
                                 callback({
                                     error: false

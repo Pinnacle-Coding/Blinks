@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 module.exports = [
     {
         path: '/last-updates',

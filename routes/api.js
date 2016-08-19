@@ -2,6 +2,7 @@
 
 BLINKS.IO API ROUTES
 ====================
+Base URL: http://blinks-app.herokuapp.com
 
 1. Trending Stickers = /api/stickers?type=trending [DONE]
 2. Trending Searches = /api/tags?type=trending [DONE]

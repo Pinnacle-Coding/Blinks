@@ -56,7 +56,7 @@ you want to.
 
 */
 
-const router = require('express').Router();
+var router = require('express').Router();
 
 var add = function (filename) {
     require(filename).forEach(function(route) {
@@ -81,7 +81,7 @@ var add = function (filename) {
             router.delete(path, callback);
         }
     });
-}
+};
 
 require('fs').readdirSync(require('path').join(__dirname, 'api')).forEach(function (file) {
     add('./api/' + file);

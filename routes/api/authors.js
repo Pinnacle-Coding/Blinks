@@ -42,12 +42,12 @@ module.exports = [{
     path: '/authors',
     method: 'POST',
     handler: function(req, done) {
-
+		
     }
 }, {
     path: '/author/:id',
     method: 'PUT',
     handler: function(req, done) {
-
-    }
+	
+	}
 }];

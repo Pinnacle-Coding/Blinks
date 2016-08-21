@@ -1,9 +1,3 @@
-var mongoose = require('mongoose');
-var async = require('async');
-var fs = require('fs');
-var Author = mongoose.model('Author');
-var Pack = mongoose.model('Pack');
-var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 
 module.exports = {

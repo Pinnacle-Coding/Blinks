@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 
 mongoose.model('Author', new mongoose.Schema({
     name: String,
+    username: String,
+    password: String,
     location: String,
     image: String,
     packs: [{

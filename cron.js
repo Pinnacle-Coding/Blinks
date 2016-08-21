@@ -1,4 +1,5 @@
 var Tag = mongoose.model('Tag');
+var async = require('async');
 
 module.exports = {
     run: function(callback) {
@@ -11,7 +12,7 @@ module.exports = {
                     daily: today.toISOString(),
                     weekly: today.toISOString(),
                     monthly: today.toISOString()
-                }
+                };
             } else {
                 dates = JSON.parse(fs.readFileSync(UPDATE_HITS_FILE, 'utf8'));
             }

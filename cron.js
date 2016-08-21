@@ -1,3 +1,4 @@
+var fs = require('fs');
 var mongoose = require('mongoose');
 var Tag = mongoose.model('Tag');
 var async = require('async');

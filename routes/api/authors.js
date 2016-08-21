@@ -91,7 +91,7 @@ module.exports = [{
                         }
                     });
                 }
-            };
+            });
         }
         else {
             done(null, {

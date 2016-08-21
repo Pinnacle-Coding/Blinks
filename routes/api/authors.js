@@ -39,7 +39,9 @@ module.exports = [{
     path: '/authors',
     method: 'GET',
     handler: function(req, done) {
-        done(null, {})
+        done(null, {
+            message: 'Not implemented'            
+        })
     }
 }, {
     path: '/authors',
@@ -103,6 +105,9 @@ module.exports = [{
     path: '/author/:id',
     method: 'PUT',
     handler: function(req, done) {
+        done(null, {
+            message: 'Not implemented'            
+        })
 	
 	}
 }]

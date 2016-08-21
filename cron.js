@@ -1,5 +1,8 @@
 var fs = require('fs');
 var mongoose = require('mongoose');
+var Pack = mongoose.model('Pack');
+var Author = mongoose.model('Author');
+var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var async = require('async');
 

@@ -65,9 +65,9 @@ module.exports = [{
                 }
                 else {
                     var new_author = new Author({
-                        name: req.body.name,
-                        username: req.body.username,
-                        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                        name: name,
+                        username: username,
+                        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
                         location: (req.body.location) ? req.body.location : '',
                         image: (req.body.image) ? req.body.image : '',
                         packs: [],                        
@@ -78,10 +78,21 @@ module.exports = [{
                             total: 0
                         }
                     });
+                    new_author.save(function (err, new_author) {
+                        if (err) {
+                            done(err, {
+                                message: err.message
+                            });
+                        }
+                        else {
+                            done(null, {
+                                message: 'Author successfully created'
+                            });
+                        }
+                    });
                 }
             };
         }
-
         else {
             done(null, {
                 message: 'Required parameters not found'

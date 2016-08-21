@@ -1,0 +1,14 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    margin-top: 1.5em;
+}
+
+.logo {
+    max-width: 500px;
+    height: auto;
+    margin-top: 6em;
+}

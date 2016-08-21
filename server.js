@@ -23,14 +23,17 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use('/api', require('./routes/api'));
+app.use(function (req, res) {
+    res.status(404).send('Sorry cant find that!');
+});
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
 
 var cron = require('./cron.js');
-var timeoutCallback = function() {
-    setTimeout(function() {
+var timeoutCallback = function () {
+    setTimeout(function () {
         cron.run(timeoutCallback);
     }, 1000 * 60 * 60);
 };

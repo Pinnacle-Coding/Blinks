@@ -40,7 +40,7 @@ module.exports = [{
     method: 'GET',
     handler: function(req, done) {
         done(null, {
-            message: 'Not implemented'            
+            message: 'Not implemented'
         })
     }
 }, {
@@ -72,7 +72,7 @@ module.exports = [{
                         password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
                         location: (req.body.location) ? req.body.location : '',
                         image: (req.body.image) ? req.body.image : '',
-                        packs: [],                        
+                        packs: [],
                         hits: {
                             daily: 0,
                             weekly: 0,
@@ -106,8 +106,7 @@ module.exports = [{
     method: 'PUT',
     handler: function(req, done) {
         done(null, {
-            message: 'Not implemented'            
+            message: 'Not implemented'
         })
-	
 	}
 }]

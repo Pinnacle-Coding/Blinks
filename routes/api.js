@@ -19,18 +19,27 @@ Base URL: http://blinks-app.herokuapp.com
 Creating an author (temp) ...
 POST /api/authors
 {
-    name: ...
-    username: ...
-    password: ...
-    location: ... // Optional
-    image: ... // Optional, URL
+    name: String (REQUIRED)
+    username: String (REQUIRED & UNIQUE)
+    password: String (REQUIRED)
+    location: String
+    image: String -> URL
 }
 
 Creating a pack (temp) ...
 POST /api/packs
 {
-    name: ...
-    author: ... // Can be username or _id, not name
+    name: String (REQUIRED)
+    author: String (REQUIRED) // MUST be either _id or username
+}
+
+Creating a sticker (temp) ...
+POST /api/stickers
+{
+    name: String (REQUIRED)
+    image: String -> URL (REQUIRED)
+    pack: String -> _id (REQUIRED) // MUST be _id
+    tags: [String] (REQUIRED) // These will be converted into tag objects; strings should be unique -> duplicates are removed during processing
 }
 */
 

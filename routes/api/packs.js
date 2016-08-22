@@ -100,9 +100,6 @@ module.exports = [
                 var author_query = {
                     $or: [
                         {
-                            name: author_id
-                        },
-                        {
                             username: author_id
                         }
                     ]
@@ -119,42 +116,27 @@ module.exports = [
                         });
                     }
                     else {
-                        Pack.findOne({
-                            name: req.body.name
-                        }).exec(function (err, pack) {
+                        var new_pack = new Pack({
+                            name: req.body.name,
+                            author: author._id,
+                            stickers: [],
+                            hits: {
+                                daily: 0,
+                                weekly: 0,
+                                monthly: 0,
+                                total: 0
+                            }
+                        });
+                        new_pack.save(function (err, pack) {
                             if (err) {
                                 done(err, {
                                     message: err.message
                                 });
                             }
-                            else if (pack) {
-                                done(true, {
-                                    message: 'A pack by that name already exists'
-                                });
-                            }
                             else {
-                                var new_pack = new Pack({
-                                    name: req.body.name,
-                                    author: author._id,
-                                    stickers: [],
-                                    hits: {
-                                        daily: 0,
-                                        weekly: 0,
-                                        monthly: 0,
-                                        total: 0
-                                    }
-                                });
-                                new_pack.save(function (err, pack) {
-                                    if (err) {
-                                        done(err, {
-                                            message: err.message
-                                        });
-                                    }
-                                    else {
-                                        done(null, {
-                                            message: 'Pack successfully created'
-                                        });
-                                    }
+                                done(null, {
+                                    message: 'Pack successfully created',
+                                    pack: pack
                                 });
                             }
                         });

@@ -87,8 +87,10 @@ module.exports = [{
                             });
                         }
                         else {
+                            new_author.password = undefined;
                             done(null, {
-                                message: 'Author successfully created'
+                                message: 'Author successfully created',
+                                author: new_author
                             });
                         }
                     });

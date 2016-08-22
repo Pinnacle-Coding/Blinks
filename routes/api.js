@@ -16,6 +16,22 @@ Base URL: http://blinks-app.herokuapp.com
 8. Artist Detail Info = /api/author/:id [DONE]
    - 'id' can be the name of an author as well
 
+Creating an author (temp) ...
+POST /api/authors
+{
+    name: ...
+    username: ...
+    password: ...
+    location: ... // Optional
+    image: ... // Optional, URL
+}
+
+Creating a pack (temp) ...
+POST /api/packs
+{
+    name: ...
+    author: ... // Can be username or _id, not name
+}
 */
 
 /**

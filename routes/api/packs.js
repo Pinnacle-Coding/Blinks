@@ -95,14 +95,86 @@ module.exports = [
         path: '/packs',
         method: 'POST',
         handler: function (req, done) {
-
+            if (req.body.author && req.body.name) {
+                var author_id = req.body.author;
+                var author_query = {
+                    $or: [
+                        {
+                            name: author_id
+                        },
+                        {
+                            username: author_id
+                        }
+                    ]
+                };
+                if (/^[0-9a-f]{24}$/.test(author_id)) {
+                    author_query.$or.push({
+                        _id: author_id
+                    });
+                }
+                Author.findOne(author_query).exec(function (err, author) {
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
+                    }
+                    else {
+                        Pack.findOne({
+                            name: req.body.name
+                        }).exec(function (err, pack) {
+                            if (err) {
+                                done(err, {
+                                    message: err.message
+                                });
+                            }
+                            else if (pack) {
+                                done(true, {
+                                    message: 'A pack by that name already exists'
+                                });
+                            }
+                            else {
+                                var new_pack = new Pack({
+                                    name: req.body.name,
+                                    author: author._id,
+                                    stickers: [],
+                                    hits: {
+                                        daily: 0,
+                                        weekly: 0,
+                                        monthly: 0,
+                                        total: 0
+                                    }
+                                });
+                                new_pack.save(function (err, pack) {
+                                    if (err) {
+                                        done(err, {
+                                            message: err.message
+                                        });
+                                    }
+                                    else {
+                                        done(null, {
+                                            message: 'Pack successfully created'
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                done(true, {
+                    message: 'Missing required parameters'
+                });
+            }
         }
     },
     {
         path: '/pack/:id',
         method: 'PUT',
         handler: function (req, done) {
-
+            done(null, {
+                message: 'Not implemented'
+            });
         }
     }
 ];

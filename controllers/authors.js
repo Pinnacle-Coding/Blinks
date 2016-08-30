@@ -81,8 +81,8 @@ module.exports = [{
                     calls.push(function(callback) {
                         if (req.files.avatar) {
                             var filename = req.files.avatar;
-                            var bucket = 'blinks-authors';
-                            var key = new_author._id;
+                            var bucket = 'blinks';
+                            var key = require('path').join('authors', new_author._id);
                             var params = {
                                 localFile: filename,
                                 s3Params: {
@@ -95,6 +95,7 @@ module.exports = [{
                                 callback(err);
                             });
                             uploader.on('end', function () {
+                                new_author.image = client.getPublicUrl(bucket, key);
                                 callback();
                             });
                         }

@@ -121,7 +121,7 @@ var add = function (filename) {
     });
 };
 
-require('fs').readdirSync(require('path').join(__dirname, 'api')).forEach(function (file) {
+require('fs').readdirSync(require('path').join(__base, 'controllers')).forEach(function (file) {
     add('./api/' + file);
 });
 

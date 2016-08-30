@@ -240,8 +240,8 @@ module.exports = [{
                                 }
                             });
                             var filename = req.files.sticker;
-                            var bucket = 'blinks-stickers';
-                            var key = sticker._id;
+                            var bucket = 'blinks';
+                            var key = require('path').join('stickers', sticker._id);
                             var params = {
                                 localFile: filename,
                                 s3Params: {

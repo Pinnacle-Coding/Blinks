@@ -21,7 +21,6 @@ POST /api/authors
 {
     name: String (REQUIRED)
     username: String (REQUIRED & UNIQUE)
-    password: String (REQUIRED)
     location: String
     image: String -> URL
 }
@@ -82,6 +81,10 @@ you want to.
 */
 
 var router = require('express').Router();
+var multer = require('multer');
+var upload = multer({
+    dest: __base+'uploads/'
+});
 
 var add = function (filename) {
     require(filename).forEach(function(route) {
@@ -99,9 +102,19 @@ var add = function (filename) {
         if (method === 'get') {
             router.get(path, callback);
         } else if (method === 'post') {
-            router.post(path, callback);
+            if ('upload' in route) {
+                router.post(path, upload.single(route.upload), callback);
+            }
+            else {
+                router.post(path, callback);
+            }
         } else if (method === 'put') {
-            router.put(path, callback);
+            if ('upload' in route) {
+                router.put(path, upload.single(route.upload), callback);
+            }
+            else {
+                router.put(path, callback);
+            }
         } else if (method === 'delete') {
             router.delete(path, callback);
         }

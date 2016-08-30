@@ -1,6 +1,7 @@
-var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
+var async = require('async');
 var Author = mongoose.model('Author');
+var client = require(__base + 's3client.js');
 
 module.exports = [{
     path: '/author/:id',
@@ -46,32 +47,28 @@ module.exports = [{
 }, {
     path: '/authors',
     method: 'POST',
+    upload: 'avatar',
     handler: function(req, done) {
-        if (req.body.username && req.body.password && req.body.name) {
+        if (req.body.username && req.body.name) {
             var username = req.body.username;
-            var password = req.body.password;
             var name = req.body.name;
             var query = {
                 username: username
             };
-            Author.findOne(query).exec(function (err, author) {
+            Author.findOne(query).exec(function(err, author) {
                 if (err) {
                     done(err, {
                         message: err.message
                     });
-                }
-                else if (author) {
+                } else if (author) {
                     done(true, {
                         message: 'Author already exists by that name or username'
                     });
-                }
-                else {
+                } else {
                     var new_author = new Author({
                         name: name,
                         username: username,
-                        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
                         location: (req.body.location) ? req.body.location : undefined,
-                        image: (req.body.image) ? req.body.image : undefined,
                         packs: [],
                         hits: {
                             daily: 0,
@@ -80,24 +77,52 @@ module.exports = [{
                             total: 0
                         }
                     });
-                    new_author.save(function (err, new_author) {
+                    var calls = [];
+                    calls.push(function(callback) {
+                        if (req.files.avatar) {
+                            var filename = req.files.avatar;
+                            var bucket = 'blinks-authors';
+                            var key = new_author._id;
+                            var params = {
+                                localFile: filename,
+                                s3Params: {
+                                    Bucket: bucket,
+                                    Key: key
+                                }
+                            };
+                            var uploader = client.uploadFile(params);
+                            uploader.on('error', function(err) {
+                                callback(err);
+                            });
+                            uploader.on('end', function () {
+                                callback();
+                            });
+                        }
+                    });
+                    async.series(calls, function (err) {
                         if (err) {
-                            done(err, {
+                            done(true, {
                                 message: err.message
                             });
                         }
                         else {
-                            new_author.password = undefined;
-                            done(null, {
-                                message: 'Author successfully created',
-                                author: new_author
+                            new_author.save(function(err, new_author) {
+                                if (err) {
+                                    done(err, {
+                                        message: err.message
+                                    });
+                                } else {
+                                    done(null, {
+                                        message: 'Author successfully created',
+                                        author: new_author
+                                    });
+                                }
                             });
                         }
                     });
                 }
             });
-        }
-        else {
+        } else {
             done(null, {
                 message: 'Required parameters not found'
             });
@@ -110,5 +135,5 @@ module.exports = [{
         done(null, {
             message: 'Not implemented'
         });
-	}
+    }
 }];

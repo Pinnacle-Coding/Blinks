@@ -121,8 +121,10 @@ var add = function (filename) {
     });
 };
 
-require('fs').readdirSync(require('path').join(__base, 'controllers')).forEach(function (file) {
-    add('./api/' + file);
+var path = require('path');
+var rootpath = path.join(__base, 'controllers');
+require('fs').readdirSync(rootpath).forEach(function (file) {
+    add(path.join(rootpath, file));
 });
 
 module.exports = router;

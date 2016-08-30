@@ -240,12 +240,11 @@ module.exports = [{
                                 }
                             });
                             var filename = req.files.sticker;
-                            var bucket = 'blinks';
                             var key = require('path').join('stickers', sticker._id);
                             var params = {
                                 localFile: filename,
                                 s3Params: {
-                                    Bucket: bucket,
+                                    Bucket: __bucket,
                                     Key: key
                                 }
                             };
@@ -256,7 +255,7 @@ module.exports = [{
                                 });
                             });
                             uploader.on('end', function() {
-                                sticker.image = client.getPublicUrl(bucket, key);
+                                sticker.image = client.getPublicUrl(__bucket, key);
                                 sticker.save(function(err, sticker) {
                                     if (err) {
                                         done(err, {

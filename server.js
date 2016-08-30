@@ -1,5 +1,6 @@
 
 global.__base = __dirname + '/';
+global.__bucket = 'blinks-test';
 
 var express = require('express');
 var bodyParser = require('body-parser');

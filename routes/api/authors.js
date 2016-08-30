@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var async = require('async');
+var client = require(require('path').join(__base, 'app-s3.js'));
 var Author = mongoose.model('Author');
-var client = require(__base + 's3client.js');
 
 module.exports = [{
     path: '/author/:id',

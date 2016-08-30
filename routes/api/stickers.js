@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var async = require('async');
-var client = require(__base + 's3client.js');
+var client = require(require('path').join(__base, 'app-s3.js'));
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 

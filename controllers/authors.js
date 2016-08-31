@@ -49,7 +49,7 @@ module.exports = [{
     method: 'POST',
     upload: 'avatar',
     handler: function(req, done) {
-        console.log(JSON.stringify(req.body));
+        console.log(req.body);
         if (req.body.username && req.body.name) {
             var username = req.body.username;
             var name = req.body.name;

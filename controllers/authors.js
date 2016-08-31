@@ -49,7 +49,6 @@ module.exports = [{
     method: 'POST',
     upload: 'avatar',
     handler: function(req, done) {
-        console.log(req.body);
         if (req.body.username && req.body.name) {
             var username = req.body.username;
             var name = req.body.name;
@@ -66,6 +65,7 @@ module.exports = [{
                         message: 'Author already exists by that name or username'
                     });
                 } else {
+                    console.log('Creating new author ...');
                     var new_author = new Author({
                         name: name,
                         username: username,

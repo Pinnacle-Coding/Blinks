@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Pack = mongoose.model('Pack');
+var Author = mongoose.model('Author');
 
 module.exports = [
     {

@@ -65,7 +65,6 @@ module.exports = [{
                         message: 'Author already exists by that name or username'
                     });
                 } else {
-                    console.log('Creating new author ...');
                     var new_author = new Author({
                         name: name,
                         username: username,
@@ -97,6 +96,9 @@ module.exports = [{
                                 new_author.image = client.getPublicUrl(__bucket, key);
                                 callback();
                             });
+                        }
+                        else {
+                            callback();
                         }
                     });
                     async.series(calls, function (err) {

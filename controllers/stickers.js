@@ -171,7 +171,7 @@ module.exports = [{
     method: 'POST',
     upload: 'sticker',
     handler: function(req, done) {
-        if (req.body.name && req.body.pack && req.body.tags && req.files.sticker) {
+        if (req.body.name && req.body.pack && req.body.tags && req.file) {
             Pack.findOne({
                 _id: req.body.pack
             }).exec(function(err, pack) {
@@ -239,10 +239,9 @@ module.exports = [{
                                     total: 0
                                 }
                             });
-                            var filename = req.files.sticker;
                             var key = require('path').join('stickers', sticker._id);
                             var params = {
-                                localFile: filename,
+                                localFile: req.file.path,
                                 s3Params: {
                                     Bucket: __bucket,
                                     Key: key

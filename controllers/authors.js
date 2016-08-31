@@ -79,11 +79,10 @@ module.exports = [{
                     });
                     var calls = [];
                     calls.push(function(callback) {
-                        if (req.files.avatar) {
-                            var filename = req.files.avatar;
+                        if (req.file) {
                             var key = require('path').join('authors', new_author._id);
                             var params = {
-                                localFile: filename,
+                                localFile: req.file.path,
                                 s3Params: {
                                     Bucket: __bucket,
                                     Key: key

@@ -186,6 +186,9 @@ module.exports = [{
                 } else {
                     var tags = [];
                     var tag_ids = [];
+                    if (typeof req.body.tags === 'string') {
+                        req.body.tags = req.body.tags.split(',');
+                    }
                     var tag_strings = uniq(req.body.tags);
                     var calls = [];
                     tag_strings.forEach(function(tag_string) {

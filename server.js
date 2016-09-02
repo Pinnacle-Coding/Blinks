@@ -32,6 +32,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// Dashboard
+app.get('/', function (req, res) {
+    res.status(200).sendFile(path.join(__dirname+'/views/dashboard.html'));
+});
+
 // API route
 app.use('/api', require('./routes/api'));
 

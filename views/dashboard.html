@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blinks &middot Dashboard</title>
+</head>
+<body>
+    <form action="/api/stickers" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" id="name"/>
+        <input type="text" name="pack" id="pack"/>
+        <input type="text" name="tags" id="tags"/>
+        <input type="file" name="sticker" id="sticker"/>
+        <button type="submit">Submit Sticker</button>
+    </form>
+</body>
+</html>

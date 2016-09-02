@@ -64,7 +64,13 @@ module.exports = [
             }
             var page = req.query.page ? req.query.page : 0;
             var count = req.query.count ? req.query.count : 20;
-            Pack.find().sort(sort).limit(count).skip(page * count).exec(function (err, packs) {
+            Pack.find().populate({
+                path: 'stickers',
+                select: 'name image'
+            }).populate({
+                path: 'author',
+                select: 'name location image'
+            }).sort(sort).limit(count).skip(page * count).exec(function (err, packs) {
                 if (err) {
                     done(true, {
                         message: err.message
@@ -117,27 +123,43 @@ module.exports = [
                         });
                     }
                     else {
-                        var new_pack = new Pack({
-                            name: req.body.name,
-                            author: author._id,
-                            stickers: [],
-                            hits: {
-                                daily: 0,
-                                weekly: 0,
-                                monthly: 0,
-                                total: 0
-                            }
-                        });
-                        new_pack.save(function (err, pack) {
+                        Pack.findOne({
+                            name: req.body.name
+                        }).exec(function (err, pack) {
                             if (err) {
                                 done(err, {
                                     message: err.message
                                 });
                             }
+                            else if (pack) {
+                                done(true, {
+                                    message: 'Pack by that name already exists'
+                                });
+                            }
                             else {
-                                done(null, {
-                                    message: 'Pack successfully created',
-                                    pack: pack
+                                var new_pack = new Pack({
+                                    name: req.body.name,
+                                    author: author._id,
+                                    stickers: [],
+                                    hits: {
+                                        daily: 0,
+                                        weekly: 0,
+                                        monthly: 0,
+                                        total: 0
+                                    }
+                                });
+                                new_pack.save(function (err, pack) {
+                                    if (err) {
+                                        done(err, {
+                                            message: err.message
+                                        });
+                                    }
+                                    else {
+                                        done(null, {
+                                            message: 'Pack successfully created',
+                                            pack: pack
+                                        });
+                                    }
                                 });
                             }
                         });

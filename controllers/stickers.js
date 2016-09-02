@@ -174,9 +174,19 @@ module.exports = [{
     upload: 'sticker',
     handler: function(req, done) {
         if (req.body.name && req.body.pack && req.body.tags && req.file) {
-            Pack.findOne({
-                _id: req.body.pack
-            }).exec(function(err, pack) {
+            var query = {
+                $or: [
+                    {
+                        name: req.body.pack
+                    }
+                ]
+            };
+            if (/^[0-9a-f]{24}$/.test(req.body.pack)) {
+                query.$or.push({
+                    _id: req.body.pack
+                });
+            }
+            Pack.findOne(query).exec(function(err, pack) {
                 if (err) {
                     done(err, {
                         message: err.message

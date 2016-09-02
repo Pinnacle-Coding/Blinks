@@ -3,6 +3,7 @@ var async = require('async');
 var client = require(require('path').join(__base, 'app-s3.js'));
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
+var Pack = mongoose.model('Pack');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
 // e.g. [String] or [int]

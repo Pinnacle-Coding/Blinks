@@ -81,7 +81,8 @@ module.exports = [{
                     var calls = [];
                     calls.push(function(callback) {
                         if (req.file) {
-                            var extension = req.file.path.split('.').pop();
+                            var re = /(?:\.([^.]+))?$/;
+                            var extension = re.exec(req.file.path)[1];
                             var key = require('path').join('authors', new_author._id.toString() + '.' + extension);
                             var params = {
                                 localFile: req.file.path,
@@ -94,22 +95,20 @@ module.exports = [{
                             uploader.on('error', function(err) {
                                 callback(err);
                             });
-                            uploader.on('end', function () {
+                            uploader.on('end', function() {
                                 new_author.image = s3.getPublicUrl(__bucket, key);
                                 callback();
                             });
-                        }
-                        else {
+                        } else {
                             callback();
                         }
                     });
-                    async.series(calls, function (err) {
+                    async.series(calls, function(err) {
                         if (err) {
                             done(true, {
                                 message: err.message
                             });
-                        }
-                        else {
+                        } else {
                             new_author.save(function(err, new_author) {
                                 if (err) {
                                     done(err, {

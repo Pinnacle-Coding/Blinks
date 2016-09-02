@@ -244,7 +244,8 @@ module.exports = [{
                                     total: 0
                                 }
                             });
-                            var extension = req.file.path.split('.').pop();
+                            var re = /(?:\.([^.]+))?$/;
+                            var extension = re.exec(req.file.path)[1];
                             var key = require('path').join('stickers', sticker._id.toString() + '.' + extension);
                             var params = {
                                 localFile: req.file.path,

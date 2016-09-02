@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var async = require('async');
 var client = require(require('path').join(__base, 'app-s3.js'));
 var Author = mongoose.model('Author');
+var s3 = require('s3');
 
 module.exports = [{
     path: '/author/:id',
@@ -93,7 +94,7 @@ module.exports = [{
                                 callback(err);
                             });
                             uploader.on('end', function () {
-                                new_author.image = client.getPublicUrl(__bucket, key);
+                                new_author.image = s3.getPublicUrl(__bucket, key);
                                 callback();
                             });
                         }

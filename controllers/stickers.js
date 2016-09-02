@@ -4,6 +4,7 @@ var client = require(require('path').join(__base, 'app-s3.js'));
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var Pack = mongoose.model('Pack');
+var s3 = require('s3');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
 // e.g. [String] or [int]
@@ -258,7 +259,7 @@ module.exports = [{
                                 });
                             });
                             uploader.on('end', function() {
-                                sticker.image = client.getPublicUrl(__bucket, key);
+                                sticker.image = s3.getPublicUrl(__bucket, key);
                                 sticker.save(function(err, sticker) {
                                     if (err) {
                                         done(err, {

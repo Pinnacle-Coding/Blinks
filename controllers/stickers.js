@@ -244,7 +244,8 @@ module.exports = [{
                                     total: 0
                                 }
                             });
-                            var key = require('path').join('stickers', sticker._id.toString());
+                            var extension = req.file.path.split('.').pop();
+                            var key = require('path').join('stickers', sticker._id.toString() + '.' + extension);
                             var params = {
                                 localFile: req.file.path,
                                 s3Params: {

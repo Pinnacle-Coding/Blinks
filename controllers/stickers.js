@@ -251,8 +251,6 @@ module.exports = [{
                                     Key: key
                                 }
                             };
-                            console.log(req.file);
-                            console.log(JSON.stringify(params));
                             var uploader = client.uploadFile(params);
                             uploader.on('error', function(err) {
                                 done(err, {

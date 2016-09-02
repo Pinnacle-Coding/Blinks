@@ -82,15 +82,9 @@ you want to.
 
 var router = require('express').Router();
 var multer = require('multer');
-var storage = multer.memoryStorage();
-var upload = multer({
-    storage: storage
-});
-/*
 var upload = multer({
     dest: __base+'uploads/'
 });
-*/
 
 var add = function (filename) {
     require(filename).forEach(function(route) {

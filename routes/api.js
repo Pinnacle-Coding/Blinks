@@ -82,6 +82,7 @@ you want to.
 
 var router = require('express').Router();
 var multer = require('multer');
+/*
 var crypto = require('crypto');
 var mime = require('mime');
 var storage = multer.diskStorage({
@@ -94,8 +95,9 @@ var storage = multer.diskStorage({
         });
     }
 });
+*/
 var upload = multer({
-    storage: storage
+    dest: __base+'uploads/'
 });
 
 var add = function(filename) {

@@ -83,6 +83,7 @@ you want to.
 var router = require('express').Router();
 var multer = require('multer');
 var crypto = require('crypto');
+var mime = require('mime');
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, __base+'uploads/');

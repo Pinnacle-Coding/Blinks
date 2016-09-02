@@ -81,9 +81,7 @@ module.exports = [{
                     var calls = [];
                     calls.push(function(callback) {
                         if (req.file) {
-                            var re = /(?:\.([^.]+))?$/;
-                            var extension = re.exec(req.file.path)[1];
-                            var key = require('path').join('authors', new_author._id.toString() + '.' + extension);
+                            var key = require('path').join('authors', new_author._id.toString());
                             var params = {
                                 localFile: req.file.path,
                                 s3Params: {

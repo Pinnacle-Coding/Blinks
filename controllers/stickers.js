@@ -244,9 +244,7 @@ module.exports = [{
                                     total: 0
                                 }
                             });
-                            var re = /(?:\.([^.]+))?$/;
-                            var extension = re.exec(req.file.path)[1];
-                            var key = require('path').join('stickers', sticker._id.toString() + '.' + extension);
+                            var key = require('path').join('stickers', sticker._id.toString());
                             var params = {
                                 localFile: req.file.path,
                                 s3Params: {
@@ -283,9 +281,22 @@ module.exports = [{
                                                     message: err.message
                                                 });
                                             } else {
-                                                done(null, {
-                                                    message: 'Sticker successfully created',
-                                                    sticker: sticker
+                                                if (!pack.stickers || !pack.stickers.length) {
+                                                    pack.stickers = [];
+                                                }
+                                                pack.stickers.push(sticker._id);
+                                                pack.save(function (err, pack) {
+                                                    if (err) {
+                                                        done(err, {
+                                                            message: err.message
+                                                        });
+                                                    }
+                                                    else {
+                                                        done(null, {
+                                                            message: 'Sticker successfully created',
+                                                            sticker: sticker
+                                                        });
+                                                    }
                                                 });
                                             }
                                         });

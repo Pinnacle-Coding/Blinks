@@ -243,7 +243,7 @@ module.exports = [{
                                     total: 0
                                 }
                             });
-                            var key = require('path').join('stickers', sticker._id);
+                            var key = require('path').join('stickers', sticker._id.toString());
                             var params = {
                                 localFile: req.file.path,
                                 s3Params: {

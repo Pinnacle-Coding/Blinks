@@ -82,16 +82,26 @@ you want to.
 
 var router = require('express').Router();
 var multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, __base+'uploads/');
+    },
+    filename: function(req, file, cb) {
+        crypto.pseudoRandomBytes(16, function(err, raw) {
+            cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+        });
+    }
+});
 var upload = multer({
-    dest: __base+'uploads/'
+    storage: storage
 });
 
-var add = function (filename) {
+var add = function(filename) {
     require(filename).forEach(function(route) {
         var path = route.path;
         var method = route.method.toLowerCase();
-        var callback = function (req, res) {
-            route.handler(req, function (err, payload) {
+        var callback = function(req, res) {
+            route.handler(req, function(err, payload) {
                 if (err) {
                     res.status(400).json(payload);
                 } else {
@@ -104,15 +114,13 @@ var add = function (filename) {
         } else if (method === 'post') {
             if ('upload' in route) {
                 router.post(path, upload.single(route.upload), callback);
-            }
-            else {
+            } else {
                 router.post(path, callback);
             }
         } else if (method === 'put') {
             if ('upload' in route) {
                 router.put(path, upload.single(route.upload), callback);
-            }
-            else {
+            } else {
                 router.put(path, callback);
             }
         } else if (method === 'delete') {
@@ -123,7 +131,7 @@ var add = function (filename) {
 
 var path = require('path');
 var rootpath = path.join(__base, 'controllers');
-require('fs').readdirSync(rootpath).forEach(function (file) {
+require('fs').readdirSync(rootpath).forEach(function(file) {
     add(path.join(rootpath, file));
 });
 

@@ -5,13 +5,17 @@
 </head>
 <body>
     <form action="/api/stickers" method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" id="stickerName"/>
         <label for="stickerName">Name</label>
+        <input type="text" name="name" id="stickerName"/>
+        <br>
+        <label for="stickerPack">Pack Name</label>
         <input type="text" name="pack" id="stickerPack"/>
-        <label for="stickerPack">Pack name</label>
-        <input type="text" name="tags" id="stickerTags"/>
+        <br>
         <label for="stickerTags">Tags <i>(separated by comma)</i></label>
+        <input type="text" name="tags" id="stickerTags"/>
+        <br>
         <input type="file" name="sticker" id="stickerFile"/>
+        <br>
         <button type="submit">Submit Sticker</button>
     </form>
 </body>

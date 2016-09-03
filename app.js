@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 
 // Dashboard
 app.get('/', function (req, res) {
-    res.status(200).sendFile(path.join(__dirname+'/views/dashboard.html'));
+    res.status(200).sendFile(path.join(__dirname, '/views/index.html'));
 });
 
 // API route
@@ -42,7 +42,7 @@ app.use('/api', require('./routes/api'));
 
 // 404 errors
 app.use(function (req, res) {
-    res.status(404).sendFile(path.join(__dirname+'/views/404.html'));
+    res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
 });
 
 // Run server

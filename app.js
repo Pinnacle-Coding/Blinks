@@ -42,7 +42,7 @@ app.use('/api', require('./routes/api'));
 
 // 404 errors
 app.use(function (req, res) {
-    res.status(404).sendFile(path.join(__dirname+'/views/maintenance.html'));
+    res.status(404).sendFile(path.join(__dirname+'/views/404.html'));
 });
 
 // Run server

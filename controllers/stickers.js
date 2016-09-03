@@ -193,7 +193,7 @@ module.exports = [{
                     });
                 } else if (!pack) {
                     done(true, {
-                        message: 'A pack by that id does not exist'
+                        message: 'Pack does not exist'
                     });
                 } else {
                     var tags = [];

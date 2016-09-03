@@ -31,6 +31,7 @@ app.controller('dashboardController', function($scope, Upload) {
             $scope.pack = {};
             $scope.uploading = false;
         }, function(resp) {
+            console.log(resp);
             Materialize.toast(resp.message || 'An error occurred when creating the pack', 4000);
             $scope.uploading = false;
         });

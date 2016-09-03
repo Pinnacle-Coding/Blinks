@@ -122,6 +122,11 @@ module.exports = [
                             message: err.message
                         });
                     }
+                    else if (!author) {
+                        done(true, {
+                            message: 'Author does not exist'
+                        });
+                    }
                     else {
                         Pack.findOne({
                             name: req.body.name

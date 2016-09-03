@@ -1,4 +1,4 @@
-app.controller('dashboardController', function($scope, Upload) {
+app.controller('dashboardController', function($scope, $http, Upload) {
 
     $scope.uploading = false;
 
@@ -26,7 +26,11 @@ app.controller('dashboardController', function($scope, Upload) {
 
     $scope.addPack = function() {
         $scope.uploading = true;
-        $scope.upload('/api/packs', $scope.pack, 'POST', function(resp) {
+        $http({
+            url: '/api/packs',
+            data: $scope.pack,
+            method: 'POST'
+        }).then(function(resp) {
             Materialize.toast(resp.data.message || 'Pack created successfully', 4000);
             $scope.pack = {};
             $scope.uploading = false;

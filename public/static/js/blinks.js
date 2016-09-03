@@ -1,1 +1,1 @@
-var app = angular.module('Blinks', []);
+var app = angular.module('Blinks', ['ngFileUpload']);

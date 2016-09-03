@@ -38,9 +38,20 @@
 </head>
 
 <body ng-app="Blinks" ng-controller="dashboardController">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Blinks</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#authors">Authors</a></li>
+                <li><a href="#packs">Packs</a></li>
+                <li><a href="#stickers">Stickers</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
             <div class="col m12">
+                <a id="authors"></a>
                 <div class="card">
                     <div class="card-content blue-text text-darken-2">
                         <span class="card-title">Add Author</span>
@@ -83,6 +94,7 @@
         </div>
         <div class="row">
             <div class="col m12">
+                <a id="packs"></a>
                 <div class="card">
                     <div class="card-content blue-text text-darken-2">
                         <span class="card-title">Add Pack</span>
@@ -112,6 +124,7 @@
         </div>
         <div class="row">
             <div class="col m12">
+                <a id="stickers"></a>
                 <div class="card">
                     <div class="card-content blue-text text-darken-2">
                         <span class="card-title">Add Sticker</span>

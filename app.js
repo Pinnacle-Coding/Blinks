@@ -35,7 +35,8 @@ app.use(bodyParser.json());
 // Dashboard
 var links = {
     '/': '/views/index.html',
-    '/packs': '/views/packs.html'
+    '/packs': '/views/packs.html',
+    '/authors': '/views/authors.html'
 };
 var get_link = function (url, file) {
     app.get(url, function (req, res) {

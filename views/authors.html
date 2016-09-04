@@ -15,7 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#03A9F4">
 
     <!-- Title -->
-    <title>Blinks &middot Packs</title>
+    <title>Blinks &middot Authors</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -34,10 +34,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.5/ng-file-upload.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.5/ng-file-upload-shim.min.js"></script>
     <script src="/static/js/blinks.js"></script>
-    <script src="/static/js/controllers/packs.js"></script>
+    <script src="/static/js/controllers/authors.js"></script>
 </head>
 
-<body ng-app="Blinks" ng-controller="packsController">
+<body ng-app="Blinks" ng-controller="authorsController">
     <div class="navbar-fixed">
         <nav class="blue darken-1">
             <div class="nav-wrapper">
@@ -51,19 +51,15 @@
         </nav>
     </div>
     <div class="container top-container" ng-cloak>
-        <div class="row" ng-repeat="pack in packs">
+        <div class="row" ng-repeat="author in authors">
             <div class="col m12">
                 <div class="card">
-                    <div class="card-content blue-text text-darken-2">
-                        <span class="card-title center-align">{{pack.name}}</span>
-                        <p>By {{pack.author.name}}</p>
+                    <div class="card-content blue-text text-darken-2 center">
+                        <span class="card-title center-align">{{author.name}}</span>
+                        <p ng-show="author.location">{{author.location}}</p>
+                        <p ng-hide="author.location">Location not specified</p>
                         <br>
-                        <p><b>{{pack.stickers.length}} stickers</b></p>
-                    </div>
-                    <div class="card-action">
-                        <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:9">
-                            <img class="pack-inline-image" ng-src="{{sticker.image}}" alt="{{sticker.name}}" title="{{sticker.name}}">
-                        </a>
+                        <p><b>{{author.packs.length}} packs</b></p>
                     </div>
                 </div>
             </div>

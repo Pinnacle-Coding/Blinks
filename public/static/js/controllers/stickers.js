@@ -20,6 +20,11 @@ app.controller('stickersController', function($scope, $http) {
         $scope.loading = false;
     });
 
+    $scope.setPage = function(page) {
+        $scope.page_current = page;
+        $scope.adjustPagination();
+    };
+
     $scope.nextPage = function() {
         $scope.page_current += 1;
         $scope.adjustPagination();

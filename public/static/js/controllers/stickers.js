@@ -15,6 +15,9 @@ app.controller('stickersController', function ($scope, $http) {
     });
 
     $scope.concatTags = function (sticker) {
+        if (!sticker) {
+            return '';
+        }
         var tags = sticker.tags;
         var display = '';
         for (var i in tags) {

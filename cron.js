@@ -111,6 +111,21 @@ module.exports = {
                     });
                 });
                 async.parallel(tasks, function(err, results) {
+                    if (daily_update) {
+                        var daily_future = new Date();
+                        daily_future.setDate(daily_future.getDate() + 1);
+                        metrics.hits.daily = daily_future;
+                    }
+                    if (weekly_update) {
+                        var weekly_future = new Date();
+                        weekly_future.setDate(weekly_future.getDate() + 7);
+                        metrics.hits.weekly = weekly_future;
+                    }
+                    if (monthly_update) {
+                        var monthly_future = new Date();
+                        monthly_future.setMonth(monthly_future.getMonth() + 1);
+                        metrics.hits.monthly = monthly_future;
+                    }
                     metrics.save(function(err, metrics) {
                         if (err) {
                             console.log('Error saving metrics: ' + err.message);

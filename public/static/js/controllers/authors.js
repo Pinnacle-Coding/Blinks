@@ -5,7 +5,10 @@ app.controller('authorsController', function ($scope, $http) {
 
     $http({
         method: 'GET',
-        url: '/api/authors'
+        url: '/api/authors',
+        params: {
+            type: 'trending'
+        }
     }).then(function (resp) {
         $scope.authors = resp.data.authors;
         $scope.loading = false;

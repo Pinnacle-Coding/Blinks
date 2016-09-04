@@ -21,10 +21,19 @@ module.exports = [{
                 _id: query_id
             });
         }
+        var sort = {};
+        if (req.query.type && req.query.type === 'trending') {
+            sort = {
+                'hits.daily': -1,
+                'hits.weekly': -1,
+                'hits.monthly': -1,
+                'hits.total': -1
+            };
+        }
         Author.findOne(query).populate({
             path: 'packs',
             select: 'name'
-        }).exec(function(err, author) {
+        }).sort(sort).exec(function(err, author) {
             if (err) {
                 done(true, {
                     message: err.message

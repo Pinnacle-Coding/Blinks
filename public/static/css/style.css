@@ -2,7 +2,7 @@ body {
     background-color: #bbdefb;
 }
 
-@media (min-width:801px) {
+@media (min-width:1025px) {
     .blinks-logo {
         margin-left: 1em;
     }

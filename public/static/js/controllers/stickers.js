@@ -3,6 +3,9 @@ app.controller('stickersController', function ($scope, $http) {
     $scope.stickers = [];
     $scope.loading = true;
 
+    $scope.page_current = 1;
+    $scope.pagination = [1, 2, 3];
+
     $http({
         method: 'GET',
         url: '/api/stickers',

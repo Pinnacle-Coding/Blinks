@@ -6,8 +6,6 @@ app.controller('stickersController', function($scope, $http) {
     $scope.page_current = 1;
     $scope.pagination = [1, 2, 3, 4, 5];
 
-    $scope.loadStickers();
-
     $scope.loadStickers = function() {
         $scope.loading = true;
         $http({
@@ -25,7 +23,9 @@ app.controller('stickersController', function($scope, $http) {
             Materialize.toast(resp.data.message || 'Failed to load stickers', 4000);
             $scope.loading = false;
         });
-    }
+    };
+
+    $scope.loadStickers();
 
     $scope.setPage = function(page) {
         $scope.page_current = page;
@@ -52,9 +52,9 @@ app.controller('stickersController', function($scope, $http) {
         if ($scope.page_current < 3) {
             $scope.pagination = [1, 2, 3, 4, 5];
         } else {
-            $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2]
+            $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2];
         }
-    }
+    };
 
     $scope.concatTags = function(sticker) {
         if (!sticker) {

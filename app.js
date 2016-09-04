@@ -1,4 +1,3 @@
-
 global.__base = __dirname + '/';
 global.__bucket = 'blinks';
 
@@ -39,8 +38,8 @@ var links = {
     '/authors': '/views/authors.html',
     '/stickers': '/views/stickers.html'
 };
-var get_link = function (url, file) {
-    app.get(url, function (req, res) {
+var get_link = function(url, file) {
+    app.get(url, function(req, res) {
         res.status(200).sendFile(path.join(__dirname, file));
     });
 };
@@ -50,23 +49,52 @@ for (var k in links) {
     }
 }
 
+// Delete old uploads folder
+var uploadsDirectory = path.join(__dirname, 'uploads');
+fs.access(uploadsDirectory, fs.F_OK, function(err) {
+    if (!err) {
+        console.log('/uploads exists. Deleting ...');
+        var fs = require('fs');
+        var rmDir = function(dirPath) {
+            var files;
+            try {
+                files = fs.readdirSync(dirPath);
+            } catch (e) {
+                return;
+            }
+            if (files.length > 0)
+                for (var i = 0; i < files.length; i++) {
+                    var filePath = dirPath + '/' + files[i];
+                    if (fs.statSync(filePath).isFile())
+                        fs.unlinkSync(filePath);
+                    else
+                        rmDir(filePath);
+                }
+            fs.rmdirSync(dirPath);
+        };
+        rmDir(uploadsDirectory);
+    } else {
+        console.log('/uploads does not exist.');
+    }
+});
+
 // API route
 app.use('/api', require('./routes/api'));
 
 // 404 errors
-app.use(function (req, res) {
+app.use(function(req, res) {
     res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
 });
 
 // Run server
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
 // Run cron
 var cron = require('./cron.js');
-var timeoutCallback = function () {
-    setTimeout(function () {
+var timeoutCallback = function() {
+    setTimeout(function() {
         cron.run(timeoutCallback);
     }, 1000 * 60 * 60);
 };

@@ -8,7 +8,7 @@ var async = require('async');
 
 module.exports = {
     run: function(callback) {
-        var version = process.env.npm_package_version;
+        var version = require('./package.json').version;
         var today = new Date();
         Metrics.findOne({
             version: version

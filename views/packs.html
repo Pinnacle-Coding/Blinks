@@ -50,7 +50,7 @@
             </div>
         </nav>
     </div>
-    <div class="container" ng-cloak>
+    <div class="container top-container" ng-cloak>
         <div ng-repeat="pack in packs">
             <div class="row">
                 <div class="col m12">
@@ -60,11 +60,9 @@
                             <p>By {{pack.author.name}}</p>
                         </div>
                         <div class="card-action">
-                            <ul class="pack-inline-images">
-                                <li ng-repeat="sticker in pack.stickers | limitTo:5">
-                                    <img class="pack-inline-image" ng-src="{{sticker.image}}">
-                                </li>
-                            </ul>
+                            <div ng-repeat="sticker in pack.stickers | limitTo:5">
+                                <img class="pack-inline-image" ng-src="{{sticker.image}}">
+                            </div>
                         </div>
                     </div>
                 </div>

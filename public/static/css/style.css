@@ -26,3 +26,8 @@ body {
     max-width: 120px;
     height: auto;
 }
+
+.sticker-image {
+    max-width: 90px;
+    height: auto;
+}

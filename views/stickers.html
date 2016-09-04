@@ -54,21 +54,21 @@
         </nav>
     </div>
     <div class="container top-container" ng-cloak>
-        <!-- div class="row">
-            <div class="col s12 m6" ng-repeat="author in authors">
+        <div class="row">
+            <div class="col s12 m4" ng-repeat="sticker in stickers">
                 <div class="card">
                     <div class="card-content blue-text text-darken-2 center">
-                        <img ng-src="{{author.image}}" class="circle profile-image">
+                        <img ng-src="{{sticker.image}}" class="sticker-image">
                         <br>
-                        <span class="card-title center-align">{{author.name}}</span>
-                        <p ng-show="author.location">{{author.location}}</p>
-                        <p ng-hide="author.location">Location not specified</p>
+                        <span class="card-title center-align">{{sticker.name}}</span>
+                        <p>By {{sticker.author.name}}</p>
+                        <p>Part of {{sticker.pack.name}}</p>
                         <br>
-                        <p><b>{{author.packs.length}} packs</b></p>
+                        <p>{{concatTags(sticker)}}</p>
                     </div>
                 </div>
             </div>
-        </div -->
+        </div>
     </div>
 </body>
 

@@ -13,4 +13,16 @@ app.controller('stickersController', function ($scope, $http) {
         Materialize.toast(resp.data.message || 'Failed to load stickers', 4000);
         $scope.loading = false;
     });
+
+    $scope.concatTags = function (sticker) {
+        var tags = sticker.tags;
+        var display = '';
+        for (var i in tags) {
+            display += tags[i].name;
+            if (i !== tags.length - 1) {
+                display += ', '
+            }
+        }
+        return display;
+    }
 });

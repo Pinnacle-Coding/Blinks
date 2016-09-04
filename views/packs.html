@@ -57,12 +57,14 @@
                     <div class="card">
                         <div class="card-content blue-text text-darken-2">
                             <span class="card-title center-align">{{pack.name}}</span>
-                            <p class="flow-text">By {{pack.author.name}}</p>
+                            <p>By {{pack.author.name}}</p>
                         </div>
                         <div class="card-action">
-                            <div ng-repeat="sticker in pack.stickers">
-                                <a href="{{sticker.image}}">{{sticker.name}}</a>
-                            </div>
+                            <ul class="pack-inline-images">
+                                <li ng-repeat="sticker in pack.stickers | limitTo:5">
+                                    <img class="pack-inline-image" ng-src="{{sticker.image}}">
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

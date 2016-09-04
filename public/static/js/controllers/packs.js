@@ -5,7 +5,10 @@ app.controller('packsController', function ($scope, $http) {
 
     $http({
         method: 'GET',
-        url: '/api/packs'
+        url: '/api/packs',
+        params: {
+            type: 'trending'
+        }
     }).then(function (resp) {
         $scope.packs = resp.data.packs;
         $scope.loading = false;

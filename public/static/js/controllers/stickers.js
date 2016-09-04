@@ -5,7 +5,10 @@ app.controller('stickersController', function ($scope, $http) {
 
     $http({
         method: 'GET',
-        url: '/api/stickers'
+        url: '/api/stickers',
+        params: {
+            type: 'trending'
+        }
     }).then(function (resp) {
         $scope.stickers = resp.data.stickers;
         $scope.loading = false;

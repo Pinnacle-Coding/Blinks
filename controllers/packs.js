@@ -160,9 +160,19 @@ module.exports = [
                                         });
                                     }
                                     else {
-                                        done(null, {
-                                            message: 'Pack successfully created',
-                                            pack: pack
+                                        author.packs.push(pack._id);
+                                        author.save(function (err, author) {
+                                            if (err) {
+                                                done(err, {
+                                                    message: err.message
+                                                });
+                                            }
+                                            else {
+                                                done(null, {
+                                                    message: 'Pack successfully created',
+                                                    pack: pack
+                                                });
+                                            }
                                         });
                                     }
                                 });

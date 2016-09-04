@@ -57,6 +57,21 @@ app.use(function (req, res) {
     res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
 });
 
+var Pack = mongoose.model('Pack');
+var Author = mongoose.model('Author');
+Pack.find().exec(function (err, packs) {
+    packs.forEach(function (pack) {
+        Author.findOne({
+            _id: pack.author
+        }).exec(function (err, author) {
+            author.packs.push(pack._id);
+            author.save(function (err, author) {
+
+            });
+        });
+    });
+});
+
 // Run server
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));

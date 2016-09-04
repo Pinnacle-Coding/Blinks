@@ -59,8 +59,7 @@ module.exports = [
                     'hits.daily': -1,
                     'hits.weekly': -1,
                     'hits.monthly': -1,
-                    'hits.total': -1,
-                    'stickers': -1
+                    'hits.total': -1
                 };
             }
             var page = req.query.page ? req.query.page : 1;

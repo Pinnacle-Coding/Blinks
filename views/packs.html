@@ -60,11 +60,7 @@
                             <p>By {{pack.author.name}}</p>
                         </div>
                         <div class="card-action">
-                            <ul class="pack-inline-images">
-                                <li ng-repeat="sticker in pack.stickers | limitTo:5">
-                                    <img class="pack-inline-image" ng-src="{{sticker.image}}">
-                                </li>
-                            </ul>
+                            <img class="pack-inline-image" ng-src="{{sticker.image}}" ng-repeat="sticker in pack.stickers | limitTo:5">
                         </div>
                     </div>
                 </div>

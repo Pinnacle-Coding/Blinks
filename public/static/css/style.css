@@ -16,13 +16,13 @@ body {
     margin-top: 3em;
 }
 
-.pack-inline-images {
-    display: inline;
-    list-style-type: none;
-}
-
 .pack-inline-image {
     display: inline;
     max-width: 60px;
+    height: auto;
+}
+
+.profile-image {
+    max-width: 100px;
     height: auto;
 }

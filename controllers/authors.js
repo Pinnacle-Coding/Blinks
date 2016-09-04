@@ -43,7 +43,10 @@ module.exports = [{
     handler: function(req, done) {
         var page = req.query.page ? req.query.page : 1;
         if (page < 1) {
-            page = 1;
+            done(true, {
+                message: 'Invalid page. Pagination starts at 1.'
+            });
+            return;
         }
         var count = req.query.count ? req.query.count : 20;
         Author.find().populate({

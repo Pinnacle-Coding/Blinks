@@ -14,7 +14,7 @@ app.controller('packsController', function ($scope, $http) {
             params: {
                 type: 'trending',
                 page: $scope.page_current,
-                count: 4
+                count: 3
             }
         }).then(function (resp) {
             $scope.packs = resp.data.packs;

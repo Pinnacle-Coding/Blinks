@@ -14,7 +14,7 @@ app.controller('stickersController', function($scope, $http) {
             params: {
                 type: 'trending',
                 page: $scope.page_current,
-                count: 12
+                count: 9
             }
         }).then(function(resp) {
             $scope.stickers = resp.data.stickers;

@@ -13,7 +13,7 @@ app.controller('authorsController', function($scope, $http) {
             params: {
                 type: 'trending',
                 page: $scope.page_current,
-                count: 8
+                count: 6
             }
         }).then(function(resp) {
             $scope.authors = resp.data.authors;

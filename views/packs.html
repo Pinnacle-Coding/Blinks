@@ -60,7 +60,7 @@
                             <p>By {{pack.author.name}}</p>
                         </div>
                         <div class="card-action">
-                            <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:8" data-position="top" data-delay="50" data-tooltip="{{sticker.name}}">
+                            <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:9" data-position="top" data-delay="50" data-tooltip="{{sticker.name}}">
                                 test
                                 <img class="pack-inline-image" ng-src="{{sticker.image}}" alt="{{sticker.name}}" title="{{sticker.name}}">
                             </a>
@@ -70,6 +70,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+          $('.tooltipped').tooltip({delay: 50});
+        });
+    </script>
 </body>
 
 </html>

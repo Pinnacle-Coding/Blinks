@@ -24,5 +24,5 @@ app.controller('stickersController', function ($scope, $http) {
             tag_names.append(tags[i]);
         }
         return tag_names.join(', ');
-    }
+    };
 });

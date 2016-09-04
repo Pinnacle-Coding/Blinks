@@ -4,7 +4,10 @@ mongoose.model('Author', new mongoose.Schema({
     name: String,
     username: String,
     location: String,
-    image: String,
+    image: {
+        type: String,
+        default: '/static/img/default-author.png'
+    },
     packs: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Pack'

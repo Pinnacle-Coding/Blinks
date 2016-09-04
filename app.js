@@ -36,7 +36,8 @@ app.use(bodyParser.json());
 var links = {
     '/': '/views/index.html',
     '/packs': '/views/packs.html',
-    '/authors': '/views/authors.html'
+    '/authors': '/views/authors.html',
+    '/stickers': '/views/stickers.html'
 };
 var get_link = function (url, file) {
     app.get(url, function (req, res) {

@@ -62,7 +62,10 @@ module.exports = [
                     'hits.total': -1
                 };
             }
-            var page = req.query.page ? req.query.page : 0;
+            var page = req.query.page ? req.query.page : 1;
+            if (page < 1) {
+                page = 1;
+            }
             var count = req.query.count ? req.query.count : 20;
             Pack.find().populate({
                 path: 'stickers',
@@ -70,7 +73,7 @@ module.exports = [
             }).populate({
                 path: 'author',
                 select: 'name location image'
-            }).sort(sort).limit(count).skip(page * count).exec(function (err, packs) {
+            }).sort(sort).limit(count).skip((page - 1) * count).exec(function (err, packs) {
                 if (err) {
                     done(true, {
                         message: err.message

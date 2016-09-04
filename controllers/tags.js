@@ -64,10 +64,15 @@ module.exports = [{
                 'hits.total': -1
             };
         }
+        var page = req.query.page ? req.query.page : 1;
+        if (page < 1) {
+            page = 1;
+        }
+        var count = req.query.count ? req.query.count : 20;
         Tag.find(query).populate({
             path: 'stickers',
             select: 'name image'
-        }).sort(sort).limit(20).skip(0).exec(function(err, tags) {
+        }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, tags) {
             if (err) {
                 done(true, {
                     message: err.message

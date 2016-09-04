@@ -41,18 +41,20 @@ module.exports = [{
     path: '/authors',
     method: 'GET',
     handler: function(req, done) {
-        var page = req.query.page ? req.query.page : 0;
+        var page = req.query.page ? req.query.page : 1;
+        if (page < 1) {
+            page = 1;
+        }
         var count = req.query.count ? req.query.count : 20;
         Author.find().populate({
             path: 'packs',
             select: 'name'
-        }).limit(count).skip(page * count).exec(function (err, authors) {
+        }).limit(count).skip((page - 1) * count).exec(function(err, authors) {
             if (err) {
                 done(true, {
                     message: err.message
                 });
-            }
-            else {
+            } else {
                 done(false, {
                     message: (authors && authors.length) ? 'Authors found' : 'No authors found',
                     authors: authors

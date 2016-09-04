@@ -60,7 +60,7 @@
                             <p>By {{pack.author.name}}</p>
                         </div>
                         <div class="card-action">
-                            <img class="pack-inline-image tooltipped" ng-src="{{sticker.image}}" ng-repeat="sticker in pack.stickers | limitTo:8" data-position="top" data-delay="50" data-tooltip="{{sticker.name}}">
+                            <img class="pack-inline-image tooltipped" ng-src="{{sticker.image}}" alt="{{sticker.name}}" ng-repeat="sticker in pack.stickers | limitTo:8" data-position="top" data-delay="50" data-tooltip="{{sticker.name}}">
                         </div>
                     </div>
                 </div>

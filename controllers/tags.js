@@ -48,7 +48,11 @@ module.exports = [{
         var query = {};
         if (req.query.contains) {
             query = {
-                name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
+                $or: [{
+                    name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
+                }, {
+                    name: new RegExp(req.query.contains, 'i')
+                }]
             };
         }
         var sort = {};

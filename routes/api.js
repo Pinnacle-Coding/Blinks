@@ -22,7 +22,7 @@ POST /api/authors
     name: String (REQUIRED)
     username: String (REQUIRED & UNIQUE)
     location: String
-    image: String -> URL
+    avatar: File - image/*
 }
 
 Creating a pack (temp) ...
@@ -36,7 +36,7 @@ Creating a sticker (temp) ...
 POST /api/stickers
 {
     name: String (REQUIRED)
-    image: String -> URL (REQUIRED)
+    sticker: File - image/* (REQUIRED)
     pack: String -> _id (REQUIRED) // MUST be _id
     tags: [String] (REQUIRED) // These will be converted into tag objects; strings should be unique -> duplicates are removed during processing
 }

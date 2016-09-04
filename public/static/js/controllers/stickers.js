@@ -21,7 +21,7 @@ app.controller('stickersController', function ($scope, $http) {
         var tags = sticker.tags;
         var tag_names = [];
         for (var i in tags) {
-            tag_names.append(tags[i]);
+            tag_names.push(tags[i]);
         }
         return tag_names.join(', ');
     };

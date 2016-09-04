@@ -13,7 +13,7 @@ app.controller('authorsController', function($scope, $http) {
             params: {
                 type: 'trending',
                 page: $scope.page_current,
-                count: 6
+                count: 8
             }
         }).then(function(resp) {
             $scope.authors = resp.data.authors;
@@ -29,13 +29,13 @@ app.controller('authorsController', function($scope, $http) {
     $scope.setPage = function(page) {
         $scope.page_current = page;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadAuthors();
     };
 
     $scope.nextPage = function() {
         $scope.page_current += 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadAuthors();
     };
 
     $scope.previousPage = function() {
@@ -44,7 +44,7 @@ app.controller('authorsController', function($scope, $http) {
         }
         $scope.page_current -= 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadAuthors();
     };
 
     $scope.adjustPagination = function() {

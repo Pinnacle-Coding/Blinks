@@ -30,13 +30,13 @@ app.controller('packsController', function ($scope, $http) {
     $scope.setPage = function(page) {
         $scope.page_current = page;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadPacks();
     };
 
     $scope.nextPage = function() {
         $scope.page_current += 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadPacks();
     };
 
     $scope.previousPage = function() {
@@ -45,7 +45,7 @@ app.controller('packsController', function ($scope, $http) {
         }
         $scope.page_current -= 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadPacks();
     };
 
     $scope.adjustPagination = function() {

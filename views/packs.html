@@ -57,7 +57,7 @@
                     <div class="card">
                         <div class="card-content blue-text text-darken-2">
                             <span class="card-title center-align">{{pack.name}}</span>
-                            <p>By {{pack.author.name}}</p>
+                            <p>By {{pack.author.name}} <span class="right-align">{{pack.stickers.length}} stickers</span></p>
                         </div>
                         <div class="card-action">
                             <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:9">

@@ -16,7 +16,12 @@ app.controller('dashboardController', function($scope, $http, Upload) {
         $scope.uploading = true;
         $scope.upload('/api/stickers', $scope.sticker, 'POST', function(resp) {
             Materialize.toast(resp.data.message || 'Sticker created successfully', 4000);
-            $scope.sticker = {};
+            var pack = $scope.sticker.pack;
+            var tags = $scope.sticker.tags;
+            $scope.sticker = {
+                pack: pack,
+                tags: tags
+            };
             $scope.uploading = false;
         }, function(resp) {
             Materialize.toast(resp.data.message || 'An error occurred when creating the sticker', 4000);

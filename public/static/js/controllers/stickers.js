@@ -19,13 +19,10 @@ app.controller('stickersController', function ($scope, $http) {
             return '';
         }
         var tags = sticker.tags;
-        var display = '';
+        var tag_names = [];
         for (var i in tags) {
-            display += tags[i].name;
-            if (i !== tags.length - 1) {
-                display += ', '
-            }
+            tag_names.append(tags[i]);
         }
-        return display;
+        return tag_names.join(', ');
     }
 });

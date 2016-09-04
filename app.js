@@ -33,9 +33,20 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Dashboard
-app.get('/', function (req, res) {
-    res.status(200).sendFile(path.join(__dirname, '/views/index.html'));
-});
+var links = {
+    '/': '/views/index.html',
+    '/packs': '/views/packs.html'
+};
+var get_link = function (url, file) {
+    app.get(url, function (req, res) {
+        res.status(200).sendFile(path.join(__dirname, file));
+    });
+};
+for (var k in links) {
+    if (links.hasOwnProperty(k)) {
+        get_link(k, links[k]);
+    }
+}
 
 // API route
 app.use('/api', require('./routes/api'));

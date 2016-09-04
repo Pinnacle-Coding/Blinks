@@ -71,17 +71,19 @@ module.exports = {
                 tasks.push(function(callback) {
                     Sticker.find().exec(function(err, stickers) {
                         if (!err && stickers) {
-                            if (daily_update) {
-                                sticker.hits.daily = 0;
-                            }
-                            if (weekly_update) {
-                                sticker.hits.weekly = 0;
-                            }
-                            if (monthly_update) {
-                                sticker.hits.monthly = 0;
-                            }
-                            sticker.save(function(err, sticker) {
+                            stickers.forEach(function(sticker) {
+                                if (daily_update) {
+                                    sticker.hits.daily = 0;
+                                }
+                                if (weekly_update) {
+                                    sticker.hits.weekly = 0;
+                                }
+                                if (monthly_update) {
+                                    sticker.hits.monthly = 0;
+                                }
+                                sticker.save(function(err, sticker) {
 
+                                });
                             });
                         }
                         callback(null);
@@ -117,8 +119,7 @@ module.exports = {
                         }
                     });
                 });
-            }
-            else {
+            } else {
                 console.log('Error parsing metrics: ' + err.message);
             }
         });

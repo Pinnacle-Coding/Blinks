@@ -201,7 +201,10 @@ module.exports = [{
                     if (typeof req.body.tags === 'string') {
                         req.body.tags = req.body.tags.split(',');
                     }
-                    var tag_strings = uniq(req.body.tags);
+                    var tag_strings = [];
+                    uniq(req.body.tags).forEach(function (tag_string) {
+                        tag_strings.push(tag_string.toLowerCase().trim());
+                    });
                     var calls = [];
                     tag_strings.forEach(function(tag_string) {
                         calls.push(function(callback) {

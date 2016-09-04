@@ -97,7 +97,7 @@ var storage = multer.diskStorage({
 });
 */
 var upload = multer({
-    dest: __base+'uploads/'
+    dest: __base+'tmp/uploads/'
 });
 
 var add = function(filename) {

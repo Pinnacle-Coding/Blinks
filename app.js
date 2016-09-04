@@ -51,7 +51,7 @@ for (var k in links) {
 
 // Delete old uploads folder
 var fs = require('fs');
-var uploadsDirectory = path.join(__dirname, 'uploads');
+var uploadsDirectory = path.join(__dirname, 'tmp/uploads');
 fs.access(uploadsDirectory, fs.F_OK, function(err) {
     if (!err) {
         console.log('/uploads exists. Deleting ...');

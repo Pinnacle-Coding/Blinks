@@ -74,3 +74,21 @@ mongoose.model('Tag', new mongoose.Schema({
         monthly: Number
     }
 }));
+
+mongoose.model('Metrics', new mongoose.Schema({
+    version: String,
+    hits: {
+        daily: {
+            type: Date,
+            default: Date.now
+        },
+        weekly: {
+            type: Date,
+            default: Date.now
+        },
+        monthly: {
+            type: Date,
+            default: Date.now
+        }
+    }
+}));

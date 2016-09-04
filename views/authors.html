@@ -62,7 +62,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col s12 m6" ng-repeat="author in authors">
+            <div class="col s12 m6" ng-repeat="author in authors" ng-show="authors && authors.length">
                 <div class="card">
                     <div class="card-content blue-text text-darken-2 center">
                         <img ng-src="{{author.image}}" class="circle profile-image">
@@ -72,6 +72,13 @@
                         <p ng-hide="author.location">Location not specified</p>
                         <br>
                         <p><b>{{author.packs.length}} packs</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12" ng-hide="authors && authors.length">
+                <div class="card">
+                    <div class="card-content red-text text-darken-2 center">
+                        <h1>No more authors!</h1>
                     </div>
                 </div>
             </div>

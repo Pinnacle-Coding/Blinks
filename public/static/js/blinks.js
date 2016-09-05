@@ -1,4 +1,4 @@
-var app = angular.module('Blinks', ['ngFileUpload']);
+var app = angular.module('Blinks', ['ngFileUpload', 'ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');

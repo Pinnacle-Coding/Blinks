@@ -64,13 +64,13 @@
         <div class="row">
             <div class="col m12" ng-repeat="pack in packs" ng-show="packs && packs.length">
                 <div class="card">
-                    <div class="card-content blue-text text-darken-2">
+                    <div class="card-content blue-text text-darken-2 center">
                         <span class="card-title center-align">{{pack.name}}</span>
                         <p>By {{pack.author.name}}</p>
                         <br>
                         <p><b>{{pack.stickers.length}} stickers</b></p>
                     </div>
-                    <div class="card-action">
+                    <div class="card-action center">
                         <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:6">
                             <img class="pack-inline-image" ng-src="{{sticker.image}}" alt="{{sticker.name}}" title="{{sticker.name}}">
                         </a>

@@ -1,4 +1,4 @@
-app.controller('authorsController', function($scope, $http) {
+app.controller('AuthorsController', function($scope, $http) {
 
     $scope.authors = [];
     $scope.loading = true;

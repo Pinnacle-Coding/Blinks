@@ -1,0 +1,38 @@
+<div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row center">
+        <ul class="pagination">
+            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
+            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
+            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col s12 m4" ng-repeat="sticker in stickers" ng-show="stickers && stickers.length">
+            <div class="card">
+                <div class="card-content blue-text text-darken-2 center">
+                    <img ng-src="{{sticker.image}}" class="sticker-image">
+                    <br>
+                    <span class="card-title center-align">{{sticker.name}}</span>
+                    <p><b>By {{sticker.author.name}}</b></p>
+                    <p><b>Part of {{sticker.pack.name}}</b></p>
+                    <br>
+                    <p>{{concatTags(sticker)}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12" ng-hide="stickers && stickers.length">
+            <div class="card">
+                <div class="card-content red-text text-darken-2 center">
+                    <span class="card-title center-align">No more stickers!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row center">
+        <ul class="pagination">
+            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
+            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
+            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-app.controller('packsController', function ($scope, $http) {
+app.controller('PacksController', function ($scope, $http) {
 
     $scope.packs = [];
     $scope.loading = true;

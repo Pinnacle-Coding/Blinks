@@ -1,4 +1,4 @@
-app.controller('dashboardController', function($scope, $http, Upload) {
+app.controller('DashboardController', function($scope, $http, Upload) {
 
     $scope.uploading = false;
 

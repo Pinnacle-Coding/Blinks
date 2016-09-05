@@ -34,6 +34,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// Use index as base template
+app.use(function(req, res) {
+    res.status(200).render('index');
+});
+
+/*
 // Dashboard
 var links = {
     '/': '/views/index.html',
@@ -52,13 +58,14 @@ for (var k in links) {
     }
 }
 
-// API route
-app.use('/api', require('./routes/api'));
-
 // 404 errors
 app.use(function(req, res) {
     res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
 });
+*/
+
+// API route
+app.use('/api', require('./routes/api'));
 
 // Run server
 app.listen(app.get('port'), function() {

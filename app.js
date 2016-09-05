@@ -1,6 +1,9 @@
 global.__base = __dirname + '/';
 global.__bucket = 'blinks';
 
+// Temporary until admin accounts are made
+global.__password = new Buffer('V29vZGxha2U4MDU=', 'base64').toString();
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');

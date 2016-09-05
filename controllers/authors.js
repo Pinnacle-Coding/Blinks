@@ -79,7 +79,13 @@ module.exports = [{
     method: 'POST',
     upload: 'avatar',
     handler: function(req, done) {
-        if (req.body.username && req.body.name) {
+        if (req.body.username && req.body.name && req.body.password) {
+            if (req.body.password !== __password) {
+                done(true, {
+                    message: 'Incorrect password'
+                });
+                return;
+            }
             var username = req.body.username;
             var name = req.body.name;
             var query = {

@@ -108,7 +108,13 @@ module.exports = [
         path: '/packs',
         method: 'POST',
         handler: function (req, done) {
-            if (req.body.author && req.body.name) {
+            if (req.body.author && req.body.name && req.body.password) {
+                if (req.body.password !== __password) {
+                    done(true, {
+                        message: 'Incorrect password'
+                    });
+                    return;
+                }
                 var author_id = req.body.author;
                 var author_query = {
                     $or: [

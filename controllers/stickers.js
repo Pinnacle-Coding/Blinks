@@ -179,7 +179,13 @@ module.exports = [{
     method: 'POST',
     upload: 'sticker',
     handler: function(req, done) {
-        if (req.body.name && req.body.pack && req.body.tags && req.file) {
+        if (req.body.name && req.body.pack && req.body.tags && req.file && req.body.password) {
+            if (req.body.password !== __password) {
+                done(true, {
+                    message: 'Incorrect password'
+                });
+                return;
+            }
             var query = {
                 $or: [
                     {

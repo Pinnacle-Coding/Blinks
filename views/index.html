@@ -38,6 +38,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.5/ng-file-upload-shim.min.js"></script>
     <script src="/static/js/blinks.js"></script>
     <script src="/static/js/controllers/dashboard.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
 </head>
 
 <body ng-app="Blinks" ng-controller="dashboardController">
@@ -82,6 +87,10 @@
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
+                                <div class="input-field col m12">
+                                    <label for="authorPassword">Password</label>
+                                    <input type="password" ng-model="author.password" id="authorPassword" required>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col m12">
@@ -110,6 +119,10 @@
                                 <div class="input-field col m12">
                                     <label for="packAuthor">Author</label>
                                     <input type="text" ng-model="pack.author" id="packAuthor" required>
+                                </div>
+                                <div class="input-field col m12">
+                                    <label for="packPassword">Password</label>
+                                    <input type="password" ng-model="pack.password" id="packPassword" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -152,6 +165,10 @@
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
                                     </div>
+                                </div>
+                                <div class="input-field col m12">
+                                    <label for="stickerPassword">Password</label>
+                                    <input type="password" ng-model="sticker.password" id="stickerPassword" required>
                                 </div>
                             </div>
                             <div class="row">

@@ -49,35 +49,6 @@ for (var k in links) {
     }
 }
 
-// Delete old uploads folder
-var fs = require('fs');
-var uploadsDirectory = path.join(__dirname, 'tmp/uploads');
-fs.access(uploadsDirectory, fs.F_OK, function(err) {
-    if (!err) {
-        console.log('/uploads exists. Deleting ...');
-        var rmDir = function(dirPath) {
-            var files;
-            try {
-                files = fs.readdirSync(dirPath);
-            } catch (e) {
-                return;
-            }
-            if (files.length > 0)
-                for (var i = 0; i < files.length; i++) {
-                    var filePath = dirPath + '/' + files[i];
-                    if (fs.statSync(filePath).isFile())
-                        fs.unlinkSync(filePath);
-                    else
-                        rmDir(filePath);
-                }
-            fs.rmdirSync(dirPath);
-        };
-        rmDir(uploadsDirectory);
-    } else {
-        console.log('/uploads does not exist.');
-    }
-});
-
 // API route
 app.use('/api', require('./routes/api'));
 

@@ -7,47 +7,47 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
     $stateProvider.state('dashboard', {
             url: '/',
-            controller: 'DashboardController',
             views: {
                 'content': {
-                    templateUrl: 'templates/dashboard.html'
+                    templateUrl: 'templates/dashboard.html',
+                    controller: 'DashboardController'
                 }
             },
             data: {
-                title: 'Blinks &middot Dashboard'
+                pageTitle: 'Blinks &middot Dashboard'
             }
         }).state('stickers', {
             url: '/stickers',
-            controller: 'StickersController',
             views: {
                 'content': {
-                    templateUrl: 'templates/stickers.html'
+                    templateUrl: 'templates/stickers.html',
+                    controller: 'StickersController'
                 }
             },
             data: {
-                title: 'Blinks &middot Stickers'
+                pageTitle: 'Blinks &middot Stickers'
             }
         }).state('packs', {
             url: '/packs',
-            controller: 'PacksController',
             views: {
                 'content': {
-                    templateUrl: 'templates/packs.html'
+                    templateUrl: 'templates/packs.html',
+                    controller: 'PacksController'
                 }
             },
             data: {
-                title: 'Blinks &middot Packs'
+                pageTitle: 'Blinks &middot Packs'
             }
         }).state('authors', {
             url: '/authors',
-            controller: 'AuthorsController',
             views: {
                 'content': {
-                    templateUrl: 'templates/authors.html'
+                    templateUrl: 'templates/authors.html',
+                    controller: 'AuthorsController'
                 }
             },
             data: {
-                title: 'Blinks &middot Authors'
+                pageTitle: 'Blinks &middot Authors'
             }
         });
 }]);
@@ -60,8 +60,8 @@ app.directive('updateTitle', ['$rootScope', '$timeout',
                 var listener = function(event, toState) {
 
                     var title = 'Blinks';
-                    if (toState.data && toState.data.title)
-                        title = toState.data.title;
+                    if (toState.data && toState.data.pageTitle)
+                        title = toState.data.pageTitle;
 
                     $timeout(function() {
                         element.text(title);

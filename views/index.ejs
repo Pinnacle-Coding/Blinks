@@ -17,7 +17,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#03A9F4">
 
     <!-- Title -->
-    <title>{{ Page.title() }} &middot Blinks</title>
+    <title ng-bind="($title || 'Home') + ' &middot Blinks'">Blinks</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">

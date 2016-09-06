@@ -1,4 +1,4 @@
-var app = angular.module('Blinks', ['ngFileUpload', 'ui.router']);
+var app = angular.module('Blinks', ['ngFileUpload', 'ui.router', 'ui.router.title']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
@@ -12,6 +12,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 templateUrl: 'templates/dashboard.html',
                 controller: 'DashboardController'
             }
+        },
+        resolve: {
+            $title: function () {
+                return 'Dashboard';
+            }
         }
     }).state('authors', {
         url: '/authors',
@@ -19,6 +24,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             'content': {
                 templateUrl: 'templates/authors.html',
                 controller: 'AuthorsController'
+            }
+        },
+        resolve: {
+            $title: function () {
+                return 'Authors';
             }
         }
     }).state('packs', {
@@ -28,6 +38,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 templateUrl: 'templates/packs.html',
                 controller: 'PacksController'
             }
+        },
+        resolve: {
+            $title: function () {
+                return 'Packs';
+            }
         }
     }).state('stickers', {
         url: '/stickers',
@@ -36,18 +51,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 templateUrl: 'templates/stickers.html',
                 controller: 'StickersController'
             }
+        },
+        resolve: {
+            $title: function () {
+                return 'Stickers';
+            }
         }
     });
 }]);
-
-app.factory('Page', function() {
-    var title = 'Home';
-    return {
-        title: function() {
-            return title;
-        },
-        setTitle: function(newTitle) {
-            title = newTitle;
-        }
-    };
-});

@@ -1,6 +1,4 @@
-app.controller('AuthorsController', function($scope, $http, Page) {
-
-    Page.setTitle('Authors');
+app.controller('AuthorsController', function($scope, $http) {
 
     $scope.authors = [];
     $scope.loading = true;

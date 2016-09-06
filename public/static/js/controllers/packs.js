@@ -1,6 +1,4 @@
-app.controller('PacksController', function ($scope, $http, Page) {
-
-    Page.setTitle('Packs');
+app.controller('PacksController', function ($scope, $http) {
 
     $scope.packs = [];
     $scope.loading = true;

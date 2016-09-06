@@ -59,7 +59,7 @@ app.directive('updateTitle', ['$rootScope', '$timeout',
 
                 var listener = function(event, toState) {
 
-                    var title = 'Blinks';
+                    var title = 'Blinks &middot Dashboard';
                     if (toState.data && toState.data.pageTitle)
                         title = toState.data.pageTitle;
 

@@ -1,4 +1,4 @@
-var app = angular.module('Blinks', ['ngFileUpload', 'ui.router', 'ui.router.title']);
+var app = angular.module('Blinks', ['ngFileUpload', 'ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);

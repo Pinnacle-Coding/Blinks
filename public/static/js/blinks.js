@@ -6,56 +6,48 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     $urlRouterProvider.otherwise('/');
 
     $stateProvider.state('dashboard', {
-            url: '/',
-            views: {
-                'content': {
-                    templateUrl: 'templates/dashboard.html',
-                    controller: 'DashboardController'
-                }
-            },
-            resolve: {
-                $title: function () {
-                    return 'Dashboard';
-                }
+        url: '/',
+        views: {
+            'content': {
+                templateUrl: 'templates/dashboard.html',
+                controller: 'DashboardController'
             }
-        }).state('authors', {
-            url: '/authors',
-            views: {
-                'content': {
-                    templateUrl: 'templates/authors.html',
-                    controller: 'AuthorsController'
-                }
-            },
-            resolve: {
-                $title: function () {
-                    return 'Authors';
-                }
+        }
+    }).state('authors', {
+        url: '/authors',
+        views: {
+            'content': {
+                templateUrl: 'templates/authors.html',
+                controller: 'AuthorsController'
             }
-        }).state('packs', {
-            url: '/packs',
-            views: {
-                'content': {
-                    templateUrl: 'templates/packs.html',
-                    controller: 'PacksController'
-                }
-            },
-            resolve: {
-                $title: function () {
-                    return 'Packs';
-                }
+        }
+    }).state('packs', {
+        url: '/packs',
+        views: {
+            'content': {
+                templateUrl: 'templates/packs.html',
+                controller: 'PacksController'
             }
-        }).state('stickers', {
-            url: '/stickers',
-            views: {
-                'content': {
-                    templateUrl: 'templates/stickers.html',
-                    controller: 'StickersController'
-                }
-            },
-            resolve: {
-                $title: function () {
-                    return 'Stickers';
-                }
+        }
+    }).state('stickers', {
+        url: '/stickers',
+        views: {
+            'content': {
+                templateUrl: 'templates/stickers.html',
+                controller: 'StickersController'
             }
-        });
+        }
+    });
 }]);
+
+app.factory('Page', function() {
+    var title = 'Home';
+    return {
+        title: function() {
+            return title;
+        },
+        setTitle: function(newTitle) {
+            title = newTitle;
+        }
+    };
+});

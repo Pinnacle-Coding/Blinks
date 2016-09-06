@@ -1,4 +1,6 @@
-app.controller('DashboardController', function($scope, $http, Upload) {
+app.controller('DashboardController', function($scope, $http, Upload, Page) {
+
+    Page.setTitle('Dashboard');
 
     $scope.uploading = false;
 

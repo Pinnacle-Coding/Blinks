@@ -1,4 +1,6 @@
-app.controller('StickersController', function($scope, $http) {
+app.controller('StickersController', function($scope, $http, Page) {
+
+    Page.setTitle('Stickers');
 
     $scope.loading = true;
     $scope.stickers = [];

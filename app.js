@@ -42,31 +42,6 @@ app.use(function(req, res) {
     res.status(200).render('index');
 });
 
-/*
-// Dashboard
-var links = {
-    '/': '/views/index.html',
-    '/packs': '/views/packs.html',
-    '/authors': '/views/authors.html',
-    '/stickers': '/views/stickers.html'
-};
-var get_link = function(url, file) {
-    app.get(url, function(req, res) {
-        res.status(200).sendFile(path.join(__dirname, file));
-    });
-};
-for (var k in links) {
-    if (links.hasOwnProperty(k)) {
-        get_link(k, links[k]);
-    }
-}
-
-// 404 errors
-app.use(function(req, res) {
-    res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
-});
-*/
-
 // Run server
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));

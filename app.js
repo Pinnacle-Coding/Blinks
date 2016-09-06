@@ -34,6 +34,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// API route
+app.use('/api', require('./routes/api'));
+
 // Use index as base template
 app.use(function(req, res) {
     res.status(200).render('index');
@@ -63,9 +66,6 @@ app.use(function(req, res) {
     res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
 });
 */
-
-// API route
-app.use('/api', require('./routes/api'));
 
 // Run server
 app.listen(app.get('port'), function() {

@@ -7,10 +7,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
     $stateProvider.state('dashboard', {
             url: '/',
+            controller: 'DashboardController',
             views: {
                 'content': {
-                    templateUrl: 'templates/dashboard.html',
-                    controller: 'DashboardController'
+                    templateUrl: 'templates/dashboard.html'
                 }
             },
             data: {
@@ -18,10 +18,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             }
         }).state('stickers', {
             url: '/stickers',
+            controller: 'StickersController',
             views: {
                 'content': {
-                    templateUrl: 'templates/stickers.html',
-                    controller: 'StickersController'
+                    templateUrl: 'templates/stickers.html'
                 }
             },
             data: {
@@ -29,10 +29,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             }
         }).state('packs', {
             url: '/packs',
+            controller: 'PacksController',
             views: {
                 'content': {
-                    templateUrl: 'templates/packs.html',
-                    controller: 'PacksController'
+                    templateUrl: 'templates/packs.html'
                 }
             },
             data: {
@@ -40,10 +40,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             }
         }).state('authors', {
             url: '/authors',
+            controller: 'AuthorsController',
             views: {
                 'content': {
-                    templateUrl: 'templates/authors.html',
-                    controller: 'AuthorsController'
+                    templateUrl: 'templates/authors.html'
                 }
             },
             data: {

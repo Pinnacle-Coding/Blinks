@@ -5,7 +5,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
     $urlRouterProvider.otherwise('/');
 
-    $stateProvider.state('dashboard', {
+    $stateProvider.state('blinks', {
+        views: {
+            'body': {
+                templateUrl: 'templates/main.html'
+            }
+        }
+    }).state('blinks.dashboard', {
         url: '/',
         views: {
             'content': {
@@ -18,7 +24,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Dashboard';
             }
         }
-    }).state('authors', {
+    }).state('blinks.authors', {
         url: '/authors',
         views: {
             'content': {
@@ -31,7 +37,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Authors';
             }
         }
-    }).state('packs', {
+    }).state('blinks.packs', {
         url: '/packs',
         views: {
             'content': {
@@ -44,7 +50,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Packs';
             }
         }
-    }).state('stickers', {
+    }).state('blinks.stickers', {
         url: '/stickers',
         views: {
             'content': {

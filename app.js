@@ -43,9 +43,11 @@ app.use(function(req, res) {
 });
 
 // Run server
+/*
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
+*/
 
 // Run cron
 var cron = require('./cron.js');

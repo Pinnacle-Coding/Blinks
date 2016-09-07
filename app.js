@@ -15,7 +15,7 @@ var Text = mongoose.model('Text', new mongoose.Schema({
     content: String,
     hash: String
 }));
-mongoose.connect('mongodb://blinks:P@ssf0x123@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
+mongoose.connect('mongodb://main:P@ssf0x123@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
 require('./models/models.js');
 
 // Port

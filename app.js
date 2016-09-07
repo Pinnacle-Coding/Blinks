@@ -15,7 +15,7 @@ var Text = mongoose.model('Text', new mongoose.Schema({
     content: String,
     hash: String
 }));
-mongoose.connect('mongodb://dmhacker:insaneMembrane1@ds153735.mlab.com:53735/blinks');
+mongoose.connect('mongodb://blinks:P@ssf0x123@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
 require('./models/models.js');
 
 // Port
@@ -43,11 +43,9 @@ app.use(function(req, res) {
 });
 
 // Run server
-/*
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
-*/
 
 // Run cron
 var cron = require('./cron.js');

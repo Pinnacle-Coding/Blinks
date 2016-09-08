@@ -72,9 +72,9 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             }
         },
         resolve: {
-            $title: ['$stateParams', function ($stateParams) {
-                return 'Sticker ('+$stateParams.id+')';
-            }]
+            $title: function() {
+                return 'Viewing Sticker';
+            }
         }
     });
 }]);

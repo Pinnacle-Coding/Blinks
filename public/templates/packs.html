@@ -35,7 +35,7 @@
                     <p><b>{{pack.stickers.length}} stickers</b></p>
                 </div>
                 <div class="card-action center">
-                    <a class="tooltipped" ng-repeat="sticker in pack.stickers | limitTo:6">
+                    <a class="tooltipped" ng-repeat="sticker in pack.stickers">
                         <img class="pack-inline-image" ng-src="{{sticker.image}}" alt="{{sticker.name}}" title="{{sticker.name}}">
                     </a>
                 </div>

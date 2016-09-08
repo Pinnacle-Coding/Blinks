@@ -461,7 +461,7 @@ module.exports = [{
                 });
                 calls.push(function(callback) {
                     if (req.file) {
-
+                        
                     }
                 });
                 async.series(calls, function(err, results) {
@@ -470,6 +470,18 @@ module.exports = [{
                             message: err.message
                         });
                     } else {
+                        removed_tags.forEach(function (tag) {
+                            tag.stickers.pull(sticker._id);
+                            tag.save(function (err, tag) {
+
+                            });
+                        });
+                        added_tags.forEach(function (tag) {
+                            tag.stickers.push(sticker._id);
+                            tag.save(function (err, tag) {
+
+                            });
+                        });
                         sticker.save(function(err, sticker) {
                             done(true, {
                                 message: 'Sticker updated successfully',

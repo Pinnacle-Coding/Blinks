@@ -48,7 +48,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             break;
         case 'blinks.sticker':
             $scope.sticker = undefined;
-            $scope.loadSticker($stateParams._id);
+            $scope.loadSticker($stateParams.id);
             break;
     }
 

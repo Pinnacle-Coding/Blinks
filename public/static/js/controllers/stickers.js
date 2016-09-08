@@ -52,7 +52,11 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             break;
     }
 
-    $scope.loadStickers();
+    $scope.goToSticker = function (sticker) {
+        $state.go('blinks.sticker', {
+            id: sticker._id
+        });
+    };
 
     $scope.setPage = function(page) {
         $scope.page_current = page;

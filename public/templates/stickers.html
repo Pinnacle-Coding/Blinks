@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <div class="col s12 m4" ng-repeat="sticker in stickers" ng-show="stickers && stickers.length">
-            <div class="card cursor-pointer hoverable" ng-click="$state.go('blinks.sticker', {id: sticker._id})">
+            <div class="card cursor-pointer hoverable" ng-click="goToSticker(sticker)">
                 <div class="card-content blue-text text-darken-2 center">
                     <img ng-src="{{sticker.image}}" class="sticker-image">
                     <br>

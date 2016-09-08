@@ -1,0 +1,42 @@
+<div class="container" ng-show="loading">
+    <div class="row center">
+        <div class="col s12">
+            <div class="preloader-wrapper big active loading-indicator" ng-show="loading">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row">
+        <div class="col s12" ng-show="sticker">
+            <div class="card">
+                <div class="card-content blue-text text-darken-2 center">
+                    <img ng-src="{{sticker.image}}" class="sticker-image">
+                    <br>
+                    <span class="card-title center-align">Part of {{sticker.pack.name}}</span>
+                    <p><b>By {{sticker.author.name}}</b></p>
+                    <br>
+                    <p>{{concatTags(sticker)}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12" ng-hide="sticker">
+            <div class="card">
+                <div class="card-content red-text text-darken-2 center">
+                    <span class="card-title center-align">Sticker not found.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

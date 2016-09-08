@@ -418,13 +418,11 @@ module.exports = [{
                                     }).exec(function(err, tag) {
                                         if (err) {
                                             callback(err);
-                                        }
-                                        else if (tag) {
+                                        } else if (tag) {
                                             sticker.tags.push(tag._id);
                                             added_tags.push(tag);
                                             callback(null);
-                                        }
-                                        else {
+                                        } else {
                                             tag = new Tag({
                                                 name: tag_string,
                                                 stickers: [],
@@ -435,11 +433,10 @@ module.exports = [{
                                                     total: 0
                                                 }
                                             });
-                                            tag.save(function (err, tag) {
+                                            tag.save(function(err, tag) {
                                                 if (err) {
                                                     callback(err);
-                                                }
-                                                else {
+                                                } else {
                                                     sticker.tags.push(tag._id);
                                                     added_tags.push(tag);
                                                     callback(null);
@@ -461,7 +458,22 @@ module.exports = [{
                 });
                 calls.push(function(callback) {
                     if (req.file) {
-                        
+                        var key = require('path').join('stickers', sticker._id.toString());
+                        var params = {
+                            localFile: req.file.path,
+                            s3Params: {
+                                Bucket: __bucket,
+                                Key: key
+                            }
+                        };
+                        var uploader = client.uploadFile(params);
+                        uploader.on('error', function(err) {
+                            callback(err);
+                        });
+                        uploader.on('end', function() {
+                            sticker.image = s3.getPublicUrl(__bucket, key);
+                            callback(null);
+                        });
                     }
                 });
                 async.series(calls, function(err, results) {
@@ -470,15 +482,15 @@ module.exports = [{
                             message: err.message
                         });
                     } else {
-                        removed_tags.forEach(function (tag) {
+                        removed_tags.forEach(function(tag) {
                             tag.stickers.pull(sticker._id);
-                            tag.save(function (err, tag) {
+                            tag.save(function(err, tag) {
 
                             });
                         });
-                        added_tags.forEach(function (tag) {
+                        added_tags.forEach(function(tag) {
                             tag.stickers.push(sticker._id);
-                            tag.save(function (err, tag) {
+                            tag.save(function(err, tag) {
 
                             });
                         });

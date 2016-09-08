@@ -53,9 +53,13 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
     }
 
     $scope.goToSticker = function (sticker) {
+        /*
+        // Proper way
         $state.go('blinks.sticker', {
             id: sticker._id
         });
+        */
+        window.location.href = '/sticker/'+sticker._id;
     };
 
     $scope.setPage = function(page) {

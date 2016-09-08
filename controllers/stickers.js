@@ -180,11 +180,9 @@ module.exports = [{
                 return;
             }
             var query = {
-                $or: [
-                    {
-                        name: req.body.pack
-                    }
-                ]
+                $or: [{
+                    name: req.body.pack
+                }]
             };
             if (/^[0-9a-f]{24}$/.test(req.body.pack)) {
                 query.$or.push({
@@ -207,7 +205,7 @@ module.exports = [{
                         req.body.tags = req.body.tags.split(',');
                     }
                     var tag_strings = [];
-                    uniq(req.body.tags).forEach(function (tag_string) {
+                    uniq(req.body.tags).forEach(function(tag_string) {
                         tag_strings.push(tag_string.toLowerCase().trim());
                     });
                     var calls = [];
@@ -302,13 +300,12 @@ module.exports = [{
                                                     pack.stickers = [];
                                                 }
                                                 pack.stickers.push(sticker._id);
-                                                pack.save(function (err, pack) {
+                                                pack.save(function(err, pack) {
                                                     if (err) {
                                                         done(err, {
                                                             message: err.message
                                                         });
-                                                    }
-                                                    else {
+                                                    } else {
                                                         done(null, {
                                                             message: 'Sticker successfully created',
                                                             sticker: sticker
@@ -333,7 +330,156 @@ module.exports = [{
 }, {
     path: '/sticker/:id',
     method: 'PUT',
+    upload: 'sticker',
     handler: function(req, done) {
+        if (!req.body.password) {
+            done(true, {
+                message: 'Required parameters missing'
+            });
+            return;
+        }
+        if (req.body.password !== __password) {
+            done(true, {
+                message: 'Incorrect password'
+            });
+            return;
+        }
+        var query_id = req.params.id;
+        Sticker.findOne({
+            _id: query_id
+        }).populate({
+            path: 'tags',
+            select: 'name'
+        }).exec(function(err, sticker) {
+            if (err) {
+                done(err, {
+                    message: err.message
+                });
+            } else if (!sticker) {
+                done(true, {
+                    message: 'Sticker not found'
+                });
+            } else {
+                var calls = [];
+                calls.push(function(callback) {
+                    if (req.body.pack) {
+                        var query = {
+                            $or: [{
+                                name: req.body.pack
+                            }]
+                        };
+                        if (/^[0-9a-f]{24}$/.test(req.body.pack)) {
+                            query.$or.push({
+                                _id: req.body.pack
+                            });
+                        }
+                        Pack.findOne(query).exec(function(err, pack) {
+                            if (err) {
+                                callback(err);
+                            } else if (!pack) {
+                                sticker.pack = pack._id;
+                            }
+                            callback(null);
+                        });
+                    }
+                });
+                var removed_tags = [];
+                var added_tags = [];
+                calls.push(function(callback) {
+                    if (req.body.tags) {
+                        var tag_ids = [];
+                        if (typeof req.body.tags === 'string') {
+                            req.body.tags = req.body.tags.split(',');
+                        }
+                        var tag_strings = [];
+                        uniq(req.body.tags).forEach(function(tag_string) {
+                            tag_strings.push(tag_string.toLowerCase().trim());
+                        });
+                        sticker.tags.forEach(function(tag) {
+                            var foundTag = tag_strings.some(function(tag_string) {
+                                return tag_string.equals(tag.name);
+                            });
+                            // If the old tag is not found in the new list, remove
+                            if (!foundTag) {
+                                sticker.tags.pull(tag._id);
+                                removed_tags.push(tag);
+                            }
+                        });
+                        var subcalls = [];
+                        tag_strings.forEach(function(tag_string) {
+                            var foundTag = sticker.tags.some(function(tag) {
+                                return tag.name.equals(tag_string);
+                            });
+                            // If the new tag is not found in the old list, add
+                            if (!foundTag) {
+                                subcalls.push(function(callback) {
+                                    Tag.findOne({
+                                        name: tag_string
+                                    }).exec(function(err, tag) {
+                                        if (err) {
+                                            callback(err);
+                                        }
+                                        else if (tag) {
+                                            sticker.tags.push(tag._id);
+                                            added_tags.push(tag);
+                                            callback(null);
+                                        }
+                                        else {
+                                            tag = new Tag({
+                                                name: tag_string,
+                                                stickers: [],
+                                                hits: {
+                                                    daily: 0,
+                                                    weekly: 0,
+                                                    monthly: 0,
+                                                    total: 0
+                                                }
+                                            });
+                                            tag.save(function (err, tag) {
+                                                if (err) {
+                                                    callback(err);
+                                                }
+                                                else {
+                                                    sticker.tags.push(tag._id);
+                                                    added_tags.push(tag);
+                                                    callback(null);
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                        async.parallel(subcalls, function(err, results) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(null);
+                            }
+                        });
+                    }
+                });
+                calls.push(function(callback) {
+                    if (req.file) {
+
+                    }
+                });
+                async.series(calls, function(err, results) {
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
+                    } else {
+                        sticker.save(function(err, sticker) {
+                            done(true, {
+                                message: 'Sticker updated successfully',
+                                sticker: sticker
+                            });
+                        });
+                    }
+                });
+            }
+        });
         done(null, {
             message: 'Not implemented'
         });

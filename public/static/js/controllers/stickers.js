@@ -1,19 +1,8 @@
 app.controller('StickersController', function($scope, $http, $state, $stateParams, Upload) {
 
-    $scope.loading = true;
+    // Loading functions ...
 
-    switch ($state.current.name) {
-        case 'blinks.stickers':
-            $scope.stickers = [];
-            $scope.page_current = 1;
-            $scope.pagination = [1, 2, 3, 4, 5];
-            $scope.loadStickers();
-            break;
-        case 'blinks.sticker':
-            $scope.sticker = undefined;
-            $scope.loadSticker($stateParams._id);
-            break;
-    }
+    $scope.loading = true;
 
     $scope.loadSticker = function(id) {
         $scope.loading = true;
@@ -47,6 +36,21 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $scope.loading = false;
         });
     };
+
+    // On load, call loading functions
+
+    switch ($state.current.name) {
+        case 'blinks.stickers':
+            $scope.stickers = [];
+            $scope.page_current = 1;
+            $scope.pagination = [1, 2, 3, 4, 5];
+            $scope.loadStickers();
+            break;
+        case 'blinks.sticker':
+            $scope.sticker = undefined;
+            $scope.loadSticker($stateParams._id);
+            break;
+    }
 
     $scope.loadStickers();
 

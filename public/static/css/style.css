@@ -35,3 +35,7 @@ body {
 .loading-indicator {
     margin-top: 3em;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

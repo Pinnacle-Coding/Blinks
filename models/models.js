@@ -39,7 +39,6 @@ mongoose.model('Pack', new mongoose.Schema({
 }));
 
 mongoose.model('Sticker', new mongoose.Schema({
-    name: String,
     image: String,
     author: {
         type: mongoose.Schema.ObjectId,

@@ -21,15 +21,8 @@ module.exports = [{
     handler: function(req, done) {
         var query_id = req.params.id;
         var query = {
-            $or: [{
-                name: query_id
-            }]
+            _id: query_id
         };
-        if (/^[0-9a-f]{24}$/.test(query_id)) {
-            query.$or.push({
-                _id: query_id
-            });
-        }
         Sticker.findOne(query).populate({
             path: 'tags',
             select: 'name'
@@ -179,7 +172,7 @@ module.exports = [{
     method: 'POST',
     upload: 'sticker',
     handler: function(req, done) {
-        if (req.body.name && req.body.pack && req.body.tags && req.file && req.body.password) {
+        if (req.body.pack && req.body.tags && req.file && req.body.password) {
             if (req.body.password !== __password) {
                 done(true, {
                     message: 'Incorrect password'
@@ -258,7 +251,6 @@ module.exports = [{
                             });
                         } else {
                             var sticker = new Sticker({
-                                name: req.body.name,
                                 author: pack.author,
                                 pack: pack._id,
                                 tags: tag_ids,

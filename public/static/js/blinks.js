@@ -63,5 +63,18 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Stickers';
             }
         }
+    }).state('blinks.sticker', {
+        url: '/sticker/:id',
+        views: {
+            'content': {
+                templateUrl: 'templates/sticker.html',
+                controller: 'StickersController'
+            }
+        },
+        resolve: {
+            $title: ['$stateParams', function ($stateParams) {
+                return 'Sticker '+$stateParams.id;
+            }]
+        }
     });
 }]);

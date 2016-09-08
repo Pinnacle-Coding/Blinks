@@ -1,10 +1,33 @@
-app.controller('StickersController', function($scope, $http) {
+app.controller('StickersController', function($scope, $http, $state, $stateParams, Upload) {
 
     $scope.loading = true;
-    $scope.stickers = [];
 
-    $scope.page_current = 1;
-    $scope.pagination = [1, 2, 3, 4, 5];
+    switch ($state.current.name) {
+        case 'blinks.stickers':
+            $scope.stickers = [];
+            $scope.page_current = 1;
+            $scope.pagination = [1, 2, 3, 4, 5];
+            $scope.loadStickers();
+            break;
+        case 'blinks.sticker':
+            $scope.sticker = undefined;
+            $scope.loadSticker($stateParams._id);
+            break;
+    }
+
+    $scope.loadSticker = function(id) {
+        $scope.loading = true;
+        $http({
+            method: 'GET',
+            url: '/api/sticker/'+id
+        }).then(function (resp) {
+            $scope.sticker = resp.data.sticker;
+            $scope.loading = false;
+        }, function (resp) {
+            Materialize.toast(resp.data.message || 'Failed to load sticker', 4000);
+            $scope.loading = false;
+        });
+    };
 
     $scope.loadStickers = function() {
         $scope.loading = true;

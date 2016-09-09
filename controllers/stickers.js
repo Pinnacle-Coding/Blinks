@@ -497,7 +497,7 @@ module.exports = [{
                             });
                         });
                         sticker.save(function(err, sticker) {
-                            done(true, {
+                            done(false, {
                                 message: 'Sticker updated successfully',
                                 sticker: sticker
                             });

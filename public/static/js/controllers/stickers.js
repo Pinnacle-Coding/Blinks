@@ -1,5 +1,19 @@
 app.controller('StickersController', function($scope, $http, $state, $stateParams, Upload) {
 
+    // Utility functions/variables ...
+
+    $scope.uploading = false;
+
+    $scope.upload = function(url, data, method, success, error) {
+        Upload.upload({
+            url: url,
+            data: data,
+            method: method
+        }).then(success, error, function(evt) {
+
+        });
+    };
+
     // Loading functions ...
 
     $scope.loading = true;

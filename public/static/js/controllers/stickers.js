@@ -11,6 +11,10 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             url: '/api/sticker/' + id
         }).then(function (resp) {
             $scope.sticker = resp.data.sticker;
+            $scope.stickerEdit = {
+                pack: $scope.sticker.pack.name,
+                tags: $scope.concatTags($scope.sticker)
+            };
             $scope.loading = false;
         }, function (resp) {
             Materialize.toast(resp.data.message || 'Failed to load sticker', 4000);

@@ -51,16 +51,16 @@
                         <div class="row">
                             <div class="input-field col m12">
                                 <label for="stickerPack">Pack</label>
-                                <input type="text" ng-model="sticker.pack" id="stickerPack">
+                                <input type="text" ng-model="stickerEdit.pack" id="stickerPack">
                             </div>
                             <div class="input-field col m12">
                                 <label for="stickerTags">Tags (list with commas)</label>
-                                <input type="text" ng-model="sticker.tags" id="stickerTags">
+                                <input type="text" ng-model="stickerEdit.tags" id="stickerTags">
                             </div>
                             <div class="file-field input-field col m12">
                                 <div class="btn blue darken-4">
                                     <span>Sticker Image</span>
-                                    <input type="file" ng-model="sticker.sticker" ngf-select ngf-accept="'image/*'" ngf-pattern="'.png,.jpg'">
+                                    <input type="file" ng-model="stickerEdit.sticker" ngf-select ngf-accept="'image/*'" ngf-pattern="'.png,.jpg'">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="input-field col m12">
                                 <label for="stickerPassword">Password</label>
-                                <input type="password" ng-model="sticker.password" id="stickerPassword" required>
+                                <input type="password" ng-model="stickerEdit.password" id="stickerPassword" required>
                             </div>
                         </div>
                         <div class="row">

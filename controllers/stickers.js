@@ -497,7 +497,9 @@ module.exports = [{
                             });
                         });
                         sticker.save(function(err, sticker) {
-                            Sticker.findOne(query).populate({
+                            Sticker.findOne({
+                                _id: sticker._id
+                            }).populate({
                                 path: 'tags',
                                 select: 'name'
                             }).populate({

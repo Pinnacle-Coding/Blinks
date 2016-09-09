@@ -361,8 +361,8 @@ module.exports = [{
                 });
             } else {
                 var calls = [];
-                calls.push(function(callback) {
-                    if (req.body.pack) {
+                if (req.body.pack) {
+                    calls.push(function(callback) {
                         var query = {
                             $or: [{
                                 name: req.body.pack
@@ -381,12 +381,12 @@ module.exports = [{
                             }
                             callback(null);
                         });
-                    }
-                });
+                    });
+                }
                 var removed_tags = [];
                 var added_tags = [];
-                calls.push(function(callback) {
-                    if (req.body.tags) {
+                if (req.body.tags) {
+                    calls.push(function(callback) {
                         var tag_ids = [];
                         if (typeof req.body.tags === 'string') {
                             req.body.tags = req.body.tags.split(',');
@@ -454,10 +454,10 @@ module.exports = [{
                                 callback(null);
                             }
                         });
-                    }
-                });
-                calls.push(function(callback) {
-                    if (req.file) {
+                    });
+                }
+                if (req.file) {
+                    calls.push(function(callback) {
                         var key = require('path').join('stickers', sticker._id.toString());
                         var params = {
                             localFile: req.file.path,
@@ -474,9 +474,11 @@ module.exports = [{
                             sticker.image = s3.getPublicUrl(__bucket, key);
                             callback(null);
                         });
-                    }
-                });
+                    });
+                }
+                console.log(calls);
                 async.series(calls, function(err, results) {
+                    console.log('done');
                     if (err) {
                         done(err, {
                             message: err.message

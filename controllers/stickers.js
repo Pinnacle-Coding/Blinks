@@ -504,8 +504,5 @@ module.exports = [{
                 });
             }
         });
-        done(null, {
-            message: 'Not implemented'
-        });
     }
 }];

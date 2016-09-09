@@ -397,7 +397,7 @@ module.exports = [{
                         });
                         sticker.tags.forEach(function(tag) {
                             var foundTag = tag_strings.some(function(tag_string) {
-                                return tag_string.equals(tag.name);
+                                return tag_string === tag.name;
                             });
                             // If the old tag is not found in the new list, remove
                             if (!foundTag) {
@@ -408,7 +408,7 @@ module.exports = [{
                         var subcalls = [];
                         tag_strings.forEach(function(tag_string) {
                             var foundTag = sticker.tags.some(function(tag) {
-                                return tag.name.equals(tag_string);
+                                return tag.name === tag_string;
                             });
                             // If the new tag is not found in the old list, add
                             if (!foundTag) {

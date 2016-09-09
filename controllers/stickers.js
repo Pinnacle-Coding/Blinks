@@ -363,23 +363,40 @@ module.exports = [{
                 var calls = [];
                 if (req.body.pack) {
                     calls.push(function(callback) {
-                        var query = {
-                            $or: [{
-                                name: req.body.pack
-                            }]
-                        };
-                        if (/^[0-9a-f]{24}$/.test(req.body.pack)) {
-                            query.$or.push({
-                                _id: req.body.pack
-                            });
-                        }
-                        Pack.findOne(query).exec(function(err, pack) {
+                        Pack.findOne({
+                            _id: sticker.pack
+                        }).exec(function(err, old_pack) {
                             if (err) {
                                 callback(err);
-                            } else if (pack) {
-                                sticker.pack = pack._id;
                             }
-                            callback(null);
+                            else {
+                                old_pack.stickers.pull(sticker._id);
+                                old_pack.save(function(err, old_pack) {
+                                    var query = {
+                                        $or: [{
+                                            name: req.body.pack
+                                        }]
+                                    };
+                                    if (/^[0-9a-f]{24}$/.test(req.body.pack)) {
+                                        query.$or.push({
+                                            _id: req.body.pack
+                                        });
+                                    }
+                                    Pack.findOne(query).exec(function(err, pack) {
+                                        if (err) {
+                                            callback(err);
+                                        } else if (pack) {
+                                            sticker.pack = pack._id;
+                                            pack.stickers.push(sticker._id);
+                                            pack.save(function (err, pack) {
+                                                callback(null);
+                                            });
+                                        } else {
+                                            callback(null);
+                                        }
+                                    });
+                                });
+                            }
                         });
                     });
                 }
@@ -511,8 +528,7 @@ module.exports = [{
                                     done(err, {
                                         message: err.message
                                     });
-                                }
-                                else {
+                                } else {
                                     done(false, {
                                         message: 'Sticker updated successfully',
                                         sticker: sticker

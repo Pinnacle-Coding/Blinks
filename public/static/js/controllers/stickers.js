@@ -15,8 +15,8 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
                 pack: $scope.sticker.pack.name,
                 tags: $scope.concatTags($scope.sticker)
             };
-            $('#stickerPack').addClass('active');
-            $('#stickerTags').addClass('active');
+            $('#stickerPackLabel').addClass('active');
+            $('#stickerTagsLabel').addClass('active');
             $scope.loading = false;
         }, function (resp) {
             Materialize.toast(resp.data.message || 'Failed to load sticker', 4000);

@@ -16,6 +16,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
                 tags: $scope.concatTags($scope.sticker)
             };
             $scope.loading = false;
+            Materialize.updateTextFields();
         }, function (resp) {
             Materialize.toast(resp.data.message || 'Failed to load sticker', 4000);
             $scope.loading = false;

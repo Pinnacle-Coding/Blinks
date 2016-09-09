@@ -77,6 +77,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         $scope.upload('/api/sticker/'+$scope.sticker._id, $scope.stickerEdit, 'PUT', function(resp) {
             Materialize.toast(resp.data.message || 'Sticker updated successfully', 4000);
             $scope.sticker = resp.data.sticker;
+            console.log(resp.data);
             console.log($scope.sticker);
             $scope.stickerEdit = {
                 pack: $scope.sticker.pack.name,

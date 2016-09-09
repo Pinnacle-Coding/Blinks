@@ -58,6 +58,22 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             break;
     }
 
+    $scope.editSticker = function() {
+        $scope.uploading = true;
+        $scope.upload('/api/sticker/'+$scope.sticker._id, $scope.stickerEdit, 'PUT', function(resp) {
+            Materialize.toast(resp.data.message || 'Sticker updated successfully', 4000);
+            $scope.sticker = resp.data.sticker;
+            $scope.stickerEdit = {
+                pack: $scope.sticker.pack.name,
+                tags: $scope.concatTags($scope.sticker)
+            };
+            $scope.uploading = false;
+        }, function(resp) {
+            Materialize.toast(resp.data.message || 'An error occurred when updated the sticker', 4000);
+            $scope.uploading = false;
+        });
+    };
+
     $scope.goToSticker = function (sticker) {
         /*
         // Proper way

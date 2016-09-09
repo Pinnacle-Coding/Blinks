@@ -497,9 +497,27 @@ module.exports = [{
                             });
                         });
                         sticker.save(function(err, sticker) {
-                            done(false, {
-                                message: 'Sticker updated successfully',
-                                sticker: sticker
+                            Sticker.findOne(query).populate({
+                                path: 'tags',
+                                select: 'name'
+                            }).populate({
+                                path: 'author',
+                                select: 'name location image'
+                            }).populate({
+                                path: 'pack',
+                                select: 'name'
+                            }).exec(function(err, sticker) {
+                                if (err) {
+                                    done(err, {
+                                        message: err.message
+                                    });
+                                }
+                                else {
+                                    done(false, {
+                                        message: 'Sticker updated successfully',
+                                        sticker: sticker
+                                    });
+                                }
                             });
                         });
                     }

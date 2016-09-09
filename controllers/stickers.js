@@ -376,7 +376,7 @@ module.exports = [{
                         Pack.findOne(query).exec(function(err, pack) {
                             if (err) {
                                 callback(err);
-                            } else if (!pack) {
+                            } else if (pack) {
                                 sticker.pack = pack._id;
                             }
                             callback(null);
@@ -476,9 +476,7 @@ module.exports = [{
                         });
                     });
                 }
-                console.log(calls);
                 async.series(calls, function(err, results) {
-                    console.log('done');
                     if (err) {
                         done(err, {
                             message: err.message

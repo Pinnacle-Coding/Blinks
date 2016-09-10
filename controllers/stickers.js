@@ -349,7 +349,7 @@ module.exports = [{
             _id: query_id
         }).populate({
             path: 'tags',
-            select: 'name'
+            select: 'name stickers'
         }).exec(function(err, sticker) {
             if (err) {
                 done(err, {
@@ -368,9 +368,7 @@ module.exports = [{
                         }).exec(function(err, old_pack) {
                             if (err) {
                                 callback(err);
-                            }
-                            else {
-                                console.log(JSON.stringify(old_pack));
+                            } else {
                                 old_pack.stickers.pull(sticker._id);
                                 old_pack.save(function(err, old_pack) {
                                     var query = {
@@ -389,7 +387,7 @@ module.exports = [{
                                         } else if (pack) {
                                             sticker.pack = pack._id;
                                             pack.stickers.push(sticker._id);
-                                            pack.save(function (err, pack) {
+                                            pack.save(function(err, pack) {
                                                 callback(null);
                                             });
                                         } else {
@@ -403,61 +401,67 @@ module.exports = [{
                 }
                 if (req.body.tags) {
                     calls.push(function(callback) {
-                        sticker.tags.forEach(function (tag) {
-                            tag.stickers.pull(sticker._id);
-                            tag.save(function (err, tag) {
-
-                            });
-                        });
-                        sticker.tags = [];
-                        if (typeof req.body.tags === 'string') {
-                            req.body.tags = req.body.tags.split(',');
-                        }
-                        var tag_ids = [];
-                        var tag_names = [];
-                        uniq(req.body.tags).forEach(function(tag_name) {
-                            tag_names.push(tag_name.toLowerCase().trim());
-                        });
                         var subcalls = [];
-                        tag_names.forEach(function (tag_name) {
-                            subcalls.push(function (callback) {
-                                Tag.findOne({
-                                    name: tag_name
-                                }).exec(function (err, tag) {
-                                    if (err) {
-                                        callback(err);
-                                    }
-                                    else if (!tag) {
-                                        tag = new Tag({
-                                            name: tag_name,
-                                            hits: {
-                                                daily: 0,
-                                                weekly: 0,
-                                                monthly: 0,
-                                                total: 0
-                                            }
-                                        });
-                                    }
-                                    tag.save(function (err, tag) {
-                                        if (err) {
-                                            callback(err);
-                                        }
-                                        else {
-                                            tag.stickers.push(sticker._id);
-                                            tag_ids.push(tag._id);
-                                            callback(null);
-                                        }
-                                    });
+                        sticker.tags.forEach(function(tag) {
+                            subcalls.push(function(callback) {
+                                tag.stickers.pull(sticker._id);
+                                tag.save(function(err, tag) {
+                                    callback(null);
                                 });
                             });
                         });
-                        async.series(subcalls, function (err, results) {
+                        async.series(subcalls, function(err, results) {
                             if (err) {
                                 callback(err);
-                            }
-                            else {
-                                sticker.tags = tag_ids;
-                                callback(null);
+                            } else {
+                                sticker.tags = [];
+                                if (typeof req.body.tags === 'string') {
+                                    req.body.tags = req.body.tags.split(',');
+                                }
+                                var tag_ids = [];
+                                var tag_names = [];
+                                uniq(req.body.tags).forEach(function(tag_name) {
+                                    tag_names.push(tag_name.toLowerCase().trim());
+                                });
+                                subcalls = [];
+                                tag_names.forEach(function(tag_name) {
+                                    subcalls.push(function(callback) {
+                                        Tag.findOne({
+                                            name: tag_name
+                                        }).exec(function(err, tag) {
+                                            if (err) {
+                                                callback(err);
+                                            } else if (!tag) {
+                                                tag = new Tag({
+                                                    name: tag_name,
+                                                    hits: {
+                                                        daily: 0,
+                                                        weekly: 0,
+                                                        monthly: 0,
+                                                        total: 0
+                                                    }
+                                                });
+                                            }
+                                            tag.save(function(err, tag) {
+                                                if (err) {
+                                                    callback(err);
+                                                } else {
+                                                    tag.stickers.push(sticker._id);
+                                                    tag_ids.push(tag._id);
+                                                    callback(null);
+                                                }
+                                            });
+                                        });
+                                    });
+                                });
+                                async.series(subcalls, function(err, results) {
+                                    if (err) {
+                                        callback(err);
+                                    } else {
+                                        sticker.tags = tag_ids;
+                                        callback(null);
+                                    }
+                                });
                             }
                         });
                     });

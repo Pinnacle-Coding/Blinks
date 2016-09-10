@@ -50,14 +50,14 @@ HOW THIS API WORKS
 1. Create a file. The different files are purely for organization.
 2. In the file, write:
 
-module.exports = [
+module.exports = {
 
-]
+}
 
 3. To add a route (i.e 'GET /api/stickers'), add it to exports. For example:
 
-module.exports = [
-    {
+module.exports = {
+    getStickers: { // The key can be anything. It's only used if you call the handler from another controller
         path: '/stickers' // Note: no need to add /api/, this is already done via middleware
         method: 'GET'
         handler: function (req, done) {
@@ -66,7 +66,7 @@ module.exports = [
             });
         }
     }
-]
+}
 
 4. In the handler function, you will notice that two parameters are passed in. The first is the HTTP request
 itself (params, body, etc.). The second is the callback function. It signals the conclusion of the handler. No code
@@ -97,11 +97,18 @@ var storage = multer.diskStorage({
 });
 */
 var upload = multer({
-    dest: __base+'tmp/uploads/'
+    dest: __base + 'tmp/uploads/'
 });
 
 var add = function(filename) {
-    require(filename).forEach(function(route) {
+    var routes = require(filename);
+    var route_handlers = [];
+    for (var route_name in routes) {
+        if (routes.hasOwnProperty(route_name)) {
+            route_handlers.push(routes[route_name]);
+        }
+    }
+    route_handlers.forEach(function (route) {
         var path = route.path;
         var method = route.method.toLowerCase();
         var callback = function(req, res) {

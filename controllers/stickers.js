@@ -568,16 +568,33 @@ module.exports = {
                                 message: 'Sticker does not exist'
                             });
                         } else {
-                            sticker.remove(function(err) {
-                                if (err) {
-                                    done(err, {
-                                        message: err.message
-                                    });
-                                } else {
-                                    done(false, {
-                                        message: 'Sticker deleted successfully'
-                                    });
+                            var key = require('path').join('stickers', sticker._id.toString());
+                            var params = {
+                                Bucket: __bucket,
+                                Delete: {
+                                    Objects: [{
+                                        Key: key
+                                    }]
                                 }
+                            };
+                            var deleter = client.deleteObjects(params);
+                            deleter.on('error', function(err) {
+                                done(err, {
+                                    message: err.message
+                                });
+                            });
+                            deleter.on('end', function() {
+                                sticker.remove(function(err) {
+                                    if (err) {
+                                        done(err, {
+                                            message: err.message
+                                        });
+                                    } else {
+                                        done(false, {
+                                            message: 'Sticker deleted successfully'
+                                        });
+                                    }
+                                });
                             });
                         }
                     });

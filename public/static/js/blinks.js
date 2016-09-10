@@ -1,13 +1,6 @@
 var app = angular.module('Blinks', ['ngFileUpload', 'ui.router', 'ui.router.title']);
 
-app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
-
-    /*
-    $httpProvider.defaults.headers.delete = {
-        "Content-Type": "application/json;charset=utf-8"
-    };
-    */
-    
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise('/');
@@ -27,7 +20,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
             }
         },
         resolve: {
-            $title: function() {
+            $title: function () {
                 return 'Dashboard';
             }
         }
@@ -40,7 +33,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
             }
         },
         resolve: {
-            $title: function() {
+            $title: function () {
                 return 'Authors';
             }
         }
@@ -53,7 +46,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
             }
         },
         resolve: {
-            $title: function() {
+            $title: function () {
                 return 'Packs';
             }
         }
@@ -66,7 +59,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
             }
         },
         resolve: {
-            $title: function() {
+            $title: function () {
                 return 'Stickers';
             }
         }

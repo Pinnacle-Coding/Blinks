@@ -80,8 +80,11 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         console.log($scope.stickerDelete);
         $http({
             method: 'DELETE',
-            url: '/api/sticker/'+$scope.sticker._id,
-            data: $scope.stickerDelete
+            url: '/api/sticker/' + $scope.sticker._id,
+            data: $scope.stickerDelete,
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            }
         }).then(function(resp) {
             Materialize.toast(resp.data.message || 'Sticker deleted successfully', 4000);
             $scope.sticker = undefined;

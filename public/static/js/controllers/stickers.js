@@ -79,10 +79,12 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         $scope.loading = true;
         $http({
             method: 'DELETE',
-            url: '/api/sticker/'+$scope.sticker._id
+            url: '/api/sticker/'+$scope.sticker._id,
+            data: $scope.stickerDelete
         }).then(function(resp) {
             Materialize.toast(resp.data.message || 'Sticker deleted successfully', 4000);
             $scope.sticker = undefined;
+            $scope.stickerDelete = {};
             $scope.loading = false;
         }, function(resp) {
             Materialize.toast(resp.data.message || 'Failed to delete sticker', 4000);

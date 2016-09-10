@@ -86,8 +86,19 @@
             <div class="card">
                 <div class="card-content red-text text-darken-1 center">
                     <span class="card-title">Delete Sticker</span>
-                    <br>
-                    <button ng-click="deleteSticker()" class="btn red darken-1 waves-effect">Do it</button>
+                    <form ng-submit="deleteSticker()">
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <label for="stickerDeletePassword">Password</label>
+                                <input type="password" ng-model="stickerDelete.password" id="stickerDeletePassword" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col m12">
+                                <button type="submit" class="btn red darken-1 waves-effect">Do it</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

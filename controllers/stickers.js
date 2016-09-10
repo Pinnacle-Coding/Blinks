@@ -38,19 +38,29 @@ module.exports = [{
                     message: err.message
                 });
             } else {
-                if (sticker) {
+                if (sticker && !req.query.hitblock) {
                     sticker.hits.total += 1;
                     sticker.hits.daily += 1;
                     sticker.hits.weekly += 1;
                     sticker.hits.monthly += 1;
                     sticker.save(function(err, sticker) {
-
+                        if (err) {
+                            done(true, {
+                                message: err.message
+                            });
+                        } else {
+                            done(false, {
+                                message: 'Sticker found',
+                                sticker: sticker
+                            });
+                        }
+                    });
+                } else {
+                    done(false, {
+                        message: (sticker) ? 'Sticker found' : 'No sticker found',
+                        sticker: sticker
                     });
                 }
-                done(false, {
-                    message: (sticker) ? 'Sticker found' : 'No sticker found',
-                    sticker: sticker
-                });
             }
         });
     }

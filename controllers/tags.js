@@ -25,7 +25,7 @@ module.exports = [{
                     message: err.message
                 });
             } else {
-                if (tag) {
+                if (tag && !req.query.hitblock) {
                     tag.hits.total += 1;
                     tag.hits.daily += 1;
                     tag.hits.weekly += 1;

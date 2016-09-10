@@ -39,10 +39,29 @@ module.exports = [{
                     message: err.message
                 });
             } else {
-                done(false, {
-                    message: (author) ? 'Author found' : 'No author found',
-                    author: author
-                });
+                if (author && !req.query.hitblock) {
+                    author.hits.total += 1;
+                    author.hits.daily += 1;
+                    author.hits.weekly += 1;
+                    author.hits.monthly += 1;
+                    author.save(function(err, author) {
+                        if (err) {
+                            done(true, {
+                                message: err.message
+                            });
+                        } else {
+                            done(false, {
+                                message: 'Author found',
+                                author: author
+                            });
+                        }
+                    });
+                } else {
+                    done(false, {
+                        message: (author) ? 'Author found' : 'No author found',
+                        author: author
+                    });
+                }
             }
         });
     }

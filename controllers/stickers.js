@@ -400,74 +400,62 @@ module.exports = [{
                         });
                     });
                 }
-                var removed_tags = [];
-                var added_tags = [];
                 if (req.body.tags) {
                     calls.push(function(callback) {
-                        var tag_ids = [];
+                        sticker.tags.forEach(function (tag) {
+                            tag.stickers.pull(sticker._id);
+                            tag.save(function (err, tag) {
+
+                            });
+                        });
+                        sticker.tags = [];
                         if (typeof req.body.tags === 'string') {
                             req.body.tags = req.body.tags.split(',');
                         }
-                        var tag_strings = [];
-                        uniq(req.body.tags).forEach(function(tag_string) {
-                            tag_strings.push(tag_string.toLowerCase().trim());
-                        });
-                        sticker.tags.forEach(function(tag) {
-                            var foundTag = tag_strings.some(function(tag_string) {
-                                return tag_string === tag.name;
-                            });
-                            // If the old tag is not found in the new list, remove
-                            if (!foundTag) {
-                                sticker.tags.pull(tag._id);
-                                removed_tags.push(tag);
-                            }
+                        var tag_ids = [];
+                        var tag_names = [];
+                        uniq(req.body.tags).forEach(function(tag_name) {
+                            tag_names.push(tag_name.toLowerCase().trim());
                         });
                         var subcalls = [];
-                        tag_strings.forEach(function(tag_string) {
-                            var foundTag = sticker.tags.some(function(tag) {
-                                return tag.name === tag_string;
-                            });
-                            // If the new tag is not found in the old list, add
-                            if (!foundTag) {
-                                subcalls.push(function(callback) {
-                                    Tag.findOne({
-                                        name: tag_string
-                                    }).exec(function(err, tag) {
+                        tag_names.forEach(function (tag_name) {
+                            subcalls.push(function (callback) {
+                                Tag.findOne({
+                                    name: tag_name
+                                }).exec(function (err, tag) {
+                                    if (err) {
+                                        callback(err);
+                                    }
+                                    else if (!tag) {
+                                        tag = new Tag({
+                                            name: tag_name,
+                                            hits: {
+                                                daily: 0,
+                                                weekly: 0,
+                                                monthly: 0,
+                                                total: 0
+                                            }
+                                        });
+                                    }
+                                    tag.save(function (err, tag) {
                                         if (err) {
                                             callback(err);
-                                        } else if (tag) {
-                                            sticker.tags.push(tag._id);
-                                            added_tags.push(tag);
+                                        }
+                                        else {
+                                            tag.stickers.push(sticker._id);
+                                            tag_ids.push(tag._id);
                                             callback(null);
-                                        } else {
-                                            tag = new Tag({
-                                                name: tag_string,
-                                                stickers: [],
-                                                hits: {
-                                                    daily: 0,
-                                                    weekly: 0,
-                                                    monthly: 0,
-                                                    total: 0
-                                                }
-                                            });
-                                            tag.save(function(err, tag) {
-                                                if (err) {
-                                                    callback(err);
-                                                } else {
-                                                    sticker.tags.push(tag._id);
-                                                    added_tags.push(tag);
-                                                    callback(null);
-                                                }
-                                            });
                                         }
                                     });
                                 });
-                            }
+                            });
                         });
-                        async.parallel(subcalls, function(err, results) {
+                        async.series(subcalls, function (err, results) {
                             if (err) {
                                 callback(err);
-                            } else {
+                            }
+                            else {
+                                sticker.tags = tag_ids;
                                 callback(null);
                             }
                         });
@@ -499,18 +487,6 @@ module.exports = [{
                             message: err.message
                         });
                     } else {
-                        removed_tags.forEach(function(tag) {
-                            tag.stickers.pull(sticker._id);
-                            tag.save(function(err, tag) {
-
-                            });
-                        });
-                        added_tags.forEach(function(tag) {
-                            tag.stickers.push(sticker._id);
-                            tag.save(function(err, tag) {
-
-                            });
-                        });
                         sticker.save(function(err, sticker) {
                             Sticker.findOne({
                                 _id: sticker._id

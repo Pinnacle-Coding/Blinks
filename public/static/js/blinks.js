@@ -2,6 +2,8 @@ var app = angular.module('Blinks', ['ngFileUpload', 'ui.router', 'ui.router.titl
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 
+    console.log($httpProvider.defaults);
+    
     $httpProvider.defaults.headers.delete = {
         "Content-Type": "application/json;charset=utf-8"
     };

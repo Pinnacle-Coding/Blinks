@@ -26,7 +26,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             params: {
                 hitblock: true
             }
-        }).then(function (resp) {
+        }).then(function(resp) {
             $scope.sticker = resp.data.sticker;
             $scope.stickerEdit = {
                 pack: $scope.sticker.pack.name,
@@ -35,7 +35,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $('#stickerPackLabel').addClass('active');
             $('#stickerTagsLabel').addClass('active');
             $scope.loading = false;
-        }, function (resp) {
+        }, function(resp) {
             Materialize.toast(resp.data.message || 'Failed to load sticker', 4000);
             $scope.loading = false;
         });
@@ -75,15 +75,32 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             break;
     }
 
+    $scope.deleteSticker = function() {
+        $scope.loading = true;
+        $http({
+            method: 'DELETE',
+            url: '/api/sticker/'+$scope.sticker._id
+        }).then(function(resp) {
+            Materialize.toast(resp.data.message || 'Sticker deleted successfully', 4000);
+            $scope.sticker = undefined;
+            $scope.loading = false;
+        }, function(resp) {
+            Materialize.toast(resp.data.message || 'Failed to delete sticker', 4000);
+            $scope.loading = false;
+        });
+    };
+
     $scope.editSticker = function() {
         $scope.uploading = true;
-        $scope.upload('/api/sticker/'+$scope.sticker._id, $scope.stickerEdit, 'PUT', function(resp) {
+        $scope.upload('/api/sticker/' + $scope.sticker._id, $scope.stickerEdit, 'PUT', function(resp) {
             Materialize.toast(resp.data.message || 'Sticker updated successfully', 4000);
             $scope.sticker = resp.data.sticker;
             $scope.stickerEdit = {
                 pack: $scope.sticker.pack.name,
                 tags: $scope.concatTags($scope.sticker)
             };
+            $('#stickerPackLabel').addClass('active');
+            $('#stickerTagsLabel').addClass('active');
             $scope.uploading = false;
         }, function(resp) {
             Materialize.toast(resp.data.message || 'An error occurred when updated the sticker', 4000);
@@ -91,14 +108,14 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         });
     };
 
-    $scope.goToSticker = function (sticker) {
+    $scope.goToSticker = function(sticker) {
         /*
         // Proper way
         $state.go('blinks.sticker', {
             id: sticker._id
         });
         */
-        window.location.href = '/sticker/'+sticker._id;
+        window.location.href = '/sticker/' + sticker._id;
     };
 
     $scope.setPage = function(page) {

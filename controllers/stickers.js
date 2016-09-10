@@ -532,4 +532,51 @@ module.exports = [{
             }
         });
     }
+}, {
+    path: '/sticker/:id',
+    method: 'DELETE',
+    handler: function (req, done) {
+        if (req.body.password) {
+            if (req.body.password === __password) {
+                Sticker.findOne({
+                    _id: req.params.id
+                }).exec(function (err, sticker) {
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
+                    }
+                    else if (!sticker) {
+                        done(true, {
+                            message: 'Sticker does not exist'
+                        });
+                    }
+                    else {
+                        sticker.remove(function (err) {
+                            if (err) {
+                                done(err, {
+                                    message: err.message
+                                });
+                            }
+                            else {
+                                done(false, {
+                                    message: 'Sticker deleted successfully'
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                done(true, {
+                    message: 'Incorrect password'
+                });
+            }
+        }
+        else {
+            done(true, {
+                message: 'Required parameters missing'
+            });
+        }
+    }
 }];

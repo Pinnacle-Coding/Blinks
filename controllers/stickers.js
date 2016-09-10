@@ -489,6 +489,10 @@ module.exports = {
                                     Delete: {
                                         Objects: [{
                                             Key: key
+                                        },{
+                                            Key: key
+                                        },{
+                                            Key: key
                                         }]
                                     }
                                 }

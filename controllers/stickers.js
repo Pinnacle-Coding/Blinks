@@ -483,6 +483,7 @@ module.exports = {
                     if (req.file) {
                         calls.push(function(callback) {
                             var key = require('path').join('stickers', sticker._id.toString());
+                            console.log(req.file.path);
                             var params = {
                                 localFile: req.file.path,
                                 s3Params: {

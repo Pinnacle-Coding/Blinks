@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Pack = mongoose.model('Pack');
 var Author = mongoose.model('Author');
+var StickerCtrl = require('stickers.js');
 
 module.exports = [{
     path: '/pack/:id',
@@ -200,6 +201,88 @@ module.exports = [{
     handler: function(req, done) {
         done(null, {
             message: 'Not implemented'
+        });
+    }
+}, {
+    path: '/pack/:id',
+    method: 'DELETE',
+    handler: function(req, done) {
+        if (!req.body.password) {
+            done(true, {
+                message: 'Required parameters missing'
+            });
+            return;
+        }
+        if (req.body.password !== __password) {
+            done(true, {
+                message: 'Incorrect password'
+            });
+            return;
+        }
+        var query_id = req.query.id;
+        var query = {
+            $or: [{
+                name: query_id
+            }]
+        };
+        if (/^[0-9a-f]{24}$/.test(query_id)) {
+            query.$or.push({
+                _id: query_id
+            });
+        }
+        Pack.findOne(query).populate({
+            path: 'author',
+            select: 'packs'
+        }).exec(function(err, pack) {
+            if (err) {
+                done(err, {
+                    message: err.message
+                });
+            } else if (!pack) {
+                done(true, {
+                    message: 'Pack by that id does not exist'
+                });
+            } else {
+                var calls = [];
+                var stickerHandler;
+                for (var i in StickerCtrl) {
+                    if (StickerCtrl[i].method === 'DELETE') {
+                        stickerHandler = StickerCtrl[i].handler;
+                        break;
+                    }
+                }
+                pack.stickers.forEach(function(sticker) {
+                    calls.push(function(callback) {
+                        req.params.id = sticker;
+                        stickerHandler(req, function(err, res) {
+                            callback(err ? err : null);
+                        });
+                    });
+                });
+                async.parallel(calls, function() {
+                    pack.author.packs.pull(pack._id);
+                    pack.author.save(function(err) {
+                        if (err) {
+                            done(err, {
+                                message: err.message
+                            });
+                        } else {
+                            pack.remove(function(err) {
+                                if (err) {
+                                    done(err, {
+                                        message: err.message
+                                    });
+                                }
+                                else {
+                                    done(false, {
+                                        message: 'Pack deleted successfully'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            }
         });
     }
 }];

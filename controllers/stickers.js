@@ -483,23 +483,35 @@ module.exports = {
                     if (req.file) {
                         calls.push(function(callback) {
                             var key = require('path').join('stickers', sticker._id.toString());
-                            console.log(req.file.path);
                             var params = {
-                                localFile: req.file.path,
                                 s3Params: {
                                     Bucket: __bucket,
-                                    Key: key
+                                    Delete: {
+                                        Objects: [{
+                                            Key: key
+                                        }]
+                                    }
                                 }
-                            };
-                            var uploader = client.uploadFile(params);
-                            uploader.on('error', function(err) {
-                                console.log(err.message);
+                            }
+                            var deleter = client.deleteObjects(params);
+                            deleter.on('error', function(err) {
                                 callback(err);
                             });
-                            uploader.on('end', function() {
-                                // sticker.image = s3.getPublicUrl(__bucket, key);
-                                console.log(sticker.image);
-                                callback(null);
+                            deleter.on('end', function() {
+                                params = {
+                                    localFile: req.file.path,
+                                    s3Params: {
+                                        Bucket: __bucket,
+                                        Key: key
+                                    }
+                                };
+                                var uploader = client.uploadFile(params);
+                                uploader.on('error', function(err) {
+                                    callback(err);
+                                });
+                                uploader.on('end', function() {
+                                    callback(null);
+                                });
                             });
                         });
                     }

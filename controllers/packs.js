@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Pack = mongoose.model('Pack');
 var Author = mongoose.model('Author');
-var StickerCtrl = require('stickers.js');
+var StickerCtrl = require(require('path').join(__base, 'controllers/stickers.js'));
 
 module.exports = [{
     path: '/pack/:id',

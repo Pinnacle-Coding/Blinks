@@ -492,10 +492,12 @@ module.exports = {
                             };
                             var uploader = client.uploadFile(params);
                             uploader.on('error', function(err) {
+                                console.log(err.message);
                                 callback(err);
                             });
                             uploader.on('end', function() {
-                                sticker.image = s3.getPublicUrl(__bucket, key);
+                                // sticker.image = s3.getPublicUrl(__bucket, key);
+                                console.log(sticker.image);
                                 callback(null);
                             });
                         });

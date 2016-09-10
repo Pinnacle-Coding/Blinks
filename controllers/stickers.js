@@ -370,6 +370,7 @@ module.exports = [{
                                 callback(err);
                             }
                             else {
+                                console.log(JSON.stringify(old_pack));
                                 old_pack.stickers.pull(sticker._id);
                                 old_pack.save(function(err, old_pack) {
                                     var query = {

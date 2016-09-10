@@ -484,19 +484,13 @@ module.exports = {
                         calls.push(function(callback) {
                             var key = require('path').join('stickers', sticker._id.toString());
                             var params = {
-                                s3Params: {
-                                    Bucket: __bucket,
-                                    Delete: {
-                                        Objects: [{
-                                            Key: key
-                                        },{
-                                            Key: key
-                                        },{
-                                            Key: key
-                                        }]
-                                    }
+                                Bucket: __bucket,
+                                Delete: {
+                                    Objects: [{
+                                        Key: key
+                                    }]
                                 }
-                            }
+                            };
                             var deleter = client.deleteObjects(params);
                             deleter.on('error', function(err) {
                                 callback(err);

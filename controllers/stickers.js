@@ -536,6 +536,7 @@ module.exports = [{
     path: '/sticker/:id',
     method: 'DELETE',
     handler: function (req, done) {
+        console.log(req);
         console.log(req.body);
         if (req.body.password) {
             if (req.body.password === __password) {

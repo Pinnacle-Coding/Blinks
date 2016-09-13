@@ -1,10 +1,22 @@
 app.controller('AuthorsController', function($scope, $http) {
 
-    $scope.authors = [];
-    $scope.loading = true;
+    // Utility functions/variables ...
 
-    $scope.page_current = 1;
-    $scope.pagination = [1, 2, 3, 4, 5];
+    $scope.uploading = false;
+
+    $scope.upload = function(url, data, method, success, error) {
+        Upload.upload({
+            url: url,
+            data: data,
+            method: method
+        }).then(success, error, function(evt) {
+
+        });
+    };
+
+    // Loading functions ...
+
+    $scope.loading = true;
 
     $scope.loadAuthors = function() {
         $http({
@@ -24,7 +36,56 @@ app.controller('AuthorsController', function($scope, $http) {
         });
     };
 
-    $scope.loadAuthors();
+    $scope.loadAuthor = function(id) {
+        $http({
+            method: 'GET',
+            url: '/api/author/' + id,
+            params: {
+                hitblock: true
+            }
+        }).then(function(resp) {
+            $scope.author = resp.data.author;
+            $scope.loading = false;
+        }, function(resp) {
+            Materialize.toast(resp.data.message || 'Failed to load author', 4000);
+            $scope.loading = false;
+        });
+    };
+
+    // On load, call loading functions
+
+    switch ($state.current.name) {
+        case 'blinks.authors':
+            $scope.authors = [];
+            $scope.page_current = 1;
+            $scope.pagination = [1, 2, 3, 4, 5];
+            $scope.loadAuthors();
+            break;
+        case 'blinks.author':
+            $scope.author = undefined;
+            $scope.loadAuthor($stateParams.id);
+            break;
+    }
+
+    $scope.deleteAuthor = function () {
+        $scope.loading = true;
+        $http({
+            method: 'DELETE',
+            url: '/api/author/' + $scope.author._id,
+            data: $scope.authorDelete,
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            }
+        }).then(function(resp) {
+            Materialize.toast(resp.data.message || 'Author deleted successfully', 4000);
+            $scope.author = undefined;
+            $scope.authorDelete = {};
+            $scope.loading = false;
+        }, function(resp) {
+            Materialize.toast(resp.data.message || 'Failed to delete author', 4000);
+            $scope.loading = false;
+        });
+    }
 
     $scope.setPage = function(page) {
         $scope.page_current = page;

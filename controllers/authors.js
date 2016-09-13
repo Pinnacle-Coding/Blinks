@@ -12,8 +12,6 @@ module.exports = {
             var query_id = req.params.id;
             var query = {
                 $or: [{
-                    name: query_id
-                }, {
                     username: query_id
                 }]
             };

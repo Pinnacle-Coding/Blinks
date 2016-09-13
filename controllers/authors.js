@@ -190,7 +190,7 @@ module.exports = {
         path: '/author/:id',
         method: 'PUT',
         handler: function(req, done) {
-            console.log(req.body);
+            console.log(req);
             if (!req.body.password) {
                 done(true, {
                     message: 'Required parameters missing'

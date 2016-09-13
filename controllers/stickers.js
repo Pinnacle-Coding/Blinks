@@ -178,7 +178,7 @@ module.exports = {
                         });
                     } else if (!(tags && tags.length)) {
                         done(false, {
-                            message: 'No stickers found for specified tag',
+                            message: 'Stickers not found',
                             stickers: []
                         });
                     } else {

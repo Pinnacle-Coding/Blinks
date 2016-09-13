@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Tag = mongoose.model('Tag');
 
 module.exports = {
-    getAuthor: {
+    getTag: {
         path: '/tag/:id',
         method: 'GET',
         handler: function(req, done) {
@@ -43,7 +43,7 @@ module.exports = {
             });
         }
     },
-    getAuthors: {
+    getTags: {
         path: '/tags',
         method: 'GET',
         handler: function(req, done) {

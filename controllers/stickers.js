@@ -129,7 +129,7 @@ module.exports = {
                 });
             };
 
-            var searchAll = function (callback) {
+            var searchAll = function(callback) {
                 console.log("Searching all ...");
                 Sticker.find().populate({
                     path: 'tags',
@@ -165,8 +165,6 @@ module.exports = {
                 });
             };
 
-            var tasks = [];
-
             if (req.query.tag) {
                 Tag.find({
                     $or: [{
@@ -175,29 +173,28 @@ module.exports = {
                         name: new RegExp(req.query.tag, 'i')
                     }]
                 }).exec(function(err, tags) {
+                    var tasks = [];
                     if (err) {
                         done(err, {
                             message: err.message
                         });
                     } else if (!tags || !tags.length) {
-                        tasks.push(function (callback) {
-                            searchAll(function (err) {
+                        tasks.push(function(callback) {
+                            searchAll(function(err) {
                                 if (err) {
                                     callback(err);
-                                }
-                                else {
+                                } else {
                                     callback(null);
                                 }
                             });
                         });
                     } else {
                         tags.forEach(function(tag) {
-                            tasks.push(function (callback) {
-                                searchTag(tag, function (err) {
+                            tasks.push(function(callback) {
+                                searchTag(tag, function(err) {
                                     if (err) {
                                         callback(err);
-                                    }
-                                    else {
+                                    } else {
                                         tag.hits.daily += 1;
                                         tag.hits.weekly += 1;
                                         tag.hits.monthly += 1;
@@ -209,31 +206,24 @@ module.exports = {
                                 });
                             });
                         });
-
                     }
-                });
-            }
-            else {
-                tasks.push(function (callback) {
-                    searchAll(function (err) {
+                    async.series(tasks, function(err, results) {
                         if (err) {
-                            callback(err);
-                        }
-                        else {
-                            callback(null);
+                            done(true, {
+                                message: err.message
+                            });
+                        } else {
+                            done(false, {
+                                message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
+                                stickers: stickersRet
+                            });
                         }
                     });
                 });
-            }
-
-            async.series(tasks, function(err, results) {
-                if (err) {
-                    done(true, {
-                        message: err.message
-                    });
-                } else {
+            } else {
+                searchAll(function(err) {
                     if (err) {
-                        done(err, {
+                        done(true, {
                             message: err.message
                         });
                     } else {
@@ -242,8 +232,8 @@ module.exports = {
                             stickers: stickersRet
                         });
                     }
-                }
-            });
+                });
+            }
         }
     },
     createSticker: {

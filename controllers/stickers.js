@@ -171,7 +171,6 @@ module.exports = {
                         name: new RegExp(req.query.tag, 'i')
                     }]
                 }).exec(function(err, tags) {
-                    var tasks = [];
                     if (err) {
                         done(err, {
                             message: err.message
@@ -182,6 +181,7 @@ module.exports = {
                             stickers: []
                         });
                     } else {
+                        var tasks = [];
                         tags.forEach(function(tag) {
                             tasks.push(function(callback) {
                                 searchTag(tag, function(err) {
@@ -199,19 +199,19 @@ module.exports = {
                                 });
                             });
                         });
+                        async.series(tasks, function(err, results) {
+                            if (err) {
+                                done(true, {
+                                    message: err.message
+                                });
+                            } else {
+                                done(false, {
+                                    message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
+                                    stickers: stickersRet
+                                });
+                            }
+                        });
                     }
-                    async.series(tasks, function(err, results) {
-                        if (err) {
-                            done(true, {
-                                message: err.message
-                            });
-                        } else {
-                            done(false, {
-                                message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
-                                stickers: stickersRet
-                            });
-                        }
-                    });
                 });
             } else {
                 searchAll(function(err) {

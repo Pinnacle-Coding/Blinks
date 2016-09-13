@@ -77,6 +77,7 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
 
     $scope.editAuthor = function() {
         $scope.uploading = true;
+        console.log($scope.authorEdit);
         $scope.upload('/api/author/' + $scope.author._id, $scope.authorEdit, 'PUT', function(resp) {
             Materialize.toast(resp.data.message || 'Author updated successfully', 4000);
             $scope.author = resp.data.author;

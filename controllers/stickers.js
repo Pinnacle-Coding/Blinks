@@ -70,23 +70,30 @@ module.exports = {
         path: '/stickers',
         method: 'GET',
         handler: function(req, done) {
-            var query = {};
+            var query = {
+                tags: {
+                    $in: []
+                }
+            };
             var tasks = [];
             var tag_error;
             if (req.query.tag) {
                 tasks.push(function(callback) {
-                    Tag.findOne({
-                        name: {
-                            $regex: new RegExp(req.query.tag, 'i')
-                        }
-                    }).exec(function(err, tag) {
+                    Tag.find({
+                        $or: [{
+                            name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
+                        }, {
+                            name: new RegExp(req.query.tag, 'i')
+                        }]
+                    }).exec(function(err, tags) {
                         if (err) {
-                            tag_error = {
-                                error: err
-                            };
+                            callback(err);
+                        } else if (!tags) {
+                            query = {};
+                            callback(null);
                         } else {
-                            if (tag) {
-                                query.tags = tag._id;
+                            tags.forEach(function (err, tag) {
+                                query.tags.$in.push(tag._id);
                                 tag.hits.daily += 1;
                                 tag.hits.weekly += 1;
                                 tag.hits.monthly += 1;
@@ -94,13 +101,9 @@ module.exports = {
                                 tag.save(function(err, tag) {
 
                                 });
-                            } else {
-                                tag_error = {
-                                    error: false
-                                };
-                            }
+                            });
+                            callback(null);
                         }
-                        callback(null);
                     });
                 });
             }
@@ -110,17 +113,10 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (tag_error) {
-                        if (tag_error.error) {
-                            done(true, {
-                                message: tag_error.error.message
-                            });
-                        } else {
-                            done(false, {
-                                message: 'No matching tag found',
-                                stickers: []
-                            });
-                        }
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
                     } else {
                         var sort = {};
                         if (req.query.type && req.query.type === 'trending') {
@@ -139,7 +135,7 @@ module.exports = {
                             return;
                         }
                         var count = req.query.count ? req.query.count : 20;
-                        Sticker.find().populate({
+                        Sticker.find(query).populate({
                             path: 'tags',
                             select: 'name'
                         }).populate({

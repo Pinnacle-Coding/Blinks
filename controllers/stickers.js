@@ -200,6 +200,17 @@ module.exports = {
                             });
                         });
                         async.series(tasks, function(err, results) {
+                            var sliceBegin = (page - 1) * count;
+                            var sliceEnd = page * count;
+                            if (sliceBegin >= stickersRet.length) {
+                                stickersRet = [];
+                            }
+                            else if (sliceEnd > stickersRet.length) {
+                                stickersRet = stickersRet.slice(sliceBegin, stickersRet.length);
+                            }
+                            else {
+                                stickersRet = stickersRet.slice(sliceBegin, sliceEnd);
+                            }
                             if (err) {
                                 done(true, {
                                     message: err.message

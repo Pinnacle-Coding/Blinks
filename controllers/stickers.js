@@ -89,80 +89,6 @@ module.exports = {
             }
             var count = req.query.count ? req.query.count : 20;
 
-            var stickersRet = [];
-
-            var searchTag = function(tag, callback) {
-                Sticker.find({
-                    tags: tag._id
-                }).populate({
-                    path: 'tags',
-                    select: 'name'
-                }).populate({
-                    path: 'author',
-                    select: 'name'
-                }).populate({
-                    path: 'pack',
-                    select: 'name'
-                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        if (stickers && stickers.length) {
-                            // We don't count trending searches as hits
-                            // because that would continue to reinforce the top searches
-                            if (!req.query.type || req.query.type !== 'trending') {
-                                stickers.forEach(function(sticker) {
-                                    sticker.hits.total += 1;
-                                    sticker.hits.daily += 1;
-                                    sticker.hits.weekly += 1;
-                                    sticker.hits.monthly += 1;
-                                    sticker.save(function(err, sticker) {
-
-                                    });
-                                });
-                            }
-                        }
-                        stickersRet = stickersRet.concat(stickers);
-                        callback(null);
-                    }
-                });
-            };
-
-            var searchAll = function(callback) {
-                Sticker.find().populate({
-                    path: 'tags',
-                    select: 'name'
-                }).populate({
-                    path: 'author',
-                    select: 'name'
-                }).populate({
-                    path: 'pack',
-                    select: 'name'
-                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        if (stickers && stickers.length) {
-                            // We don't count trending searches as hits
-                            // because that would continue to reinforce the top searches
-                            if (!req.query.type || req.query.type !== 'trending') {
-                                stickers.forEach(function(sticker) {
-                                    sticker.hits.total += 1;
-                                    sticker.hits.daily += 1;
-                                    sticker.hits.weekly += 1;
-                                    sticker.hits.monthly += 1;
-                                    sticker.save(function(err, sticker) {
-
-                                    });
-                                });
-                            }
-                        }
-                        stickersRet = stickers;
-                        callback(null);
-                    }
-                });
-            };
-
             if (req.query.tag) {
                 Tag.find({
                     $or: [{
@@ -170,6 +96,18 @@ module.exports = {
                     }, {
                         name: new RegExp(req.query.tag, 'i')
                     }]
+                }).populate({
+                    path: 'stickers',
+                    select: 'name image'
+                }).populate({
+                    path: 'stickers.tags',
+                    select: 'name'
+                }).populate({
+                    path: 'stickers.author',
+                    select: 'name'
+                }).populate({
+                    path: 'stickers.pack',
+                    select: 'name'
                 }).exec(function(err, tags) {
                     if (err) {
                         done(err, {
@@ -181,59 +119,81 @@ module.exports = {
                             stickers: []
                         });
                     } else {
-                        var tasks = [];
+                        var stickers = [];
                         tags.forEach(function(tag) {
-                            tasks.push(function(callback) {
-                                searchTag(tag, function(err) {
-                                    if (err) {
-                                        callback(err);
-                                    } else {
-                                        tag.hits.daily += 1;
-                                        tag.hits.weekly += 1;
-                                        tag.hits.monthly += 1;
-                                        tag.hits.total += 1;
-                                        tag.save(function(err, tag) {
-                                            callback(null);
-                                        });
-                                    }
-                                });
+                            stickers = stickers.concat(tag.stickers);
+                            tag.hits.daily += 1;
+                            tag.hits.weekly += 1;
+                            tag.hits.monthly += 1;
+                            tag.hits.total += 1;
+                            tag.save(function(err, tag) {
+
                             });
                         });
-                        async.series(tasks, function(err, results) {
-                            var sliceBegin = (page - 1) * count;
-                            var sliceEnd = page * count;
-                            if (sliceBegin >= stickersRet.length) {
-                                stickersRet = [];
-                            }
-                            else if (sliceEnd > stickersRet.length) {
-                                stickersRet = stickersRet.slice(sliceBegin, stickersRet.length);
-                            }
-                            else {
-                                stickersRet = stickersRet.slice(sliceBegin, sliceEnd);
-                            }
-                            if (err) {
-                                done(true, {
-                                    message: err.message
+                        var sliceBegin = (page - 1) * count;
+                        var sliceEnd = page * count;
+                        if (sliceBegin >= stickers.length) {
+                            stickers = [];
+                        } else if (sliceEnd > stickers.length) {
+                            stickers = stickers.slice(sliceBegin, stickers.length);
+                        } else {
+                            stickers = stickers.slice(sliceBegin, sliceEnd);
+                        }
+                        if (stickers && stickers.length) {
+                            // We don't count trending searches as hits
+                            // because that would continue to reinforce the top searches
+                            if (!req.query.type || req.query.type !== 'trending') {
+                                stickers.forEach(function(sticker) {
+                                    sticker.hits.total += 1;
+                                    sticker.hits.daily += 1;
+                                    sticker.hits.weekly += 1;
+                                    sticker.hits.monthly += 1;
+                                    sticker.save(function(err, sticker) {
+
+                                    });
                                 });
-                            } else {
-                                done(false, {
-                                    message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
-                                    stickers: stickersRet
-                                });
                             }
+                        }
+                        done(false, {
+                            message: stickers.length ? 'Stickers found' : 'Stickers not found',
+                            stickers: stickers
                         });
                     }
                 });
             } else {
-                searchAll(function(err) {
+                Sticker.find().populate({
+                    path: 'tags',
+                    select: 'name'
+                }).populate({
+                    path: 'author',
+                    select: 'name'
+                }).populate({
+                    path: 'pack',
+                    select: 'name'
+                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
                     if (err) {
                         done(true, {
                             message: err.message
                         });
                     } else {
+                        if (stickers && stickers.length) {
+                            // We don't count trending searches as hits
+                            // because that would continue to reinforce the top searches
+                            if (!req.query.type || req.query.type !== 'trending') {
+                                stickers.forEach(function(sticker) {
+                                    sticker.hits.total += 1;
+                                    sticker.hits.daily += 1;
+                                    sticker.hits.weekly += 1;
+                                    sticker.hits.monthly += 1;
+                                    sticker.save(function(err, sticker) {
+
+                                    });
+                                });
+                            }
+                        }
                         done(false, {
-                            message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
-                            stickers: stickersRet
+                            message: stickers.length ? 'Stickers found' : 'Stickers not found',
+                            stickers: stickers
                         });
                     }
                 });

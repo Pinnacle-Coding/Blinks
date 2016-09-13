@@ -88,10 +88,11 @@ module.exports = {
                     }).exec(function(err, tags) {
                         if (err) {
                             callback(err);
-                        } else if (!tags) {
+                        } else if (!tags || !tags.length) {
                             query = {};
                             callback(null);
                         } else {
+                            console.log(tags);
                             tags.forEach(function (err, tag) {
                                 query.tags.$in.push(tag._id);
                                 tag.hits.daily += 1;

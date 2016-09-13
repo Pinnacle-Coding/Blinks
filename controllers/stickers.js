@@ -4,6 +4,7 @@ var client = require(require('path').join(__base, 'app-s3.js'));
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var Pack = mongoose.model('Pack');
+var Author = mongoose.model('Author');
 var s3 = require('s3');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
@@ -98,16 +99,19 @@ module.exports = {
                     }]
                 }).populate({
                     path: 'stickers',
-                    select: 'name image'
+                    select: 'image'
                 }).populate({
                     path: 'stickers.tags',
-                    select: 'name'
+                    select: 'name',
+                    model: Tag
                 }).populate({
                     path: 'stickers.author',
-                    select: 'name'
+                    select: 'name',
+                    model: Author
                 }).populate({
                     path: 'stickers.pack',
-                    select: 'name'
+                    select: 'name',
+                    model: Pack
                 }).exec(function(err, tags) {
                     if (err) {
                         done(err, {

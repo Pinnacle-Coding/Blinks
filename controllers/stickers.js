@@ -16,7 +16,7 @@ var uniq = function(a) {
 };
 
 module.exports = {
-    getAuthor: {
+    getSticker: {
         path: '/sticker/:id',
         method: 'GET',
         handler: function(req, done) {

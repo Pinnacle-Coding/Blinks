@@ -108,7 +108,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $('#stickerTagsLabel').addClass('active');
             $scope.uploading = false;
         }, function(resp) {
-            Materialize.toast(resp.data.message || 'An error occurred when updated the sticker', 4000);
+            Materialize.toast(resp.data.message || 'An error occurred when updating the sticker', 4000);
             $scope.uploading = false;
         });
     };

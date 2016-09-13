@@ -45,6 +45,14 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
             }
         }).then(function(resp) {
             $scope.author = resp.data.author;
+            $scope.authorEdit = {
+                name: $scope.author.name,
+            };
+            if ($scope.author.location) {
+                $scope.authorEdit.location = $scope.author.location;
+            }
+            $('#authorNameLabel').addClass('active');
+            $('#authorLocationLabel').addClass('active');
             $scope.loading = false;
         }, function(resp) {
             Materialize.toast(resp.data.message || 'Failed to load author', 4000);
@@ -67,6 +75,26 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
             break;
     }
 
+    $scope.editAuthor = function() {
+        $scope.uploading = true;
+        $scope.upload('/api/author/' + $scope.author._id, $scope.authorEdit, 'PUT', function(resp) {
+            Materialize.toast(resp.data.message || 'Author updated successfully', 4000);
+            $scope.author = resp.data.author;
+            $scope.authorEdit = {
+                name: $scope.author.name,
+            };
+            if ($scope.author.location) {
+                $scope.authorEdit.location = $scope.author.location;
+            }
+            $('#authorNameLabel').addClass('active');
+            $('#authorLocationLabel').addClass('active');
+            $scope.uploading = false;
+        }, function(resp) {
+            Materialize.toast(resp.data.message || 'An error occurred when updating the author', 4000);
+            $scope.uploading = false;
+        });
+    };
+
     $scope.deleteAuthor = function () {
         $scope.loading = true;
         $http({
@@ -85,7 +113,7 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
             Materialize.toast(resp.data.message || 'Failed to delete author', 4000);
             $scope.loading = false;
         });
-    }
+    };
 
     $scope.setPage = function(page) {
         $scope.page_current = page;

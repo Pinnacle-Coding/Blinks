@@ -190,7 +190,7 @@ module.exports = {
         path: '/author/:id',
         method: 'PUT',
         handler: function(req, done) {
-            done(null, {
+            done(true, {
                 message: 'Not implemented'
             });
         }

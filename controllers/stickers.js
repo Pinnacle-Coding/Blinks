@@ -122,6 +122,7 @@ module.exports = {
                                 });
                             }
                         }
+                        console.log(stickersRet);
                         stickersRet = stickersRet.concat(stickers);
                         callback(null);
                     }

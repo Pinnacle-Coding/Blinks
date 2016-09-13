@@ -93,7 +93,7 @@ module.exports = {
                             callback(null);
                         } else {
                             console.log(tags);
-                            tags.forEach(function (err, tag) {
+                            tags.forEach(function (tag) {
                                 query.tags.$in.push(tag._id);
                                 tag.hits.daily += 1;
                                 tag.hits.weekly += 1;

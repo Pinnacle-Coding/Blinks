@@ -249,7 +249,6 @@ module.exports = {
                     });
                 } else {
                     var calls = [];
-                    var stickerHandler;
                     pack.stickers.forEach(function(sticker) {
                         calls.push(function(callback) {
                             req.params.id = sticker;

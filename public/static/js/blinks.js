@@ -37,6 +37,19 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Authors';
             }
         }
+    }).state('blinks.authors', {
+        url: '/author/:id',
+        views: {
+            'content': {
+                templateUrl: 'templates/author.html',
+                controller: 'AuthorsController'
+            }
+        },
+        resolve: {
+            $title: function () {
+                return 'Viewing Author';
+            }
+        }
     }).state('blinks.packs', {
         url: '/packs',
         views: {

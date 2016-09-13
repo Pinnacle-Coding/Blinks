@@ -54,4 +54,8 @@ app.controller('AuthorsController', function($scope, $http) {
             $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2];
         }
     };
+
+    $scope.goToAuthor = function(author) {
+        window.location.href = '/author/' + author.username;
+    };
 });

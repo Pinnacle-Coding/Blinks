@@ -190,8 +190,119 @@ module.exports = {
         path: '/author/:id',
         method: 'PUT',
         handler: function(req, done) {
-            done(true, {
-                message: 'Not implemented'
+            if (!req.body.password) {
+                done(true, {
+                    message: 'Required parameters missing'
+                });
+                return;
+            }
+            if (req.body.password !== __password) {
+                done(true, {
+                    message: 'Incorrect password'
+                });
+                return;
+            }
+            var query_id = req.params.id;
+            var query = {
+                $or: [{
+                    username: query_id
+                }]
+            };
+            if (/^[0-9a-f]{24}$/.test(query_id)) {
+                query.$or.push({
+                    _id: query_id
+                });
+            }
+            Author.findOne(query).exec(function (err, author) {
+                if (err) {
+                    done(err, {
+                        message: err.message
+                    });
+                }
+                else if (!author) {
+                    done(true, {
+                        message: 'Author not found'
+                    });
+                }
+                else {
+                    var calls = [];
+                    if (req.body.name) {
+                        calls.push(function (callback) {
+                            if (req.body.name === '') {
+                                req.body.name = 'Anonymous Artist';
+                            }
+                            author.name = req.body.name;
+                            callback(null);
+                        });
+                    }
+                    if (req.body.location !== undefined) {
+                        calls.push(function (callback) {
+                            author.location = req.body.location;
+                            callback(null);
+                        });
+                    }
+                    if (req.file) {
+                        calls.push(function(callback) {
+                            var key = require('path').join('authors', author._id.toString());
+                            var params = {
+                                Bucket: __bucket,
+                                Delete: {
+                                    Objects: [{
+                                        Key: key
+                                    }]
+                                }
+                            };
+                            var deleter = client.deleteObjects(params);
+                            deleter.on('error', function(err) {
+                                callback(err);
+                            });
+                            deleter.on('end', function() {
+                                params = {
+                                    localFile: req.file.path,
+                                    s3Params: {
+                                        Bucket: __bucket,
+                                        Key: key
+                                    }
+                                };
+                                var uploader = client.uploadFile(params);
+                                uploader.on('error', function(err) {
+                                    callback(err);
+                                });
+                                uploader.on('end', function() {
+                                    callback(null);
+                                });
+                            });
+                        });
+                    }
+                    async.series(calls, function (err, results) {
+                        if (err) {
+                            done(err, {
+                                message: err.message
+                            });
+                        }
+                        else {
+                            author.save(function (err, author) {
+                                Author.findOne({
+                                    _id: author._id
+                                }).populate({
+                                    path: 'packs',
+                                    select: 'name'
+                                }).exec(function (err, author) {
+                                    if (err) {
+                                        done(err, {
+                                            message: err.message
+                                        });
+                                    } else {
+                                        done(false, {
+                                            message: 'Author updated successfully',
+                                            author: author
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
             });
         }
     },

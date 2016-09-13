@@ -118,6 +118,7 @@ module.exports = {
                             message: err.message
                         });
                     } else {
+                        console.log(query);
                         var sort = {};
                         if (req.query.type && req.query.type === 'trending') {
                             sort = {

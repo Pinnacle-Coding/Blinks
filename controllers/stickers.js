@@ -92,6 +92,7 @@ module.exports = {
             var stickersRet = [];
 
             var searchTag = function(tag, callback) {
+                console.log(tag);
                 Sticker.find({
                     tags: tag._id
                 }).populate({
@@ -122,7 +123,6 @@ module.exports = {
                                 });
                             }
                         }
-                        console.log(stickersRet);
                         stickersRet = stickersRet.concat(stickers);
                         callback(null);
                     }

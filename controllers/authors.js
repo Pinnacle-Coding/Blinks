@@ -195,5 +195,71 @@ module.exports = {
                 message: 'Not implemented'
             });
         }
+    },
+    deleteAuthor: {
+        path: '/author/:id',
+        method: 'DELETE',
+        handler: function(req, done) {
+            if (!req.body.password) {
+                done(true, {
+                    message: 'Required parameters missing'
+                });
+                return;
+            }
+            if (req.body.password !== __password) {
+                done(true, {
+                    message: 'Incorrect password'
+                });
+                return;
+            }
+            var query_id = req.params.id;
+            var query = {
+                $or: [{
+                    username: query_id
+                }]
+            };
+            if (/^[0-9a-f]{24}$/.test(query_id)) {
+                query.$or.push({
+                    _id: query_id
+                });
+            }
+            Author.findOne(query).exec(function (err, author) {
+                if (err) {
+                    done(true, {
+                        message: err.message
+                    });
+                }
+                else if (!author) {
+                    done(true, {
+                        message: 'Author not found'
+                    });
+                }
+                else {
+                    var calls = [];
+                    author.packs.forEach(function (pack) {
+                        calls.push(function (callback) {
+                            req.params.id = pack;
+                            PackCtrl.deletePack.handler(req, function (err, res) {
+                                callback(err ? err : null);
+                            });
+                        });
+                    });
+                    async.series(calls, function (err, results) {
+                        if (err) {
+                            done(err, {
+                                message: err.message
+                            });
+                        }
+                        else {
+                            author.remove(function (err) {
+                                done(false, {
+                                    message: 'Author deleted successfully'
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
     }
 };

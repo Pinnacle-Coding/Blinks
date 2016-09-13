@@ -174,6 +174,7 @@ module.exports = {
                         name: new RegExp(req.query.tag, 'i')
                     }]
                 }).exec(function(err, tags) {
+                    console.log(tags);
                     if (err) {
                         done(err, {
                             message: err.message

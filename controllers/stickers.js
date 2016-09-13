@@ -66,48 +66,164 @@ module.exports = {
             });
         }
     },
-    getAuthors: {
+    getStickers: {
         path: '/stickers',
         method: 'GET',
         handler: function(req, done) {
-            var query = {
-                tags: {
-                    $in: []
-                }
-            };
-            var tasks = [];
-            var tag_error;
-            if (req.query.tag) {
-                tasks.push(function(callback) {
-                    Tag.find({
-                        $or: [{
-                            name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
-                        }, {
-                            name: new RegExp(req.query.tag, 'i')
-                        }]
-                    }).exec(function(err, tags) {
-                        if (err) {
-                            callback(err);
-                        } else if (!tags || !tags.length) {
-                            query = {};
-                            callback(null);
-                        } else {
-                            console.log(tags);
-                            tags.forEach(function (tag) {
-                                query.tags.$in.push(tag._id);
-                                tag.hits.daily += 1;
-                                tag.hits.weekly += 1;
-                                tag.hits.monthly += 1;
-                                tag.hits.total += 1;
-                                tag.save(function(err, tag) {
 
+            var sort = {};
+            if (req.query.type && req.query.type === 'trending') {
+                sort = {
+                    'hits.daily': -1,
+                    'hits.weekly': -1,
+                    'hits.monthly': -1,
+                    'hits.total': -1
+                };
+            }
+            var page = req.query.page ? req.query.page : 1;
+            if (page < 1) {
+                done(true, {
+                    message: 'Invalid page. Pagination starts at 1.'
+                });
+                return;
+            }
+            var count = req.query.count ? req.query.count : 20;
+
+            var stickersRet = [];
+
+            var searchTag = function(tag, callback) {
+                Sticker.find({
+                    tags: tag._id
+                }).populate({
+                    path: 'tags',
+                    select: 'name'
+                }).populate({
+                    path: 'author',
+                    select: 'name'
+                }).populate({
+                    path: 'pack',
+                    select: 'name'
+                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        if (stickers && stickers.length) {
+                            // We don't count trending searches as hits
+                            // because that would continue to reinforce the top searches
+                            if (!req.query.type || req.query.type !== 'trending') {
+                                stickers.forEach(function(sticker) {
+                                    sticker.hits.total += 1;
+                                    sticker.hits.daily += 1;
+                                    sticker.hits.weekly += 1;
+                                    sticker.hits.monthly += 1;
+                                    sticker.save(function(err, sticker) {
+
+                                    });
+                                });
+                            }
+                        }
+                        stickersRet = stickersRet.concat(stickers);
+                        callback(null);
+                    }
+                });
+            };
+
+            var searchAll = function (callback) {
+                Sticker.find().populate({
+                    path: 'tags',
+                    select: 'name'
+                }).populate({
+                    path: 'author',
+                    select: 'name'
+                }).populate({
+                    path: 'pack',
+                    select: 'name'
+                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        if (stickers && stickers.length) {
+                            // We don't count trending searches as hits
+                            // because that would continue to reinforce the top searches
+                            if (!req.query.type || req.query.type !== 'trending') {
+                                stickers.forEach(function(sticker) {
+                                    sticker.hits.total += 1;
+                                    sticker.hits.daily += 1;
+                                    sticker.hits.weekly += 1;
+                                    sticker.hits.monthly += 1;
+                                    sticker.save(function(err, sticker) {
+
+                                    });
+                                });
+                            }
+                        }
+                        stickersRet = stickers;
+                        callback(null);
+                    }
+                });
+            };
+
+            var tasks = [];
+
+            if (req.query.tag) {
+                Tag.find({
+                    $or: [{
+                        name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
+                    }, {
+                        name: new RegExp(req.query.tag, 'i')
+                    }]
+                }).exec(function(err, tags) {
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
+                    } else if (!tags || !tags.length) {
+                        tasks.push(function (callback) {
+                            searchAll(function (err) {
+                                if (err) {
+                                    callback(err);
+                                }
+                                else {
+                                    callback(null);
+                                }
+                            });
+                        });
+                    } else {
+                        tags.forEach(function(tag) {
+                            tasks.push(function (callback) {
+                                searchTag(tag, function (err) {
+                                    if (err) {
+                                        callback(err);
+                                    }
+                                    else {
+                                        tag.hits.daily += 1;
+                                        tag.hits.weekly += 1;
+                                        tag.hits.monthly += 1;
+                                        tag.hits.total += 1;
+                                        tag.save(function(err, tag) {
+                                            callback(null);
+                                        });
+                                    }
                                 });
                             });
+                        });
+
+                    }
+                });
+            }
+            else {
+                tasks.push(function (callback) {
+                    searchAll(function (err) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
                             callback(null);
                         }
                     });
                 });
             }
+
             async.series(tasks, function(err, results) {
                 if (err) {
                     done(true, {
@@ -119,59 +235,9 @@ module.exports = {
                             message: err.message
                         });
                     } else {
-                        console.log(query);
-                        var sort = {};
-                        if (req.query.type && req.query.type === 'trending') {
-                            sort = {
-                                'hits.daily': -1,
-                                'hits.weekly': -1,
-                                'hits.monthly': -1,
-                                'hits.total': -1
-                            };
-                        }
-                        var page = req.query.page ? req.query.page : 1;
-                        if (page < 1) {
-                            done(true, {
-                                message: 'Invalid page. Pagination starts at 1.'
-                            });
-                            return;
-                        }
-                        var count = req.query.count ? req.query.count : 20;
-                        Sticker.find(query).populate({
-                            path: 'tags',
-                            select: 'name'
-                        }).populate({
-                            path: 'author',
-                            select: 'name'
-                        }).populate({
-                            path: 'pack',
-                            select: 'name'
-                        }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, stickers) {
-                            if (err) {
-                                done(true, {
-                                    message: err.message
-                                });
-                            } else {
-                                if (stickers && stickers.length) {
-                                    // We don't count trending searches as hits
-                                    // because that would continue to reinforce the top searches
-                                    if (!req.query.type || req.query.type !== 'trending') {
-                                        stickers.forEach(function(sticker) {
-                                            sticker.hits.total += 1;
-                                            sticker.hits.daily += 1;
-                                            sticker.hits.weekly += 1;
-                                            sticker.hits.monthly += 1;
-                                            sticker.save(function(err, sticker) {
-
-                                            });
-                                        });
-                                    }
-                                }
-                                done(false, {
-                                    message: (stickers && stickers.length) ? 'Stickers found' : 'No stickers found',
-                                    stickers: stickers
-                                });
-                            }
+                        done(false, {
+                            message: stickersRet.length ? 'Stickers found' : 'Stickers not found',
+                            stickers: stickersRet
                         });
                     }
                 }

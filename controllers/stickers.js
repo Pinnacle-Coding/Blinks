@@ -176,15 +176,9 @@ module.exports = {
                         done(err, {
                             message: err.message
                         });
-                    } else if (!tags || !tags.length) {
-                        tasks.push(function(callback) {
-                            searchAll(function(err) {
-                                if (err) {
-                                    callback(err);
-                                } else {
-                                    callback(null);
-                                }
-                            });
+                    } else if (!(tags && tags.length)) {
+                        done(false, {
+                            message: 'No stickers found for specified tag'
                         });
                     } else {
                         tags.forEach(function(tag) {

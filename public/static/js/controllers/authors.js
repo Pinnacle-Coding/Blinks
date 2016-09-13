@@ -8,7 +8,10 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
         Upload.upload({
             url: url,
             data: data,
-            method: method
+            method: method,
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            }
         }).then(success, error, function(evt) {
 
         });

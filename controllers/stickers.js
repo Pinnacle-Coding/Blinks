@@ -92,7 +92,6 @@ module.exports = {
             var stickersRet = [];
 
             var searchTag = function(tag, callback) {
-                console.log("Searching tag ...");
                 Sticker.find({
                     tags: tag._id
                 }).populate({
@@ -130,7 +129,6 @@ module.exports = {
             };
 
             var searchAll = function(callback) {
-                console.log("Searching all ...");
                 Sticker.find().populate({
                     path: 'tags',
                     select: 'name'

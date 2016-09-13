@@ -37,7 +37,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 return 'Authors';
             }
         }
-    }).state('blinks.authors', {
+    }).state('blinks.author', {
         url: '/author/:id',
         views: {
             'content': {

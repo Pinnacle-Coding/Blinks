@@ -77,7 +77,6 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
 
     $scope.deleteSticker = function() {
         $scope.loading = true;
-        console.log($scope.stickerDelete);
         $http({
             method: 'DELETE',
             url: '/api/sticker/' + $scope.sticker._id,

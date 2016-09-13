@@ -1,4 +1,4 @@
-app.controller('AuthorsController', function($scope, $http) {
+app.controller('AuthorsController', function($scope, $http, $state, $stateParams, Upload) {
 
     // Utility functions/variables ...
 

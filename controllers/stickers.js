@@ -146,24 +146,36 @@ module.exports = {
                                 });
                             }
                         }
-                        Sticker.populate(stickers, [{
-                            path: 'tags',
-                            select: 'name',
-                        }, {
-                            path: 'author',
-                            select: 'name',
-                        }, {
-                            path: 'packs',
-                            select: 'name',
-                        }], function(err, stickers) {
+                        var stickersPop = [];
+                        var tasks = [];
+                        stickers.forEach(function (sticker) {
+                            tasks.push(function (callback) {
+                                Sticker.findOne({
+                                    _id: sticker._id
+                                }).populate({
+                                    path: 'tags',
+                                    select: 'name'
+                                }).populate({
+                                    path: 'Pack',
+                                    select: 'name'
+                                }).populate({
+                                    path: 'author',
+                                    select: 'name location'
+                                }).exec(function (err, sticker) {
+                                    stickersPop.push(sticker);
+                                    callback(null);
+                                });
+                            });
+                        });
+                        async.series(tasks, function (err, results) {
                             if (err) {
                                 done(true, {
                                     message: err.message
                                 });
                             } else {
                                 done(false, {
-                                    message: stickers.length ? 'Stickers found' : 'Stickers not found',
-                                    stickers: stickers
+                                    message: stickersPop.length ? 'Stickers found' : 'Stickers not found',
+                                    stickers: stickersPop
                                 });
                             }
                         });
@@ -175,7 +187,7 @@ module.exports = {
                     select: 'name'
                 }).populate({
                     path: 'author',
-                    select: 'name'
+                    select: 'name location'
                 }).populate({
                     path: 'pack',
                     select: 'name'

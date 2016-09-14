@@ -100,18 +100,6 @@ module.exports = {
                 }).populate({
                     path: 'stickers',
                     select: 'image'
-                }).populate({
-                    path: 'stickers.tags',
-                    select: 'name',
-                    model: Tag
-                }).populate({
-                    path: 'stickers.author',
-                    select: 'name',
-                    model: Author
-                }).populate({
-                    path: 'stickers.pack',
-                    select: 'name',
-                    model: Pack
                 }).exec(function(err, tags) {
                     if (err) {
                         done(err, {
@@ -158,9 +146,26 @@ module.exports = {
                                 });
                             }
                         }
-                        done(false, {
-                            message: stickers.length ? 'Stickers found' : 'Stickers not found',
-                            stickers: stickers
+                        Sticker.populate(stickers, [{
+                            path: 'tags',
+                            select: 'name',
+                        }, {
+                            path: 'author',
+                            select: 'name',
+                        }, {
+                            path: 'packs',
+                            select: 'name',
+                        }], function(err, stickers) {
+                            if (err) {
+                                done(true, {
+                                    message: err.message
+                                });
+                            } else {
+                                done(false, {
+                                    message: stickers.length ? 'Stickers found' : 'Stickers not found',
+                                    stickers: stickers
+                                });
+                            }
                         });
                     }
                 });

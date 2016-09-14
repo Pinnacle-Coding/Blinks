@@ -189,6 +189,7 @@ module.exports = {
     updateAuthor: {
         path: '/author/:id',
         method: 'PUT',
+        upload: 'avatar',
         handler: function(req, done) {
             console.log(req);
             if (!req.body.password) {

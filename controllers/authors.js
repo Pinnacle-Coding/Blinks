@@ -215,21 +215,19 @@ module.exports = {
                     _id: query_id
                 });
             }
-            Author.findOne(query).exec(function (err, author) {
+            Author.findOne(query).exec(function(err, author) {
                 if (err) {
                     done(err, {
                         message: err.message
                     });
-                }
-                else if (!author) {
+                } else if (!author) {
                     done(true, {
                         message: 'Author not found'
                     });
-                }
-                else {
+                } else {
                     var calls = [];
                     if (req.body.name) {
-                        calls.push(function (callback) {
+                        calls.push(function(callback) {
                             if (req.body.name === '') {
                                 req.body.name = 'Anonymous Artist';
                             }
@@ -238,7 +236,7 @@ module.exports = {
                         });
                     }
                     if (req.body.location !== undefined) {
-                        calls.push(function (callback) {
+                        calls.push(function(callback) {
                             author.location = req.body.location;
                             callback(null);
                         });
@@ -254,42 +252,35 @@ module.exports = {
                                     }]
                                 }
                             };
-                            var deleter = client.deleteObjects(params);
-                            deleter.on('error', function(err) {
+                            params = {
+                                localFile: req.file.path,
+                                s3Params: {
+                                    Bucket: __bucket,
+                                    Key: key
+                                }
+                            };
+                            var uploader = client.uploadFile(params);
+                            uploader.on('error', function(err) {
                                 callback(err);
                             });
-                            deleter.on('end', function() {
-                                params = {
-                                    localFile: req.file.path,
-                                    s3Params: {
-                                        Bucket: __bucket,
-                                        Key: key
-                                    }
-                                };
-                                var uploader = client.uploadFile(params);
-                                uploader.on('error', function(err) {
-                                    callback(err);
-                                });
-                                uploader.on('end', function() {
-                                    callback(null);
-                                });
+                            uploader.on('end', function() {
+                                callback(null);
                             });
                         });
                     }
-                    async.series(calls, function (err, results) {
+                    async.series(calls, function(err, results) {
                         if (err) {
                             done(err, {
                                 message: err.message
                             });
-                        }
-                        else {
-                            author.save(function (err, author) {
+                        } else {
+                            author.save(function(err, author) {
                                 Author.findOne({
                                     _id: author._id
                                 }).populate({
                                     path: 'packs',
                                     select: 'name'
-                                }).exec(function (err, author) {
+                                }).exec(function(err, author) {
                                     if (err) {
                                         done(err, {
                                             message: err.message
@@ -335,35 +326,32 @@ module.exports = {
                     _id: query_id
                 });
             }
-            Author.findOne(query).exec(function (err, author) {
+            Author.findOne(query).exec(function(err, author) {
                 if (err) {
                     done(true, {
                         message: err.message
                     });
-                }
-                else if (!author) {
+                } else if (!author) {
                     done(true, {
                         message: 'Author not found'
                     });
-                }
-                else {
+                } else {
                     var calls = [];
-                    author.packs.forEach(function (pack) {
-                        calls.push(function (callback) {
+                    author.packs.forEach(function(pack) {
+                        calls.push(function(callback) {
                             req.params.id = pack;
-                            PackCtrl.deletePack.handler(req, function (err, res) {
+                            PackCtrl.deletePack.handler(req, function(err, res) {
                                 callback(err ? err : null);
                             });
                         });
                     });
-                    async.series(calls, function (err, results) {
+                    async.series(calls, function(err, results) {
                         if (err) {
                             done(err, {
                                 message: err.message
                             });
-                        }
-                        else {
-                            author.remove(function (err) {
+                        } else {
+                            author.remove(function(err) {
                                 done(false, {
                                     message: 'Author deleted successfully'
                                 });

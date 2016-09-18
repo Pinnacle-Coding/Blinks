@@ -1,4 +1,4 @@
-app.controller('StickersController', function($scope, $http, $state, $stateParams, $routeParams, Upload) {
+app.controller('StickersController', function($scope, $http, $state, $stateParams, Upload) {
 
     // Utility functions/variables ...
 
@@ -48,7 +48,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             url: '/api/stickers',
             params: {
                 type: 'trending',
-                page: $routeParams.page,
+                page: $scope.page_current,
                 count: 9
             }
         }).then(function(resp) {
@@ -65,8 +65,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
     switch ($state.current.name) {
         case 'blinks.stickers':
             $scope.stickers = [];
-            if (!$routeParams.page)
-                $routeParams.page = 1;
+            $scope.page_current = 1;
             $scope.pagination = [1, 2, 3, 4, 5];
             $scope.loadStickers();
             break;
@@ -125,31 +124,31 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
     };
 
     $scope.setPage = function(page) {
-        $routeParams.page = page;
+        $scope.page_current = page;
         $scope.adjustPagination();
         $scope.loadStickers();
     };
 
     $scope.nextPage = function() {
-        $routeParams.page += 1;
+        $scope.page_current += 1;
         $scope.adjustPagination();
         $scope.loadStickers();
     };
 
     $scope.previousPage = function() {
-        if ($routeParams.page === 1) {
+        if ($scope.page_current === 1) {
             return;
         }
-        $routeParams.page -= 1;
+        $scope.page_current -= 1;
         $scope.adjustPagination();
         $scope.loadStickers();
     };
 
     $scope.adjustPagination = function() {
-        if ($routeParams.page < 3) {
+        if ($scope.page_current < 3) {
             $scope.pagination = [1, 2, 3, 4, 5];
         } else {
-            $scope.pagination = [$routeParams.page - 2, $routeParams.page - 1, $routeParams.page, $routeParams.page + 1, $routeParams.page + 2];
+            $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2];
         }
     };
 

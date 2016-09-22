@@ -14,13 +14,12 @@ There are three remote repositories. Branches are listed underneath the branch n
 GIT COMMANDS:
 1) Development:
     - git checkout develop
-    - git add .
-    - git commit -m "..."
+    - git merge -X theirs master
     - git push origin develop
     - git push staging develop:master
 2) Production:
     - git checkout master
-    - Merge master with develop branch
+    - git merge -X theirs develop
     - git push origin master
     - git push production master
 

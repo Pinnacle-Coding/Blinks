@@ -26,7 +26,7 @@ GIT COMMANDS:
 
 TODO:
     - Fork to dev/staging server [DONE]
-    - AWS to Cloudfront
+    - AWS to Cloudfront [DONE]
     - Created timestamps [DONE]
     - Updated timestamps [DONE]
     - Replace spaces with underscores
@@ -87,32 +87,6 @@ app.use(function(req, res) {
 // Run server
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
-});
-
-// Update old urls
-var Author = mongoose.model('Author');
-var Sticker = mongoose.model('Sticker');
-Author.find().exec(function (err, authors) {
-    authors.forEach(function (author) {
-        if (!author.s3) {
-            author.s3 = author.image;
-            author.image = author.image.replace('s3.amazonaws.com/blinks', 'dyhd59svym94q.cloudfront.net');
-            author.save(function (err, author) {
-
-            });
-        }
-    });
-});
-Sticker.find().exec(function (err, stickers) {
-    stickers.forEach(function (sticker) {
-        if (!sticker.s3) {
-            sticker.s3 = sticker.image;
-            sticker.image = sticker.image.replace('s3.amazonaws.com/blinks', 'dyhd59svym94q.cloudfront.net');
-            sticker.save(function (err, sticker) {
-
-            });
-        }
-    });
 });
 
 // Run cron

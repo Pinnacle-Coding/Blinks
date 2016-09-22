@@ -1,6 +1,19 @@
 global.__base = __dirname + '/';
 global.__bucket = 'blinks';
 
+/*
+TODO:
+  - Fork to dev/staging server
+  - AWS to Cloudfront
+  - Created timestamps
+  - Updated timestamps
+  - Replace spaces with underscores
+  - New packs <-- api calls
+  - Store small, medium, large images
+
+  rishimody4@gmail.com
+*/
+
 // Temporary until admin accounts are made
 global.__password = new Buffer('V29vZGxha2U4MDU=', 'base64').toString();
 
@@ -45,6 +58,43 @@ app.use(function(req, res) {
 // Run server
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
+});
+
+// Add created field to old items
+var Sticker = mongoose.model('Sticker');
+var Tag = mongoose.model('Tag');
+var Pack = mongoose.model('Pack');
+var Author = mongoose.model('Author');
+Sticker.find().exec(function (err, stickers) {
+    stickers.forEach(function (sticker) {
+        sticker.created = sticker._id.getTimestamp();
+    });
+});
+Author.find().exec(function (err, authors) {
+    authors.forEach(function (author) {
+        author.created = author._id.getTimestamp();
+        author.save(function (err, author) {
+
+        });
+    });
+});
+Pack.find().exec(function (err, packs) {
+    packs.forEach(function (pack) {
+        pack.created = pack._id.getTimestamp();
+        pack.save(function (err, pack) {
+
+        });
+    });
+});
+Tags.find().exec(function (err, tags) {
+    tags.forEach(function (tag) {
+        if (!tag.created) {
+            tag.created = tag._id.getTimestamp();
+            tag.save(function (err, tag) {
+
+            });
+        }
+    });
 });
 
 // Run cron

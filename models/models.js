@@ -17,6 +17,13 @@ mongoose.model('Author', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
+    },
+    created: {
+        type: Date
+    },
+    updated: {
+        type: Date,
+        default: Date.now
     }
 }));
 
@@ -35,6 +42,13 @@ mongoose.model('Pack', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
+    },
+    created: {
+        type: Date
+    },
+    updated: {
+        type: Date,
+        default: Date.now
     }
 }));
 
@@ -57,6 +71,13 @@ mongoose.model('Sticker', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
+    },
+    created: {
+        type: Date
+    },
+    updated: {
+        type: Date,
+        default: Date.now
     }
 }));
 
@@ -71,6 +92,13 @@ mongoose.model('Tag', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
+    },
+    created: {
+        type: Date
+    },
+    updated: {
+        type: Date,
+        default: Date.now
     }
 }));
 

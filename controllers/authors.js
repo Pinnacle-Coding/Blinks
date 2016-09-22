@@ -132,7 +132,8 @@ module.exports = {
                                 weekly: 0,
                                 monthly: 0,
                                 total: 0
-                            }
+                            },
+                            created: new Date()
                         });
                         var calls = [];
                         calls.push(function(callback) {
@@ -191,7 +192,6 @@ module.exports = {
         method: 'PUT',
         upload: 'avatar',
         handler: function(req, done) {
-            console.log(req);
             if (!req.body.password) {
                 done(true, {
                     message: 'Required parameters missing'
@@ -284,6 +284,7 @@ module.exports = {
                             });
                         }
                         else {
+                            author.updated = new Date();
                             author.save(function (err, author) {
                                 Author.findOne({
                                     _id: author._id

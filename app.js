@@ -89,7 +89,7 @@ Pack.find().exec(function (err, packs) {
         });
     });
 });
-Tags.find().exec(function (err, tags) {
+Tag.find().exec(function (err, tags) {
     tags.forEach(function (tag) {
         if (!tag.created) {
             tag.created = tag._id.getTimestamp();

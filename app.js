@@ -1,12 +1,37 @@
 /*
+Project Workflow
+================
+
+There are three remote repositories. Branches are listed underneath the branch name ...
+1) origin
+    - master (global repository, linked to production:master, contributions synced here)
+    - develop (global repository, linked to staging:master, contributions synced here)
+2) staging
+    - master (https://blinks-staging.herokuapp.com)
+3) production
+    - master (https://blinks-app.herokuapp.com)
+
+GIT COMMANDS:
+1) Development:
+    - git checkout develop
+    - git add .
+    - git commit -m "..."
+    - git push origin develop
+    - git push staging develop:master
+2) Production:
+    - git checkout master
+    - Merge master with develop branch
+    - git push origin master
+    - git push production master
+
 TODO:
-  - Fork to dev/staging server
-  - AWS to Cloudfront
-  - Created timestamps
-  - Updated timestamps
-  - Replace spaces with underscores
-  - New packs <-- api calls
-  - Store small, medium, large images
+    - Fork to dev/staging server [DONE]
+    - AWS to Cloudfront
+    - Created timestamps [DONE]
+    - Updated timestamps [DONE]
+    - Replace spaces with underscores
+    - New packs <-- api calls
+    - Store small, medium, large images
 */
 
 global.__base = __dirname + '/';

@@ -90,6 +90,8 @@ app.listen(app.get('port'), function() {
 });
 
 // Update old urls
+var Author = mongoose.model('Author');
+var Sticker = mongoose.model('Sticker');
 Author.find().exec(function (err, authors) {
     authors.forEach(function (author) {
         if (!author.s3) {

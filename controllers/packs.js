@@ -71,6 +71,12 @@ module.exports = {
                     'hits.total': -1
                 };
             }
+            if (req.query.type && req.query.type === 'new') {
+                sort = {
+                    'created': -1,
+                    'updated': -1
+                };
+            }
             var page = req.query.page ? req.query.page : 1;
             if (page < 1) {
                 done(true, {

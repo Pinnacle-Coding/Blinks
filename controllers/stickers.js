@@ -328,7 +328,8 @@ module.exports = {
                                     });
                                 });
                                 uploader.on('end', function() {
-                                    sticker.image = s3.getPublicUrl(__bucket, key);
+                                    sticker.s3 = s3.getPublicUrl(__bucket, key);
+                                    sticker.image = sticker.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
                                     sticker.updated = new Date();
                                     sticker.save(function(err, sticker) {
                                         if (err) {

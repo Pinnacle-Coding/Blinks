@@ -150,7 +150,8 @@ module.exports = {
                                     callback(err);
                                 });
                                 uploader.on('end', function() {
-                                    new_author.image = s3.getPublicUrl(__bucket, key);
+                                    new_author.s3 = s3.getPublicUrl(__bucket, key);
+                                    new_author.image = new_author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
                                     callback();
                                 });
                             } else {
@@ -270,7 +271,8 @@ module.exports = {
                                     callback(err);
                                 });
                                 uploader.on('end', function() {
-                                    author.image = s3.getPublicUrl(__bucket, key);
+                                    author.s3 = s3.getPublicUrl(__bucket, key);
+                                    author.image = author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
                                     callback(null);
                                 });
                             });

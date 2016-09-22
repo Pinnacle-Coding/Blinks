@@ -8,6 +8,7 @@ mongoose.model('Author', new mongoose.Schema({
         type: String,
         default: '/static/img/default-author.png'
     },
+    s3: String,
     packs: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Pack'
@@ -56,6 +57,7 @@ mongoose.model('Pack', new mongoose.Schema({
 
 mongoose.model('Sticker', new mongoose.Schema({
     image: String,
+    s3: String,
     author: {
         type: mongoose.Schema.ObjectId,
         ref: 'Author'

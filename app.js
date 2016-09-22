@@ -39,6 +39,7 @@ global.__base = __dirname + '/';
 // Production = blinks
 // Development = blinks-staging
 global.__bucket = 'blinks';
+global.__cloudfront = 'dyhd59svym94q';
 
 // Temporary until admin accounts are made
 global.__password = new Buffer('V29vZGxha2U4MDU=', 'base64').toString();
@@ -86,6 +87,30 @@ app.use(function(req, res) {
 // Run server
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
+});
+
+// Update old urls
+Author.find().exec(function (err, authors) {
+    authors.forEach(function (author) {
+        if (!author.s3) {
+            author.s3 = author.image;
+            author.image = author.image.replace('s3.amazonaws.com/blinks', 'dyhd59svym94q.cloudfront.net');
+            author.save(function (err, author) {
+
+            });
+        }
+    });
+});
+Sticker.find().exec(function (err, stickers) {
+    stickers.forEach(function (sticker) {
+        if (!sticker.s3) {
+            sticker.s3 = sticker.image;
+            sticker.image = sticker.image.replace('s3.amazonaws.com/blinks', 'dyhd59svym94q.cloudfront.net');
+            sticker.save(function (err, sticker) {
+
+            });
+        }
+    });
 });
 
 // Run cron

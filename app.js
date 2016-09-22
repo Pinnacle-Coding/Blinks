@@ -1,5 +1,8 @@
 global.__base = __dirname + '/';
-global.__bucket = 'blinks';
+
+// Production = blinks
+// Development = blinks-staging
+global.__bucket = 'blinks-staging';
 
 /*
 TODO:
@@ -10,8 +13,6 @@ TODO:
   - Replace spaces with underscores
   - New packs <-- api calls
   - Store small, medium, large images
-
-  rishimody4@gmail.com
 */
 
 // Temporary until admin accounts are made
@@ -28,7 +29,9 @@ var Text = mongoose.model('Text', new mongoose.Schema({
     content: String,
     hash: String
 }));
-mongoose.connect('mongodb://blinks:insaneMembrane1@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
+// Production = mongodb://blinks:insaneMembrane1@ds035786.mlab.com:35786/blinks-staging
+// Development = mongodb://blinks:insaneMembrane1@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356
+mongoose.connect('mongodb://blinks:insaneMembrane1@ds035786.mlab.com:35786/blinks-staging');
 require('./models/models.js');
 
 // Port

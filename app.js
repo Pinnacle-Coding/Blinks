@@ -63,46 +63,6 @@ app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
-// Add created field to old items
-var Sticker = mongoose.model('Sticker');
-var Tag = mongoose.model('Tag');
-var Pack = mongoose.model('Pack');
-var Author = mongoose.model('Author');
-Sticker.find().exec(function (err, stickers) {
-    stickers.forEach(function (sticker) {
-        sticker.created = sticker._id.getTimestamp();
-        sticker.save(function (err, sticker) {
-
-        });
-    });
-});
-Author.find().exec(function (err, authors) {
-    authors.forEach(function (author) {
-        author.created = author._id.getTimestamp();
-        author.save(function (err, author) {
-
-        });
-    });
-});
-Pack.find().exec(function (err, packs) {
-    packs.forEach(function (pack) {
-        pack.created = pack._id.getTimestamp();
-        pack.save(function (err, pack) {
-
-        });
-    });
-});
-Tag.find().exec(function (err, tags) {
-    tags.forEach(function (tag) {
-        if (!tag.created) {
-            tag.created = tag._id.getTimestamp();
-            tag.save(function (err, tag) {
-
-            });
-        }
-    });
-});
-
 // Run cron
 var cron = require('./cron.js');
 var timeoutCallback = function() {

@@ -165,8 +165,7 @@ module.exports = {
                                         weekly: 0,
                                         monthly: 0,
                                         total: 0
-                                    },
-                                    created: new Date()
+                                    }
                                 });
                                 new_pack.save(function(err, pack) {
                                     if (err) {

@@ -132,8 +132,7 @@ module.exports = {
                                 weekly: 0,
                                 monthly: 0,
                                 total: 0
-                            },
-                            created: new Date()
+                            }
                         });
                         var calls = [];
                         calls.push(function(callback) {

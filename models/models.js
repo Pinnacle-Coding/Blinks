@@ -19,7 +19,8 @@ mongoose.model('Author', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     updated: {
         type: Date,
@@ -44,7 +45,8 @@ mongoose.model('Pack', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     updated: {
         type: Date,
@@ -73,7 +75,8 @@ mongoose.model('Sticker', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     updated: {
         type: Date,
@@ -94,7 +97,8 @@ mongoose.model('Tag', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     updated: {
         type: Date,

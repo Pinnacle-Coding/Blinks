@@ -282,8 +282,7 @@ module.exports = {
                                                     weekly: 0,
                                                     monthly: 0,
                                                     total: 0
-                                                },
-                                                created: new Date()
+                                                }
                                             });
                                             new_tag.save(function(err, new_tag) {
                                                 if (!err) {
@@ -312,8 +311,7 @@ module.exports = {
                                         weekly: 0,
                                         monthly: 0,
                                         total: 0
-                                    },
-                                    created: new Date()
+                                    }
                                 });
                                 var key = require('path').join('stickers', sticker._id.toString());
                                 var params = {
@@ -502,8 +500,7 @@ module.exports = {
                                                             weekly: 0,
                                                             monthly: 0,
                                                             total: 0
-                                                        },
-                                                        created: new Date()
+                                                        }
                                                     });
                                                 }
                                                 tag.updated = new Date();

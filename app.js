@@ -28,7 +28,7 @@ TODO:
     - AWS to Cloudfront [DONE]
     - Created timestamps [DONE]
     - Updated timestamps [DONE]
-    - Replace spaces with underscores
+    - Replace spaces with underscores [DONE]
     - New packs <-- api calls
     - Store small, medium, large images
 */

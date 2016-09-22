@@ -16,6 +16,11 @@ var uniq = function(a) {
     });
 };
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 module.exports = {
     getSticker: {
         path: '/sticker/:id',
@@ -91,6 +96,7 @@ module.exports = {
             var count = req.query.count ? req.query.count : 20;
 
             if (req.query.tag) {
+                req.query.tag = req.query.tag.replaceAll('_', ' ');
                 Tag.find({
                     $or: [{
                         name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')

@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
 var Tag = mongoose.model('Tag');
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 module.exports = {
     getTag: {
         path: '/tag/:id',
@@ -49,6 +54,7 @@ module.exports = {
         handler: function(req, done) {
             var query = {};
             if (req.query.contains) {
+                req.query.contains = req.query.contains.replaceAll('_', ' ');
                 query = {
                     $or: [{
                         name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')

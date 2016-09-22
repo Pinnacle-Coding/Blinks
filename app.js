@@ -40,7 +40,7 @@ if (process.env.BLINKS_NODE_ENV === 'production') {
     global.__cloudfront = 'dyhd59svym94q';
 }
 else {
-    global.__bucket = 'blinks-staging';
+    global.__bucket = 'blinks-dev';
     global.__cloudfront = undefined;
 }
 

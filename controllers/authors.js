@@ -151,7 +151,12 @@ module.exports = {
                                 });
                                 uploader.on('end', function() {
                                     new_author.s3 = s3.getPublicUrl(__bucket, key);
-                                    new_author.image = new_author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    if (__cloudfront) {
+                                        new_author.image = new_author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    }
+                                    else {
+                                        new_author.image = new_author.s3;
+                                    }
                                     callback();
                                 });
                             } else {
@@ -272,7 +277,12 @@ module.exports = {
                                 });
                                 uploader.on('end', function() {
                                     author.s3 = s3.getPublicUrl(__bucket, key);
-                                    author.image = author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    if (__cloudfront) {
+                                        author.image = author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    }
+                                    else {
+                                        author.image = author.s3;
+                                    }
                                     callback(null);
                                 });
                             });

@@ -329,7 +329,12 @@ module.exports = {
                                 });
                                 uploader.on('end', function() {
                                     sticker.s3 = s3.getPublicUrl(__bucket, key);
-                                    sticker.image = sticker.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    if (__cloudfront) {
+                                            sticker.image = sticker.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
+                                    }
+                                    else {
+                                        sticker.image = sticker.s3;
+                                    }
                                     sticker.updated = new Date();
                                     sticker.save(function(err, sticker) {
                                         if (err) {

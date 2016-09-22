@@ -71,6 +71,9 @@ var Author = mongoose.model('Author');
 Sticker.find().exec(function (err, stickers) {
     stickers.forEach(function (sticker) {
         sticker.created = sticker._id.getTimestamp();
+        sticker.save(function (err, sticker) {
+
+        });
     });
 });
 Author.find().exec(function (err, authors) {

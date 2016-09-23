@@ -21,11 +21,11 @@ mongoose.model('Author', new mongoose.Schema({
     },
     created: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     },
     updated: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     }
 }));
 
@@ -47,11 +47,11 @@ mongoose.model('Pack', new mongoose.Schema({
     },
     created: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     },
     updated: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     }
 }));
 
@@ -78,11 +78,11 @@ mongoose.model('Sticker', new mongoose.Schema({
     },
     created: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     },
     updated: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     }
 }));
 
@@ -100,11 +100,11 @@ mongoose.model('Tag', new mongoose.Schema({
     },
     created: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     },
     updated: {
         type: String,
-        default: Date.now.toUTCString()
+        default: Date.now().toUTCString()
     }
 }));
 

@@ -14,6 +14,8 @@ module.exports = {
             var subcalls = [];
             models.forEach(function(Model) {
                 Model.find().exec(function(err, objs) {
+                    console.log(Model);
+                    console.log(objs.length);
                     objs.forEach(function(model_obj) {
                         subcalls.push(function (callback) {
                             model_obj.createdAtTimestamp = model_obj.createdAt.getTime();
@@ -25,8 +27,6 @@ module.exports = {
                     });
                 });
             });
-            console.log(JSON.stringify(subcalls));
-            console.log(subcalls.length);
             async.parallel(subcalls, function (err, results) {
                 console.log("Updated timestamps.");
                 callback(null);

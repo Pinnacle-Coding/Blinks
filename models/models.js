@@ -21,11 +21,14 @@ var AuthorSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number,
-    created: String,
-    updated: String
+    updatedAtTimestamp: Number
 });
 AuthorSchema.plugin(timestamps);
+AuthorSchema.pre('save', function (next) {
+    this[createdAtTimestamp] = this[createdAt].getTime();
+    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    next();
+});
 mongoose.model('Author', AuthorSchema);
 
 var PackSchema = new mongoose.Schema({
@@ -45,11 +48,14 @@ var PackSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number,
-    created: String,
-    updated: String
+    updatedAtTimestamp: Number
 });
 PackSchema.plugin(timestamps);
+PackSchema.pre('save', function (next) {
+    this[createdAtTimestamp] = this[createdAt].getTime();
+    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    next();
+});
 mongoose.model('Pack', PackSchema);
 
 var StickerSchema = new mongoose.Schema({
@@ -74,11 +80,14 @@ var StickerSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number,
-    created: String,
-    updated: String
+    updatedAtTimestamp: Number
 });
 StickerSchema.plugin(timestamps);
+StickerSchema.pre('save', function (next) {
+    this[createdAtTimestamp] = this[createdAt].getTime();
+    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    next();
+});
 mongoose.model('Sticker', StickerSchema);
 
 var TagSchema = new mongoose.Schema({
@@ -94,11 +103,14 @@ var TagSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number,
-    created: String,
-    updated: String
+    updatedAtTimestamp: Number
 });
 TagSchema.plugin(timestamps);
+TagSchema.pre('save', function (next) {
+    this[createdAtTimestamp] = this[createdAt].getTime();
+    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    next();
+});
 mongoose.model('Tag', TagSchema);
 
 mongoose.model('Metrics', new mongoose.Schema({

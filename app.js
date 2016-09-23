@@ -26,10 +26,12 @@ GIT COMMANDS:
 TODO:
     - Fork to dev/staging server [DONE]
     - AWS to Cloudfront [DONE]
-    - Created timestamps [DONE]
-    - Updated timestamps [DONE]
+    - Created timestamps [DONE - see cron script + mongoose middleware]
+    - Updated timestamps [DONE - see cron script + mongoose middleware]
     - Replace spaces with underscores [DONE]
     - New packs <-- api calls [DONE]
+    - 'Is animated sticker?' boolean field
+    - Hits API
     - Store small, medium, large images
 */
 

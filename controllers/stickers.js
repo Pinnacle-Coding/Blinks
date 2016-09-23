@@ -22,6 +22,114 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 module.exports = {
+    onUseSticker: {
+        path: '/use-sticker/:id',
+        method: 'PUT',
+        handler: function(req, done) {
+            var query_id = req.params.id;
+            var query = {
+                _id: query_id
+            };
+            Sticker.findOne(query).populate({
+                path: 'tags',
+                select: 'hits'
+            }).populate({
+                path: 'author',
+                select: 'hits'
+            }).populate({
+                path: 'pack',
+                select: 'hits'
+            }).exec(function(err, sticker) {
+                if (err) {
+                    done(err, {
+                        message: err.message
+                    });
+                } else {
+                    sticker.hits.total += 1;
+                    sticker.hits.daily += 1;
+                    sticker.hits.weekly += 1;
+                    sticker.hits.monthly += 1;
+                    sticker.save(function(err, sticker) {
+                        if (err) {
+                            done(err, {
+                                message: err.message
+                            });
+                        } else {
+                            var author = sticker.author;
+                            author.hits.total += 1;
+                            author.hits.daily += 1;
+                            author.hits.weekly += 1;
+                            author.hits.monthly += 1;
+                            author.save(function(err, author) {
+                                if (err) {
+                                    done(err, {
+                                        message: err.message
+                                    });
+                                } else {
+                                    var pack = sticker.pack;
+                                    pack.hits.total += 1;
+                                    pack.hits.daily += 1;
+                                    pack.hits.weekly += 1;
+                                    pack.hits.monthly += 1;
+                                    pack.save(function(err, pack) {
+                                        if (err) {
+                                            done(err, {
+                                                message: err.message
+                                            });
+                                        } else {
+                                            var calls = [];
+                                            sticker.tags.forEach(function(tag) {
+                                                calls.push(function(callback) {
+                                                    tag.hits.total += 1;
+                                                    tag.hits.daily += 1;
+                                                    tag.hits.weekly += 1;
+                                                    tag.hits.monthly += 1;
+                                                    tag.save(function(err, tag) {
+                                                        callback(null);
+                                                    });
+                                                });
+                                            });
+                                            async.parallel(calls, function(err, results) {
+                                                if (err) {
+                                                    done(err, {
+                                                        message: err.message
+                                                    });
+                                                } else {
+                                                    Sticker.findOne({
+                                                        _id : sticker._id
+                                                    }).populate({
+                                                        path: 'tags',
+                                                        select: 'name hits'
+                                                    }).populate({
+                                                        path: 'author',
+                                                        select: 'name location image hits'
+                                                    }).populate({
+                                                        path: 'pack',
+                                                        select: 'name hits'
+                                                    }).exec(function(err, sticker) {
+                                                        if (err) {
+                                                            done(true, {
+                                                                message: err.message
+                                                            });
+                                                        } else {
+                                                            done(false, {
+                                                                message: (sticker) ? 'Sticker found' : 'No sticker found',
+                                                                sticker: sticker
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    },
     getSticker: {
         path: '/sticker/:id',
         method: 'GET',
@@ -45,29 +153,10 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (sticker && !req.query.hitblock) {
-                        sticker.hits.total += 1;
-                        sticker.hits.daily += 1;
-                        sticker.hits.weekly += 1;
-                        sticker.hits.monthly += 1;
-                        sticker.save(function(err, sticker) {
-                            if (err) {
-                                done(true, {
-                                    message: err.message
-                                });
-                            } else {
-                                done(false, {
-                                    message: 'Sticker found',
-                                    sticker: sticker
-                                });
-                            }
-                        });
-                    } else {
-                        done(false, {
-                            message: (sticker) ? 'Sticker found' : 'No sticker found',
-                            sticker: sticker
-                        });
-                    }
+                    done(false, {
+                        message: (sticker) ? 'Sticker found' : 'No sticker found',
+                        sticker: sticker
+                    });
                 }
             });
         }
@@ -133,13 +222,6 @@ module.exports = {
                         var stickers = [];
                         tags.forEach(function(tag) {
                             stickers = stickers.concat(tag.stickers);
-                            tag.hits.daily += 1;
-                            tag.hits.weekly += 1;
-                            tag.hits.monthly += 1;
-                            tag.hits.total += 1;
-                            tag.save(function(err, tag) {
-
-                            });
                         });
                         var sliceBegin = (page - 1) * count;
                         var sliceEnd = page * count;
@@ -150,25 +232,10 @@ module.exports = {
                         } else {
                             stickers = stickers.slice(sliceBegin, sliceEnd);
                         }
-                        if (stickers && stickers.length) {
-                            // We don't count trending searches as hits
-                            // because that would continue to reinforce the top searches
-                            if (!req.query.type || req.query.type !== 'trending') {
-                                stickers.forEach(function(sticker) {
-                                    sticker.hits.total += 1;
-                                    sticker.hits.daily += 1;
-                                    sticker.hits.weekly += 1;
-                                    sticker.hits.monthly += 1;
-                                    sticker.save(function(err, sticker) {
-
-                                    });
-                                });
-                            }
-                        }
                         var stickersPop = [];
                         var tasks = [];
-                        stickers.forEach(function (sticker) {
-                            tasks.push(function (callback) {
+                        stickers.forEach(function(sticker) {
+                            tasks.push(function(callback) {
                                 Sticker.findOne({
                                     _id: sticker._id
                                 }).populate({
@@ -180,13 +247,13 @@ module.exports = {
                                 }).populate({
                                     path: 'author',
                                     select: 'name location'
-                                }).exec(function (err, sticker) {
+                                }).exec(function(err, sticker) {
                                     stickersPop.push(sticker);
                                     callback(null);
                                 });
                             });
                         });
-                        async.series(tasks, function (err, results) {
+                        async.series(tasks, function(err, results) {
                             if (err) {
                                 done(true, {
                                     message: err.message
@@ -216,21 +283,6 @@ module.exports = {
                             message: err.message
                         });
                     } else {
-                        if (stickers && stickers.length) {
-                            // We don't count trending searches as hits
-                            // because that would continue to reinforce the top searches
-                            if (!req.query.type || req.query.type !== 'trending') {
-                                stickers.forEach(function(sticker) {
-                                    sticker.hits.total += 1;
-                                    sticker.hits.daily += 1;
-                                    sticker.hits.weekly += 1;
-                                    sticker.hits.monthly += 1;
-                                    sticker.save(function(err, sticker) {
-
-                                    });
-                                });
-                            }
-                        }
                         done(false, {
                             message: stickers.length ? 'Stickers found' : 'Stickers not found',
                             stickers: stickers
@@ -295,13 +347,7 @@ module.exports = {
                                         } else {
                                             var new_tag = new Tag({
                                                 name: tag_string,
-                                                stickers: [],
-                                                hits: {
-                                                    daily: 0,
-                                                    weekly: 0,
-                                                    monthly: 0,
-                                                    total: 0
-                                                }
+                                                stickers: []
                                             });
                                             new_tag.save(function(err, new_tag) {
                                                 if (!err) {
@@ -324,13 +370,7 @@ module.exports = {
                                 var sticker = new Sticker({
                                     author: pack.author,
                                     pack: pack._id,
-                                    tags: tag_ids,
-                                    hits: {
-                                        daily: 0,
-                                        weekly: 0,
-                                        monthly: 0,
-                                        total: 0
-                                    }
+                                    tags: tag_ids
                                 });
                                 var key = require('path').join('stickers', sticker._id.toString());
                                 var params = {
@@ -349,9 +389,8 @@ module.exports = {
                                 uploader.on('end', function() {
                                     sticker.s3 = s3.getPublicUrl(__bucket, key);
                                     if (__cloudfront) {
-                                            sticker.image = sticker.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
-                                    }
-                                    else {
+                                        sticker.image = sticker.s3.replace('s3.amazonaws.com/' + __bucket, __cloudfront + '.cloudfront.net');
+                                    } else {
                                         sticker.image = sticker.s3;
                                     }
                                     sticker.save(function(err, sticker) {
@@ -513,13 +552,7 @@ module.exports = {
                                                     callback(err);
                                                 } else if (!tag) {
                                                     tag = new Tag({
-                                                        name: tag_name,
-                                                        hits: {
-                                                            daily: 0,
-                                                            weekly: 0,
-                                                            monthly: 0,
-                                                            total: 0
-                                                        }
+                                                        name: tag_name
                                                     });
                                                 }
                                                 tag.save(function(err, tag) {

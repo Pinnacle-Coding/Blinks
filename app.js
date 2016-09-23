@@ -31,7 +31,7 @@ TODO:
     - Replace spaces with underscores [DONE]
     - New packs <-- api calls [DONE]
     - 'Is animated sticker?' boolean field
-    - Hits API
+    - Hits API [DONE]
     - Store small, medium, large images
 */
 

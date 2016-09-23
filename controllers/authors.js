@@ -53,29 +53,10 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (author && !req.query.hitblock) {
-                        author.hits.total += 1;
-                        author.hits.daily += 1;
-                        author.hits.weekly += 1;
-                        author.hits.monthly += 1;
-                        author.save(function(err, author) {
-                            if (err) {
-                                done(true, {
-                                    message: err.message
-                                });
-                            } else {
-                                done(false, {
-                                    message: 'Author found',
-                                    author: author
-                                });
-                            }
-                        });
-                    } else {
-                        done(false, {
-                            message: (author) ? 'Author found' : 'No author found',
-                            author: author
-                        });
-                    }
+                    done(false, {
+                        message: (author) ? 'Author found' : 'No author found',
+                        author: author
+                    });
                 }
             });
         }
@@ -140,13 +121,7 @@ module.exports = {
                             name: name,
                             username: username,
                             location: (req.body.location) ? req.body.location : undefined,
-                            packs: [],
-                            hits: {
-                                daily: 0,
-                                weekly: 0,
-                                monthly: 0,
-                                total: 0
-                            }
+                            packs: []
                         });
                         var calls = [];
                         calls.push(function(callback) {
@@ -166,9 +141,8 @@ module.exports = {
                                 uploader.on('end', function() {
                                     new_author.s3 = s3.getPublicUrl(__bucket, key);
                                     if (__cloudfront) {
-                                        new_author.image = new_author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
-                                    }
-                                    else {
+                                        new_author.image = new_author.s3.replace('s3.amazonaws.com/' + __bucket, __cloudfront + '.cloudfront.net');
+                                    } else {
                                         new_author.image = new_author.s3;
                                     }
                                     callback();
@@ -234,21 +208,19 @@ module.exports = {
                     _id: query_id
                 });
             }
-            Author.findOne(query).exec(function (err, author) {
+            Author.findOne(query).exec(function(err, author) {
                 if (err) {
                     done(err, {
                         message: err.message
                     });
-                }
-                else if (!author) {
+                } else if (!author) {
                     done(true, {
                         message: 'Author not found'
                     });
-                }
-                else {
+                } else {
                     var calls = [];
                     if (req.body.name) {
-                        calls.push(function (callback) {
+                        calls.push(function(callback) {
                             if (req.body.name === '') {
                                 req.body.name = 'Anonymous Artist';
                             }
@@ -257,7 +229,7 @@ module.exports = {
                         });
                     }
                     if (req.body.location !== undefined) {
-                        calls.push(function (callback) {
+                        calls.push(function(callback) {
                             author.location = req.body.location;
                             callback(null);
                         });
@@ -292,9 +264,8 @@ module.exports = {
                                 uploader.on('end', function() {
                                     author.s3 = s3.getPublicUrl(__bucket, key);
                                     if (__cloudfront) {
-                                        author.image = author.s3.replace('s3.amazonaws.com/'+__bucket, __cloudfront+'.cloudfront.net');
-                                    }
-                                    else {
+                                        author.image = author.s3.replace('s3.amazonaws.com/' + __bucket, __cloudfront + '.cloudfront.net');
+                                    } else {
                                         author.image = author.s3;
                                     }
                                     callback(null);
@@ -302,20 +273,19 @@ module.exports = {
                             });
                         });
                     }
-                    async.series(calls, function (err, results) {
+                    async.series(calls, function(err, results) {
                         if (err) {
                             done(err, {
                                 message: err.message
                             });
-                        }
-                        else {
-                            author.save(function (err, author) {
+                        } else {
+                            author.save(function(err, author) {
                                 Author.findOne({
                                     _id: author._id
                                 }).populate({
                                     path: 'packs',
                                     select: 'name'
-                                }).exec(function (err, author) {
+                                }).exec(function(err, author) {
                                     if (err) {
                                         done(err, {
                                             message: err.message
@@ -361,35 +331,32 @@ module.exports = {
                     _id: query_id
                 });
             }
-            Author.findOne(query).exec(function (err, author) {
+            Author.findOne(query).exec(function(err, author) {
                 if (err) {
                     done(true, {
                         message: err.message
                     });
-                }
-                else if (!author) {
+                } else if (!author) {
                     done(true, {
                         message: 'Author not found'
                     });
-                }
-                else {
+                } else {
                     var calls = [];
-                    author.packs.forEach(function (pack) {
-                        calls.push(function (callback) {
+                    author.packs.forEach(function(pack) {
+                        calls.push(function(callback) {
                             req.params.id = pack;
-                            PackCtrl.deletePack.handler(req, function (err, res) {
+                            PackCtrl.deletePack.handler(req, function(err, res) {
                                 callback(err ? err : null);
                             });
                         });
                     });
-                    async.series(calls, function (err, results) {
+                    async.series(calls, function(err, results) {
                         if (err) {
                             done(err, {
                                 message: err.message
                             });
-                        }
-                        else {
-                            author.remove(function (err) {
+                        } else {
+                            author.remove(function(err) {
                                 done(false, {
                                     message: 'Author deleted successfully'
                                 });

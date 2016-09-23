@@ -31,15 +31,6 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (tag && !req.query.hitblock) {
-                        tag.hits.total += 1;
-                        tag.hits.daily += 1;
-                        tag.hits.weekly += 1;
-                        tag.hits.monthly += 1;
-                        tag.save(function(err, sticker) {
-
-                        });
-                    }
                     done(false, {
                         message: (tag) ? 'Tag found' : 'No tag found',
                         tag: tag
@@ -103,19 +94,6 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (tags && tags.length) {
-                        if (!req.query.type || req.query.type !== 'trending') {
-                            tags.forEach(function(tag) {
-                                tag.hits.daily += 1;
-                                tag.hits.weekly += 1;
-                                tag.hits.monthly += 1;
-                                tag.hits.total += 1;
-                                tag.save(function(err, tag) {
-
-                                });
-                            });
-                        }
-                    }
                     done(false, {
                         message: (tags && tags.length) ? 'Tags found' : 'No tags found',
                         tags: tags

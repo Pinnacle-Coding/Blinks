@@ -21,7 +21,7 @@ module.exports = {
             }
             Pack.findOne(query).populate({
                 path: 'stickers',
-                select: 'name image'
+                select: 'name image updatedAtTimestamp createdAtTimestamp'
             }).populate({
                 path: 'author',
                 select: 'name location image'
@@ -31,29 +31,10 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (pack && !req.query.hitblock) {
-                        pack.hits.total += 1;
-                        pack.hits.daily += 1;
-                        pack.hits.weekly += 1;
-                        pack.hits.monthly += 1;
-                        pack.save(function(err, pack) {
-                            if (err) {
-                                done(true, {
-                                    message: err.message
-                                });
-                            } else {
-                                done(false, {
-                                    message: 'Pack found',
-                                    pack: pack
-                                });
-                            }
-                        });
-                    } else {
-                        done(false, {
-                            message: (sticker) ? 'Pack found' : 'No pack found',
-                            pack: pack
-                        });
-                    }
+                    done(false, {
+                        message: (sticker) ? 'Pack found' : 'No pack found',
+                        pack: pack
+                    });
                 }
             });
         }
@@ -95,7 +76,7 @@ module.exports = {
             var count = req.query.count ? req.query.count : 20;
             Pack.find().populate({
                 path: 'stickers',
-                select: 'name image'
+                select: 'name image updatedAtTimestamp createdAtTimestamp'
             }).populate({
                 path: 'author',
                 select: 'name location image'
@@ -105,19 +86,6 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    if (packs && packs.length) {
-                        if (!req.query.type || req.query.type !== 'trending') {
-                            packs.forEach(function(pack) {
-                                pack.hits.daily += 1;
-                                pack.hits.weekly += 1;
-                                pack.hits.monthly += 1;
-                                pack.hits.total += 1;
-                                pack.save(function(err, pack) {
-
-                                });
-                            });
-                        }
-                    }
                     done(false, {
                         message: (packs && packs.length) ? 'Packs found' : 'No packs found',
                         packs: packs
@@ -173,13 +141,7 @@ module.exports = {
                                 var new_pack = new Pack({
                                     name: req.body.name,
                                     author: author._id,
-                                    stickers: [],
-                                    hits: {
-                                        daily: 0,
-                                        weekly: 0,
-                                        monthly: 0,
-                                        total: 0
-                                    }
+                                    stickers: []
                                 });
                                 new_pack.save(function(err, pack) {
                                     if (err) {

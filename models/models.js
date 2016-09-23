@@ -15,10 +15,22 @@ var AuthorSchema = new mongoose.Schema({
         ref: 'Pack'
     }],
     hits: {
-        all: Number,
-        daily: Number,
-        weekly: Number,
-        monthly: Number
+        total: {
+            type: Number,
+            default: 0
+        },
+        daily: {
+            type: Number,
+            default: 0
+        },
+        weekly: {
+            type: Number,
+            default: 0
+        },
+        monthly: {
+            type: Number,
+            default: 0
+        }
     },
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
@@ -42,10 +54,22 @@ var PackSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
-        all: Number,
-        daily: Number,
-        weekly: Number,
-        monthly: Number
+        total: {
+            type: Number,
+            default: 0
+        },
+        daily: {
+            type: Number,
+            default: 0
+        },
+        weekly: {
+            type: Number,
+            default: 0
+        },
+        monthly: {
+            type: Number,
+            default: 0
+        }
     },
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
@@ -74,10 +98,22 @@ var StickerSchema = new mongoose.Schema({
         ref: 'Pack'
     },
     hits: {
-        all: Number,
-        daily: Number,
-        weekly: Number,
-        monthly: Number
+        total: {
+            type: Number,
+            default: 0
+        },
+        daily: {
+            type: Number,
+            default: 0
+        },
+        weekly: {
+            type: Number,
+            default: 0
+        },
+        monthly: {
+            type: Number,
+            default: 0
+        }
     },
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
@@ -97,10 +133,22 @@ var TagSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
-        total: Number,
-        daily: Number,
-        weekly: Number,
-        monthly: Number
+        total: {
+            type: Number,
+            default: 0
+        },
+        daily: {
+            type: Number,
+            default: 0
+        },
+        weekly: {
+            type: Number,
+            default: 0
+        },
+        monthly: {
+            type: Number,
+            default: 0
+        }
     },
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number

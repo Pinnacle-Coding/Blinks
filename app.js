@@ -90,26 +90,6 @@ app.use(function(req, res) {
     res.status(200).render('index');
 });
 
-// Transition dates
-var models = [mongoose.model('Sticker'), mongoose.model('Tag'), mongoose.model('Pack'), mongoose.model('Author')];
-models.forEach(function(Model) {
-    Model.find().exec(function(err, objs) {
-        objs.forEach(function(model_obj) {
-            if (model_obj.created) {
-                model_obj.createdAt = model_obj.created;
-                model_obj.created = undefined;
-            }
-            if (model_obj.updated) {
-                model_obj.updatedAt = model_obj.updated;
-                model_obj.updated = undefined;
-            }
-            model_obj.save(function(err, model_obj) {
-
-            });
-        });
-    });
-});
-
 // Run server
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));

@@ -113,6 +113,12 @@ var add = function(filename) {
         var method = route.method.toLowerCase();
         var callback = function(req, res) {
             route.handler(req, function(err, payload) {
+                if (payload.created) {
+                    payload.created = Date.parse(payload.created).toUTCString();
+                }
+                if (payload.updated) {
+                    payload.updated = Date.parse(payload.updated).toUTCString();
+                }
                 if (err) {
                     res.status(400).json(payload);
                 } else {

@@ -18,6 +18,7 @@ module.exports = {
                         subcalls.push(function (callback) {
                             model_obj.createdAtTimestamp = model_obj.createdAt.getTime();
                             model_obj.updatedAtTimestamp = model_obj.updatedAt.getTime();
+                            console.log(model_obj.createdAtTimestamp+" "+model_obj.updatedAtTimestamp);
                             model_obj.save(function(err, model_obj) {
                                 callback(null);
                             });

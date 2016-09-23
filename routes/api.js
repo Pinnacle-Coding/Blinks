@@ -15,6 +15,7 @@ Base URL: http://blinks-app.herokuapp.com
    - 'id' can be the name of a pack as well
 8. Artist Detail Info = /api/author/:id [DONE]
    - 'id' can be the name of an author as well
+9. Sticker use/hit = /api/use-sticker/:id [DONE]
 
 Creating an author (temp) ...
 POST /api/authors

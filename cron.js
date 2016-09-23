@@ -31,7 +31,12 @@ module.exports = {
             });
             async.series(populate_subcalls, function (err, results) {
                 async.parallel(subcalls, function (err, results) {
-                    console.log("Updated timestamps.");
+                    if (err) {
+                        console.log("Error generating timestamps: "+err.message);
+                    }
+                    else {
+                        console.log("Updated timestamps.");
+                    }
                     callback(null);
                 });
             });

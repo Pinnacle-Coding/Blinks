@@ -97,6 +97,20 @@ app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
+// Update dates to UTC time format
+var models = [mongoose.model('Sticker'), mongoose.model('Tag'), mongoose.model('Pack'), mongoose.model('Author')];
+models.forEach(function (Model) {
+    Model.find().exec(function (err, objs) {
+        objs.forEach(function (model_obj) {
+            model_obj.created = Date.parse(model_obj.created).toUTCString();
+            model_obj.updated = Date.parse(model_obj.updated).toUTCString();
+            model_obj.save(function (err, model_obj) {
+
+            });
+        });
+    });
+});
+
 // Run cron
 var cron = require('./cron.js');
 var timeoutCallback = function() {

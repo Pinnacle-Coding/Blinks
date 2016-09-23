@@ -20,12 +20,12 @@ mongoose.model('Author', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     },
     updated: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     }
 }));
 
@@ -46,12 +46,12 @@ mongoose.model('Pack', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     },
     updated: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     }
 }));
 
@@ -77,12 +77,12 @@ mongoose.model('Sticker', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     },
     updated: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     }
 }));
 
@@ -99,12 +99,12 @@ mongoose.model('Tag', new mongoose.Schema({
         monthly: Number
     },
     created: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     },
     updated: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toUTCString()
     }
 }));
 

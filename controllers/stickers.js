@@ -76,15 +76,28 @@ module.exports = {
         path: '/stickers',
         method: 'GET',
         handler: function(req, done) {
-
             var sort = {};
-            if (req.query.type && req.query.type === 'trending') {
-                sort = {
-                    'hits.daily': -1,
-                    'hits.weekly': -1,
-                    'hits.monthly': -1,
-                    'hits.total': -1
-                };
+            if (req.query.type) {
+                if (req.query.type === 'trending') {
+                    sort = {
+                        'hits.daily': -1,
+                        'hits.weekly': -1,
+                        'hits.monthly': -1,
+                        'hits.total': -1
+                    };
+                }
+                if (req.query.type === 'new') {
+                    sort = {
+                        'createdAt': -1,
+                        'updatedAt': -1
+                    };
+                }
+                if (req.query.type === 'recent') {
+                    sort = {
+                        'updatedAt': -1,
+                        'createdAt': -1
+                    };
+                }
             }
             var page = req.query.page ? req.query.page : 1;
             if (page < 1) {

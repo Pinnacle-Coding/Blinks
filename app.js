@@ -29,7 +29,7 @@ TODO:
     - Created timestamps [DONE]
     - Updated timestamps [DONE]
     - Replace spaces with underscores [DONE]
-    - New packs <-- api calls
+    - New packs <-- api calls [DONE]
     - Store small, medium, large images
 */
 

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
+var timestamps = require('mongoose-timestamp');
 
-mongoose.model('Author', new mongoose.Schema({
+var AuthorSchema = new mongoose.Schema({
     name: String,
     username: String,
     location: String,
@@ -18,18 +19,12 @@ mongoose.model('Author', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    },
-    created: {
-        type: Number,
-        default: Date.now().getTime()
-    },
-    updated: {
-        type: Number,
-        default: Date.now().getTime()
     }
-}));
+});
+AuthorSchema.plugin(timestamps);
+mongoose.model('Author', AuthorSchema);
 
-mongoose.model('Pack', new mongoose.Schema({
+var PackSchema = new mongoose.Schema({
     name: String,
     author: {
         type: mongoose.Schema.ObjectId,
@@ -44,18 +39,12 @@ mongoose.model('Pack', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    },
-    created: {
-        type: Number,
-        default: Date.now().getTime()
-    },
-    updated: {
-        type: Number,
-        default: Date.now().getTime()
     }
-}));
+});
+PackSchema.plugin(timestamps);
+mongoose.model('Pack', PackSchema);
 
-mongoose.model('Sticker', new mongoose.Schema({
+var StickerSchema = new mongoose.Schema({
     image: String,
     s3: String,
     author: {
@@ -75,18 +64,12 @@ mongoose.model('Sticker', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    },
-    created: {
-        type: Number,
-        default: Date.now().getTime()
-    },
-    updated: {
-        type: Number,
-        default: Date.now().getTime()
     }
-}));
+});
+StickerSchema.plugin(timestamps);
+mongoose.model('Sticker', StickerSchema);
 
-mongoose.model('Tag', new mongoose.Schema({
+var TagSchema = new mongoose.Schema({
     name: String,
     stickers: [{
         type: mongoose.Schema.ObjectId,
@@ -97,16 +80,10 @@ mongoose.model('Tag', new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    },
-    created: {
-        type: Number,
-        default: Date.now().getTime()
-    },
-    updated: {
-        type: Number,
-        default: Date.now().getTime()
     }
-}));
+});
+TagSchema.plugin(timestamps);
+mongoose.model('Tag', TagSchema);
 
 mongoose.model('Metrics', new mongoose.Schema({
     version: String,

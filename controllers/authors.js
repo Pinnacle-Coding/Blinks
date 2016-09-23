@@ -295,7 +295,6 @@ module.exports = {
                             });
                         }
                         else {
-                            author.updated = new Date();
                             author.save(function (err, author) {
                                 Author.findOne({
                                     _id: author._id

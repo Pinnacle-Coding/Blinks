@@ -341,7 +341,6 @@ module.exports = {
                                     else {
                                         sticker.image = sticker.s3;
                                     }
-                                    sticker.updated = new Date();
                                     sticker.save(function(err, sticker) {
                                         if (err) {
                                             done(err, {
@@ -352,7 +351,6 @@ module.exports = {
                                             tags.forEach(function(tag) {
                                                 calls.push(function(callback) {
                                                     tag.stickers.push(sticker._id);
-                                                    tag.updated = new Date();
                                                     tag.save(function(err, tag) {
                                                         callback(null);
                                                     });
@@ -368,7 +366,6 @@ module.exports = {
                                                         pack.stickers = [];
                                                     }
                                                     pack.stickers.push(sticker._id);
-                                                    pack.updated = new Date();
                                                     pack.save(function(err, pack) {
                                                         if (err) {
                                                             done(err, {
@@ -440,7 +437,6 @@ module.exports = {
                                     callback(err);
                                 } else {
                                     old_pack.stickers.pull(sticker._id);
-                                    old_pack.updated = new Date();
                                     old_pack.save(function(err, old_pack) {
                                         var query = {
                                             $or: [{
@@ -458,7 +454,6 @@ module.exports = {
                                             } else if (pack) {
                                                 sticker.pack = pack._id;
                                                 pack.stickers.push(sticker._id);
-                                                pack.updated = new Date();
                                                 pack.save(function(err, pack) {
                                                     callback(null);
                                                 });
@@ -477,7 +472,6 @@ module.exports = {
                             sticker.tags.forEach(function(tag) {
                                 subcalls.push(function(callback) {
                                     tag.stickers.pull(sticker._id);
-                                    tag.updated = new Date();
                                     tag.save(function(err, tag) {
                                         callback(null);
                                     });
@@ -515,7 +509,6 @@ module.exports = {
                                                         }
                                                     });
                                                 }
-                                                tag.updated = new Date();
                                                 tag.save(function(err, tag) {
                                                     if (err) {
                                                         callback(err);
@@ -579,7 +572,6 @@ module.exports = {
                                 message: err.message
                             });
                         } else {
-                            sticker.updated = new Date();
                             sticker.save(function(err, sticker) {
                                 Sticker.findOne({
                                     _id: sticker._id

@@ -73,8 +73,8 @@ module.exports = {
             }
             if (req.query.type && req.query.type === 'new') {
                 sort = {
-                    'created': -1,
-                    'updated': -1
+                    'createdAt': -1,
+                    'updatedAt': -1
                 };
             }
             var page = req.query.page ? req.query.page : 1;

@@ -26,6 +26,7 @@ module.exports = {
                 });
             });
             async.parallel(subcalls, function (err, results) {
+                console.log("Updated timestamps.");
                 callback(null);
             });
         });
@@ -164,6 +165,7 @@ module.exports = {
             });
         });
         async.series(calls, function (err, results) {
+            console.log("Cron done.");
             callback();
         });
     }

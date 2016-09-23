@@ -38,8 +38,7 @@ global.__base = __dirname + '/';
 if (process.env.BLINKS_NODE_ENV === 'production') {
     global.__bucket = 'blinks';
     global.__cloudfront = 'dyhd59svym94q';
-}
-else {
+} else {
     global.__bucket = 'blinks-dev';
     global.__cloudfront = undefined;
 }
@@ -61,8 +60,7 @@ var Text = mongoose.model('Text', new mongoose.Schema({
 
 if (process.env.BLINKS_NODE_ENV === 'production') {
     mongoose.connect('mongodb://blinks:insaneMembrane1@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
-}
-else {
+} else {
     mongoose.connect('mongodb://blinks:insaneMembrane1@ds035786.mlab.com:35786/blinks-staging');
 }
 
@@ -90,6 +88,26 @@ app.use('/api', require('./routes/api'));
 // Use index as base template
 app.use(function(req, res) {
     res.status(200).render('index');
+});
+
+// Transition dates
+var models = [mongoose.model('Sticker'), mongoose.model('Tag'), mongoose.model('Pack'), mongoose.model('Author')];
+models.forEach(function(Model) {
+    Model.find().exec(function(err, objs) {
+        objs.forEach(function(model_obj) {
+            if (model_obj.created) {
+                model_obj.createdAt = model_obj.created;
+                model_obj.created = undefined;
+            }
+            if (model_obj.updated) {
+                model_obj.updatedAt = model_obj.updated;
+                model_obj.updated = undefined;
+            }
+            model_obj.save(function(err, model_obj) {
+
+            });
+        });
+    });
 });
 
 // Run server

@@ -19,7 +19,9 @@ var AuthorSchema = new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    }
+    },
+    createdAtTimestamp: Number,
+    updatedAtTimestamp: Number
 });
 AuthorSchema.plugin(timestamps);
 mongoose.model('Author', AuthorSchema);
@@ -39,7 +41,9 @@ var PackSchema = new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    }
+    },
+    createdAtTimestamp: Number,
+    updatedAtTimestamp: Number
 });
 PackSchema.plugin(timestamps);
 mongoose.model('Pack', PackSchema);
@@ -64,7 +68,9 @@ var StickerSchema = new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    }
+    },
+    createdAtTimestamp: Number,
+    updatedAtTimestamp: Number
 });
 StickerSchema.plugin(timestamps);
 mongoose.model('Sticker', StickerSchema);
@@ -80,7 +86,9 @@ var TagSchema = new mongoose.Schema({
         daily: Number,
         weekly: Number,
         monthly: Number
-    }
+    },
+    createdAtTimestamp: Number,
+    updatedAtTimestamp: Number
 });
 TagSchema.plugin(timestamps);
 mongoose.model('Tag', TagSchema);

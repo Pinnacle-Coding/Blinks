@@ -21,7 +21,9 @@ var AuthorSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number
+    updatedAtTimestamp: Number,
+    created: String,
+    updated: String
 });
 AuthorSchema.plugin(timestamps);
 mongoose.model('Author', AuthorSchema);
@@ -43,7 +45,9 @@ var PackSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number
+    updatedAtTimestamp: Number,
+    created: String,
+    updated: String
 });
 PackSchema.plugin(timestamps);
 mongoose.model('Pack', PackSchema);
@@ -70,7 +74,9 @@ var StickerSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number
+    updatedAtTimestamp: Number,
+    created: String,
+    updated: String
 });
 StickerSchema.plugin(timestamps);
 mongoose.model('Sticker', StickerSchema);
@@ -88,7 +94,9 @@ var TagSchema = new mongoose.Schema({
         monthly: Number
     },
     createdAtTimestamp: Number,
-    updatedAtTimestamp: Number
+    updatedAtTimestamp: Number,
+    created: String,
+    updated: String
 });
 TagSchema.plugin(timestamps);
 mongoose.model('Tag', TagSchema);

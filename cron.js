@@ -11,25 +11,29 @@ module.exports = {
         var calls = [];
         calls.push(function (callback) {
             var models = [Sticker, Author, Pack, Tag];
+            var populate_subcalls = [];
             var subcalls = [];
             models.forEach(function(Model) {
-                Model.find().exec(function(err, objs) {
-                    console.log(Model);
-                    console.log(objs.length);
-                    objs.forEach(function(model_obj) {
-                        subcalls.push(function (callback) {
-                            model_obj.createdAtTimestamp = model_obj.createdAt.getTime();
-                            model_obj.updatedAtTimestamp = model_obj.updatedAt.getTime();
-                            model_obj.save(function(err, model_obj) {
-                                callback(null);
+                populate_subcalls.push(function (callback) {
+                    Model.find().exec(function(err, objs) {
+                        objs.forEach(function(model_obj) {
+                            subcalls.push(function (callback) {
+                                model_obj.createdAtTimestamp = model_obj.createdAt.getTime();
+                                model_obj.updatedAtTimestamp = model_obj.updatedAt.getTime();
+                                model_obj.save(function(err, model_obj) {
+                                    callback(null);
+                                });
                             });
                         });
+                        callback(null);
                     });
                 });
             });
-            async.parallel(subcalls, function (err, results) {
-                console.log("Updated timestamps.");
-                callback(null);
+            async.series(populate_subcalls, function (err, results) {
+                async.parallel(subcalls, function (err, results) {
+                    console.log("Updated timestamps.");
+                    callback(null);
+                });
             });
         });
         calls.push(function(callback) {

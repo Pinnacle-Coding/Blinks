@@ -37,8 +37,8 @@ var AuthorSchema = new mongoose.Schema({
 });
 AuthorSchema.plugin(timestamps);
 AuthorSchema.pre('save', function (next) {
-    this[createdAtTimestamp] = this[createdAt].getTime();
-    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    this.createdAtTimestamp = this.createdAt.getTime();
+    this.updatedAtTimestamp = this.updatedAt.getTime();
     next();
 });
 mongoose.model('Author', AuthorSchema);
@@ -76,8 +76,8 @@ var PackSchema = new mongoose.Schema({
 });
 PackSchema.plugin(timestamps);
 PackSchema.pre('save', function (next) {
-    this[createdAtTimestamp] = this[createdAt].getTime();
-    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    this.createdAtTimestamp = this.createdAt.getTime();
+    this.updatedAtTimestamp = this.updatedAt.getTime();
     next();
 });
 mongoose.model('Pack', PackSchema);
@@ -120,8 +120,8 @@ var StickerSchema = new mongoose.Schema({
 });
 StickerSchema.plugin(timestamps);
 StickerSchema.pre('save', function (next) {
-    this[createdAtTimestamp] = this[createdAt].getTime();
-    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    this.createdAtTimestamp = this.createdAt.getTime();
+    this.updatedAtTimestamp = this.updatedAt.getTime();
     next();
 });
 mongoose.model('Sticker', StickerSchema);
@@ -155,8 +155,8 @@ var TagSchema = new mongoose.Schema({
 });
 TagSchema.plugin(timestamps);
 TagSchema.pre('save', function (next) {
-    this[createdAtTimestamp] = this[createdAt].getTime();
-    this[updatedAtTimestamp] = this[updatedAt].getTime();
+    this.createdAtTimestamp = this.createdAt.getTime();
+    this.updatedAtTimestamp = this.updatedAt.getTime();
     next();
 });
 mongoose.model('Tag', TagSchema);

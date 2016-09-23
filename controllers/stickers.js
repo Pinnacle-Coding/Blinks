@@ -143,10 +143,10 @@ module.exports = {
                 select: 'name'
             }).populate({
                 path: 'author',
-                select: 'name location image'
+                select: 'name location image hits'
             }).populate({
                 path: 'pack',
-                select: 'name'
+                select: 'name hits'
             }).exec(function(err, sticker) {
                 if (err) {
                     done(true, {

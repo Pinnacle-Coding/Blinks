@@ -12,16 +12,16 @@ There are three remote repositories. Branches are listed underneath the branch n
     - master (https://blinks-app.herokuapp.com)
 
 GIT COMMANDS:
-1) Development:
-    - git checkout develop
-    - git merge -X theirs master
-    - git push origin develop
-    - git push staging develop:master
-2) Production:
+1) Production:
     - git checkout master
     - git merge -X theirs develop
     - git push origin master
     - git push production master
+2) Development:
+    - git checkout develop
+    - git merge -X theirs master
+    - git push origin develop
+    - git push staging develop:master
 
 TODO:
     - Fork to dev/staging server [DONE]

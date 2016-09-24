@@ -121,7 +121,8 @@ module.exports = {
                             name: name,
                             username: username,
                             location: (req.body.location) ? req.body.location : undefined,
-                            packs: []
+                            packs: [],
+                            createdAtTimestamp: new Date().getTime()
                         });
                         var calls = [];
                         calls.push(function(callback) {

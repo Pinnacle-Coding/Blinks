@@ -141,7 +141,8 @@ module.exports = {
                                 var new_pack = new Pack({
                                     name: req.body.name,
                                     author: author._id,
-                                    stickers: []
+                                    stickers: [],
+                                    createdAtTimestamp: new Date().getTime()
                                 });
                                 new_pack.save(function(err, pack) {
                                     if (err) {

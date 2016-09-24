@@ -49,7 +49,7 @@ module.exports = {
                     sticker.hits.daily += 1;
                     sticker.hits.weekly += 1;
                     sticker.hits.monthly += 1;
-                    sticker.needsUpdate = false;
+                    sticker.noUpdate = true;
                     sticker.save(function(err, sticker) {
                         if (err) {
                             done(err, {
@@ -61,7 +61,7 @@ module.exports = {
                             author.hits.daily += 1;
                             author.hits.weekly += 1;
                             author.hits.monthly += 1;
-                            author.needsUpdate = false;
+                            author.noUpdate = true;
                             author.save(function(err, author) {
                                 if (err) {
                                     done(err, {
@@ -73,7 +73,7 @@ module.exports = {
                                     pack.hits.daily += 1;
                                     pack.hits.weekly += 1;
                                     pack.hits.monthly += 1;
-                                    pack.needsUpdate = false;
+                                    pack.noUpdate = true;
                                     pack.save(function(err, pack) {
                                         if (err) {
                                             done(err, {
@@ -87,7 +87,7 @@ module.exports = {
                                                     tag.hits.daily += 1;
                                                     tag.hits.weekly += 1;
                                                     tag.hits.monthly += 1;
-                                                    tag.needsUpdate = false;
+                                                    tag.noUpdate = true;
                                                     tag.save(function(err, tag) {
                                                         callback(null);
                                                     });
@@ -351,7 +351,8 @@ module.exports = {
                                         } else {
                                             var new_tag = new Tag({
                                                 name: tag_string,
-                                                stickers: []
+                                                stickers: [],
+                                                createdAtTimestamp: new Date().getTime()
                                             });
                                             new_tag.save(function(err, new_tag) {
                                                 if (!err) {
@@ -374,7 +375,8 @@ module.exports = {
                                 var sticker = new Sticker({
                                     author: pack.author,
                                     pack: pack._id,
-                                    tags: tag_ids
+                                    tags: tag_ids,
+                                    createdAtTimestamp: new Date().getTime()
                                 });
                                 var key = require('path').join('stickers', sticker._id.toString());
                                 var params = {
@@ -556,7 +558,8 @@ module.exports = {
                                                     callback(err);
                                                 } else if (!tag) {
                                                     tag = new Tag({
-                                                        name: tag_name
+                                                        name: tag_name,
+                                                        createdAtTimestamp: new Date().getTime()
                                                     });
                                                 }
                                                 tag.save(function(err, tag) {

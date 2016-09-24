@@ -31,9 +31,9 @@ var AuthorSchema = new mongoose.Schema({
             default: 0
         }
     },
-    needsUpdate: {
+    noUpdate: {
         type: Boolean,
-        default: true
+        default: false
     },
     createdAt: {
         type: Date,
@@ -44,15 +44,12 @@ var AuthorSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 AuthorSchema.pre('save', function (next) {
-    console.log(this);
-    console.log(this.createdAt);
-    this.createdAtTimestamp = this.createdAt.getTime();
-    if (this.needsUpdate) {
+    if (!this.noUpdate) {
         this.updatedAt = Date.now();
         this.updatedAtTimestamp = this.updatedAt.getTime();
     }
     else {
-        this.needsUpdate = true;
+        this.noUpdate = false;
     }
     next();
 });
@@ -86,9 +83,9 @@ var PackSchema = new mongoose.Schema({
             default: 0
         }
     },
-    needsUpdate: {
+    noUpdate: {
         type: Boolean,
-        default: true
+        default: false
     },
     createdAt: {
         type: Date,
@@ -99,13 +96,12 @@ var PackSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 PackSchema.pre('save', function (next) {
-    this.createdAtTimestamp = this.createdAt.getTime();
-    if (this.needsUpdate) {
+    if (!this.noUpdate) {
         this.updatedAt = Date.now();
         this.updatedAtTimestamp = this.updatedAt.getTime();
     }
     else {
-        this.needsUpdate = true;
+        this.noUpdate = false;
     }
     next();
 });
@@ -144,9 +140,9 @@ var StickerSchema = new mongoose.Schema({
             default: 0
         }
     },
-    needsUpdate: {
+    noUpdate: {
         type: Boolean,
-        default: true
+        default: false
     },
     createdAt: {
         type: Date,
@@ -157,13 +153,12 @@ var StickerSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 StickerSchema.pre('save', function (next) {
-    this.createdAtTimestamp = this.createdAt.getTime();
-    if (this.needsUpdate) {
+    if (!this.noUpdate) {
         this.updatedAt = Date.now();
         this.updatedAtTimestamp = this.updatedAt.getTime();
     }
     else {
-        this.needsUpdate = true;
+        this.noUpdate = false;
     }
     next();
 });
@@ -193,9 +188,9 @@ var TagSchema = new mongoose.Schema({
             default: 0
         }
     },
-    needsUpdate: {
+    noUpdate: {
         type: Boolean,
-        default: true
+        default: false
     },
     createdAt: {
         type: Date,
@@ -206,13 +201,12 @@ var TagSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 TagSchema.pre('save', function (next) {
-    this.createdAtTimestamp = this.createdAt.getTime();
-    if (this.needsUpdate) {
+    if (!this.noUpdate) {
         this.updatedAt = Date.now();
         this.updatedAtTimestamp = this.updatedAt.getTime();
     }
     else {
-        this.needsUpdate = true;
+        this.noUpdate = false;
     }
     next();
 });

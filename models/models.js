@@ -45,6 +45,7 @@ var AuthorSchema = new mongoose.Schema({
 });
 AuthorSchema.pre('save', function (next) {
     console.log(this);
+    console.log(this.createdAt);
     this.createdAtTimestamp = this.createdAt.getTime();
     if (this.needsUpdate) {
         this.updatedAt = Date.now();

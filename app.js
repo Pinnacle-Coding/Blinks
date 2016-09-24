@@ -23,15 +23,8 @@ GIT COMMANDS:
     - git push origin develop
     - git push staging develop:master
 
-TODO:
-    - Fork to dev/staging server [DONE]
-    - AWS to Cloudfront [DONE]
-    - Created timestamps [DONE - see cron script + mongoose middleware]
-    - Updated timestamps [DONE - see cron script + mongoose middleware]
-    - Replace spaces with underscores [DONE]
-    - New packs <-- api calls [DONE]
+TODO:]
     - 'Is animated sticker?' boolean field
-    - Hits API [DONE]
     - Store small, medium, large images
     - Currently, whenever you create a object, you have to MANUALLY add the timestamp. Automate this.
 */

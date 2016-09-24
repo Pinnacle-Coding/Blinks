@@ -32,7 +32,7 @@ module.exports = {
                     });
                 } else {
                     done(false, {
-                        message: (sticker) ? 'Pack found' : 'No pack found',
+                        message: (pack) ? 'Pack found' : 'No pack found',
                         pack: pack
                     });
                 }

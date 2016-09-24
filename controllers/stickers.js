@@ -49,6 +49,7 @@ module.exports = {
                     sticker.hits.daily += 1;
                     sticker.hits.weekly += 1;
                     sticker.hits.monthly += 1;
+                    sticker.needsUpdate = false;
                     sticker.save(function(err, sticker) {
                         if (err) {
                             done(err, {
@@ -60,6 +61,7 @@ module.exports = {
                             author.hits.daily += 1;
                             author.hits.weekly += 1;
                             author.hits.monthly += 1;
+                            author.needsUpdate = false;
                             author.save(function(err, author) {
                                 if (err) {
                                     done(err, {
@@ -71,6 +73,7 @@ module.exports = {
                                     pack.hits.daily += 1;
                                     pack.hits.weekly += 1;
                                     pack.hits.monthly += 1;
+                                    pack.needsUpdate = false;
                                     pack.save(function(err, pack) {
                                         if (err) {
                                             done(err, {
@@ -84,6 +87,7 @@ module.exports = {
                                                     tag.hits.daily += 1;
                                                     tag.hits.weekly += 1;
                                                     tag.hits.monthly += 1;
+                                                    tag.needsUpdate = false;
                                                     tag.save(function(err, tag) {
                                                         callback(null);
                                                     });

@@ -44,6 +44,7 @@ var AuthorSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 AuthorSchema.pre('save', function (next) {
+    console.log(this);
     this.createdAtTimestamp = this.createdAt.getTime();
     if (this.needsUpdate) {
         this.updatedAt = Date.now();
@@ -155,7 +156,6 @@ var StickerSchema = new mongoose.Schema({
     updatedAtTimestamp: Number
 });
 StickerSchema.pre('save', function (next) {
-    console.log(this);
     this.createdAtTimestamp = this.createdAt.getTime();
     if (this.needsUpdate) {
         this.updatedAt = Date.now();

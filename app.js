@@ -33,6 +33,7 @@ TODO:
     - 'Is animated sticker?' boolean field
     - Hits API [DONE]
     - Store small, medium, large images
+    - Currently, whenever you create a object, you have to MANUALLY add the timestamp. Automate this.
 */
 
 global.__base = __dirname + '/';

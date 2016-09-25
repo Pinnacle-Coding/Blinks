@@ -18,6 +18,13 @@
     </div>
 </div>
 <div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row center">
+        <ul class="pagination">
+            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
+            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
+            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
     <div class="row white z-depth-1">
         <div class="col s10 offset-s1">
             <form ng-submit="searchStickers()">
@@ -27,13 +34,6 @@
                 </div>
             </form>
         </div>
-    </div>
-    <div class="row center">
-        <ul class="pagination">
-            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
-            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
-            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
-        </ul>
     </div>
     <div class="row">
         <div class="col s12 m4" ng-repeat="sticker in stickers" ng-show="stickers && stickers.length">

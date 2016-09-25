@@ -41,6 +41,14 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         });
     };
 
+    $scope.adjustPagination = function() {
+        if ($scope.page_current < 3) {
+            $scope.pagination = [1, 2, 3, 4, 5];
+        } else {
+            $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2];
+        }
+    };
+
     $scope.loadStickers = function(search_term) {
         $scope.loading = true;
         var params = {
@@ -159,14 +167,6 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         $scope.page_current -= 1;
         $scope.adjustPagination();
         $scope.loadStickers();
-    };
-
-    $scope.adjustPagination = function() {
-        if ($scope.page_current < 3) {
-            $scope.pagination = [1, 2, 3, 4, 5];
-        } else {
-            $scope.pagination = [$scope.page_current - 2, $scope.page_current - 1, $scope.page_current, $scope.page_current + 1, $scope.page_current + 2];
-        }
     };
 
     $scope.concatTags = function(sticker) {

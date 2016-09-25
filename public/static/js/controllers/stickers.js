@@ -74,6 +74,9 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $scope.page_current = 1;
             $scope.pagination = [1, 2, 3, 4, 5];
             var term = $stateParams.tag ? $stateParams.tag : undefined;
+            if (term) {
+                $scope.search = term;
+            }
             $scope.loadStickers(term);
             break;
         case 'blinks.sticker':

@@ -52,6 +52,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             params.tag = search_term;
             params.page = 1;
             $scope.page_current = 1;
+            $scope.adjustPagination();
         }
         $http({
             method: 'GET',

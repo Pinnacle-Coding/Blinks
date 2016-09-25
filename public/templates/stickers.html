@@ -19,12 +19,16 @@
 </div>
 <div class="container top-container" ng-cloak ng-hide="loading">
     <div class="row">
-        <form ng-submit="searchStickers()" class="white">
-            <div class="input-field">
-                <input id="search" type="search" placeholder="Search" ng-model="search">
-                <!-- label for="search"><i class="material-icons">search</i></label -->
+        <div class="card hoverable">
+            <div class="card-content">
+                <form ng-submit="searchStickers()" class="white">
+                    <div class="input-field">
+                        <input id="search" type="search" ng-model="search">
+                        <label for="search"><i class="material-icons">search</i></label>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div class="row center">
         <ul class="pagination">

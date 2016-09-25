@@ -236,7 +236,8 @@ module.exports = {
                         } else {
                             stickers = stickers.slice(sliceBegin, sliceEnd);
                         }
-                        var stickersPop = [];
+                        var stickerIds = {};
+                        var stickersDone = [];
                         var tasks = [];
                         stickers.forEach(function(sticker) {
                             tasks.push(function(callback) {
@@ -246,13 +247,17 @@ module.exports = {
                                     path: 'tags',
                                     select: 'name'
                                 }).populate({
-                                    path: 'Pack',
+                                    path: 'pack',
                                     select: 'name'
                                 }).populate({
                                     path: 'author',
                                     select: 'name location'
                                 }).exec(function(err, sticker) {
-                                    stickersPop.push(sticker);
+                                    var stringId = sticker._id.toString();
+                                    if (!(stringId in stickerIds)) {
+                                        stickersDone.push(sticker);
+                                        stickerIds[stringId] = '';
+                                    }
                                     callback(null);
                                 });
                             });
@@ -264,8 +269,8 @@ module.exports = {
                                 });
                             } else {
                                 done(false, {
-                                    message: stickersPop.length ? 'Stickers found' : 'Stickers not found',
-                                    stickers: stickersPop
+                                    message: stickersDone.length ? 'Stickers found' : 'Stickers not found',
+                                    stickers: stickersDone
                                 });
                             }
                         });

@@ -41,16 +41,22 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         });
     };
 
-    $scope.loadStickers = function() {
+    $scope.loadStickers = function(search_term) {
         $scope.loading = true;
+        var params = {
+            type: 'trending',
+            page: $scope.page_current,
+            count: 9
+        };
+        if (search_term) {
+            params.tag = search_term;
+            params.page = 1;
+            $scope.page_current = 1;
+        }
         $http({
             method: 'GET',
             url: '/api/stickers',
-            params: {
-                type: 'trending',
-                page: $scope.page_current,
-                count: 9
-            }
+            params: params
         }).then(function(resp) {
             $scope.stickers = resp.data.stickers;
             $scope.loading = false;
@@ -67,7 +73,8 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $scope.stickers = [];
             $scope.page_current = 1;
             $scope.pagination = [1, 2, 3, 4, 5];
-            $scope.loadStickers();
+            var term = $stateParams.tag ? $stateParams.tag : undefined;
+            $scope.loadStickers(term);
             break;
         case 'blinks.sticker':
             $scope.sticker = undefined;
@@ -121,6 +128,12 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         });
         */
         window.location.href = '/sticker/' + sticker._id;
+    };
+
+    $scope.searchStickers = function () {
+        $state.go('blinks.stickers', {
+            tag: $scope.search
+        });
     };
 
     $scope.setPage = function(page) {

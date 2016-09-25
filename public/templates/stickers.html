@@ -18,20 +18,20 @@
     </div>
 </div>
 <div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row">
+        <form ng-submit="searchStickers()">
+            <div class="input-field">
+                <input id="search" type="search" placeholder="Search" ng-model="search">
+                <!-- label for="search"><i class="material-icons">search</i></label -->
+            </div>
+        </form>
+    </div>
     <div class="row center">
         <ul class="pagination">
             <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
             <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
             <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
         </ul>
-    </div>
-    <div class="row">
-        <form>
-            <div class="input-field">
-                <input id="search" type="search" placeholder="Search" required>
-                <!-- label for="search"><i class="material-icons">search</i></label -->
-            </div>
-        </form>
     </div>
     <div class="row">
         <div class="col s12 m4" ng-repeat="sticker in stickers" ng-show="stickers && stickers.length">

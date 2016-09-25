@@ -26,6 +26,15 @@
         </ul>
     </div>
     <div class="row">
+        <form>
+            <div class="input-field">
+                <input id="search" type="search" required>
+                <label for="search"><i class="material-icons">search</i></label>
+                <i class="material-icons">close</i>
+            </div>
+        </form>
+    </div>
+    <div class="row">
         <div class="col s12 m4" ng-repeat="sticker in stickers" ng-show="stickers && stickers.length">
             <div class="card cursor-pointer hoverable" ng-click="goToSticker(sticker)">
                 <div class="card-content blue-text text-darken-2 center">

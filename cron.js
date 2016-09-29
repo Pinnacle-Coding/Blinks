@@ -9,15 +9,51 @@ var async = require('async');
 module.exports = {
     run: function(callback) {
         var calls = [];
-        calls.push(function (callback) {
+        // Retag stickers
+        calls.push(function(callback) {
+            Stickers.find().exec(function(err, stickers) {
+                if (err) {
+                    callback(err);
+                } else {
+                    var subcalls = [];
+                    stickers.forEach(function(sticker) {
+                        sticker.tags.forEach(function(tag) {
+                            subcalls.push(function(callback) {
+                                Tag.findOne({
+                                    _id: tag
+                                }).exec(function(err, tag) {
+                                    var isInArray = tag.stickers.some(function(tag_sticker) {
+                                        return tag_sticker === sticker._id;
+                                    });
+                                    if (!isInArray) {
+                                        tag.stickers.push(sticker._id);
+                                        tag.save(function (err, tag) {
+                                            callback(null);
+                                        });
+                                    }
+                                    else {
+                                        callback(null);
+                                    }
+                                });
+                            });
+                        });
+                    });
+                    async.series(subcalls, function(err, results) {
+                        callback(null);
+                    });
+                }
+            });
+        });
+        // Fix timestamps
+        calls.push(function(callback) {
             var models = [Sticker, Author, Pack, Tag];
             var populate_subcalls = [];
             var subcalls = [];
             models.forEach(function(Model) {
-                populate_subcalls.push(function (callback) {
+                populate_subcalls.push(function(callback) {
                     Model.find().exec(function(err, objs) {
                         objs.forEach(function(model_obj) {
-                            subcalls.push(function (callback) {
+                            subcalls.push(function(callback) {
                                 model_obj.createdAtTimestamp = model_obj.createdAt.getTime();
                                 model_obj.updatedAtTimestamp = model_obj.updatedAt.getTime();
                                 model_obj.noUpdate = true;
@@ -30,18 +66,18 @@ module.exports = {
                     });
                 });
             });
-            async.series(populate_subcalls, function (err, results) {
-                async.parallel(subcalls, function (err, results) {
+            async.series(populate_subcalls, function(err, results) {
+                async.parallel(subcalls, function(err, results) {
                     if (err) {
-                        console.log("Error generating timestamps: "+err.message);
-                    }
-                    else {
+                        console.log("Error generating timestamps: " + err.message);
+                    } else {
                         console.log("Updated timestamps.");
                     }
                     callback(null);
                 });
             });
         });
+        // Update hits
         calls.push(function(callback) {
             var version = require('./package.json').version;
             var today = new Date();
@@ -176,7 +212,7 @@ module.exports = {
                 }
             });
         });
-        async.series(calls, function (err, results) {
+        async.series(calls, function(err, results) {
             console.log("Cron done.");
             callback();
         });

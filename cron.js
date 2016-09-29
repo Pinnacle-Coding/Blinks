@@ -11,7 +11,7 @@ module.exports = {
         var calls = [];
         // Retag stickers
         calls.push(function(callback) {
-            Stickers.find().exec(function(err, stickers) {
+            Sticker.find().exec(function(err, stickers) {
                 if (err) {
                     callback(err);
                 } else {

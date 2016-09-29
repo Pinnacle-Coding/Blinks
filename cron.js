@@ -9,6 +9,7 @@ var async = require('async');
 module.exports = {
     run: function(callback) {
         var calls = [];
+        /*
         // Retag stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {
@@ -44,6 +45,7 @@ module.exports = {
                 }
             });
         });
+        */
         // Fix timestamps
         calls.push(function(callback) {
             var models = [Sticker, Author, Pack, Tag];

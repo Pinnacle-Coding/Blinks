@@ -6,9 +6,37 @@ var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var async = require('async');
 
+// Use only with arrays of a SINGLE, PRIMITIVE type
+// e.g. [String] or [int]
+var uniq = function(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+};
+
 module.exports = {
     run: function(callback) {
         var calls = [];
+        // Make stickers listed in each tag unique
+        calls.push(function (callback) {
+            Tag.find().exec(function (err, tags) {
+                var subcalls = [];
+                if (!err && tags) {
+                    tags.forEach(function (tag) {
+                        subcalls.push(function (callback) {
+                            tag.stickers = uniq(tag.stickers);
+                            tag.save(function (err, tag) {
+                                callback(null);
+                            });
+                        });
+                    });
+                }
+                async.parallel(subcalls, function (err, results) {
+                    callback(err ? err : null);
+                });
+            });
+        });
         /*
         // Retag stickers
         calls.push(function(callback) {

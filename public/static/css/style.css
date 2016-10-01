@@ -1,5 +1,5 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+    display: none !important;
 }
 
 body {
@@ -37,5 +37,9 @@ body {
 }
 
 .cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
+}
+
+.sticker-card {
+    min-height: 350px;
 }

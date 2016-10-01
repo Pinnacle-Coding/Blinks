@@ -22,7 +22,7 @@ module.exports = {
         var calls = [];
         // Animated stickers
         calls.push(function (callback) {
-            Sticker.find().forEach(function (err, stickers) {
+            Sticker.find().exec(function (err, stickers) {
                 var subcalls = [];
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {

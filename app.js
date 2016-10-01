@@ -92,10 +92,11 @@ app.listen(app.get('port'), function() {
 });
 
 // Run cron
+var init = require('./init.js');
 var cron = require('./cron.js');
 var timeoutCallback = function() {
     setTimeout(function() {
         cron.run(timeoutCallback);
     }, 1000 * 60 * 60);
 };
-cron.run(timeoutCallback);
+init.run(timeoutCallback);

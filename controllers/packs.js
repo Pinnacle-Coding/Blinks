@@ -74,6 +74,25 @@ module.exports = {
                 return;
             }
             var count = req.query.count ? req.query.count : 20;
+
+            if (isNaN(page)) {
+                done(true, {
+                    message: 'Invalid page.'
+                });
+                return;
+            } else {
+                page = parseInt(page, 10);
+            }
+
+            if (isNaN(count)) {
+                done(true, {
+                    message: 'Invalid count.'
+                });
+                return;
+            } else {
+                count = parseInt(count, 10);
+            }
+
             Pack.find().populate({
                 path: 'stickers',
                 select: 'name image updatedAtTimestamp createdAtTimestamp animated'

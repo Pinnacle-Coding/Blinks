@@ -404,6 +404,8 @@ module.exports = {
                                     } else {
                                         sticker.image = sticker.s3;
                                     }
+                                    var mimetype = req.file.mimetype;
+                                    sticker.animated = (mimetype.indexOf('gif') !== -1 || mimetype.indexOf('apng') !== -1);
                                     sticker.save(function(err, sticker) {
                                         if (err) {
                                             done(err, {

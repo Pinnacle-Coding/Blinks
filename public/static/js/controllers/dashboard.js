@@ -1,6 +1,23 @@
 app.controller('DashboardController', function($scope, $http, Upload) {
 
     $scope.uploading = false;
+    $scope.loading = true;
+
+    $http({
+        method: 'GET',
+        url: '/api/metrics/stats'
+    }).then(function (resp) {
+        $scope.stats = resp.data.stats;
+        $scope.loading = false;
+    }, function (resp) {
+        $scope.stats = {
+            stickers: 0,
+            packs: 0,
+            authors: 0,
+            tags: 0
+        };
+        $scope.loading = false;
+    });
 
     $scope.upload = function(url, data, method, success, error) {
         Upload.upload({

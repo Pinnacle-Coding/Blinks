@@ -39,10 +39,7 @@ app.controller('AuthorsController', function($scope, $http, $state, $stateParams
     $scope.loadAuthor = function(id) {
         $http({
             method: 'GET',
-            url: '/api/author/' + id,
-            params: {
-                hitblock: true
-            }
+            url: '/api/author/' + id
         }).then(function(resp) {
             $scope.author = resp.data.author;
             $scope.authorEdit = {

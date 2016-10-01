@@ -22,10 +22,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         $scope.loading = true;
         $http({
             method: 'GET',
-            url: '/api/sticker/' + id,
-            params: {
-                hitblock: true
-            }
+            url: '/api/sticker/' + id
         }).then(function(resp) {
             $scope.sticker = resp.data.sticker;
             $scope.stickerEdit = {

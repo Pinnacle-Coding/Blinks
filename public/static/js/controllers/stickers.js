@@ -49,15 +49,15 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         }
     };
 
-    $scope.loadStickers = function(search_term) {
+    $scope.loadStickers = function(init) {
         $scope.loading = true;
         var params = {
             type: 'trending',
             page: $scope.page_current,
             count: 9
         };
-        if (search_term) {
-            params.tag = search_term;
+        if (init && $stateParams.tag) {
+            params.tag = $stateParams.tag;
             params.page = 1;
             $scope.page_current = 1;
             $scope.adjustPagination();
@@ -82,11 +82,10 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             $scope.stickers = [];
             $scope.page_current = 1;
             $scope.pagination = [1, 2, 3, 4, 5];
-            var term = $stateParams.tag ? $stateParams.tag : undefined;
-            if (term) {
-                $scope.search = term;
+            if ($stateParams.tag) {
+                $scope.search = $stateParams.tag;
             }
-            $scope.loadStickers(term);
+            $scope.loadStickers(true);
             break;
         case 'blinks.sticker':
             $scope.sticker = undefined;
@@ -151,13 +150,13 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
     $scope.setPage = function(page) {
         $scope.page_current = page;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadStickers(false);
     };
 
     $scope.nextPage = function() {
         $scope.page_current += 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadStickers(false);
     };
 
     $scope.previousPage = function() {
@@ -166,7 +165,7 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
         }
         $scope.page_current -= 1;
         $scope.adjustPagination();
-        $scope.loadStickers();
+        $scope.loadStickers(false);
     };
 
     $scope.concatTags = function(sticker) {

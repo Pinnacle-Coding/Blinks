@@ -5,7 +5,7 @@ var Author = mongoose.model('Author');
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var async = require('async');
-var http = require('http');
+var https = require('https');
 var fileType = require('file-type');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
@@ -27,7 +27,7 @@ module.exports = {
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {
                         subcalls.push(function (callback) {
-                            http.get(sticker.image, res => {
+                            https.get(sticker.image, res => {
                                 res.once('data', chunk => {
                                     res.destroy();
                                     var type = fileType(chunk);

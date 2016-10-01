@@ -16,7 +16,8 @@
         "body-parser": "^1.15.1",
         "async": "2.0.1",
         "s3": "4.4.0",
-        "multer": "1.2.0"
+        "multer": "1.2.0",
+        "file-type": "3.8.0"
     },
     "repository": {
         "type": "git",

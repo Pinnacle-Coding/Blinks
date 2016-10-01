@@ -110,6 +110,10 @@ mongoose.model('Pack', PackSchema);
 var StickerSchema = new mongoose.Schema({
     image: String,
     s3: String,
+    animated: {
+        type: Boolean,
+        default: false
+    },
     author: {
         type: mongoose.Schema.ObjectId,
         ref: 'Author'

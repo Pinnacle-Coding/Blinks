@@ -5,6 +5,8 @@ var Author = mongoose.model('Author');
 var Sticker = mongoose.model('Sticker');
 var Tag = mongoose.model('Tag');
 var async = require('async');
+var http = require('http');
+var fileType = require('file-type');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
 // e.g. [String] or [int]
@@ -18,6 +20,31 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
+        // Animated stickers
+        calls.push(function (callback) {
+            Sticker.find().forEach(function (err, stickers) {
+                var subcalls = [];
+                if (!err && stickers) {
+                    stickers.forEach(function (sticker) {
+                        subcalls.push(function (callback) {
+                            http.get(sticker.image, res => {
+                                res.once('data', chunk => {
+                                    res.destroy();
+                                    var type = fileType(chunk);
+                                    sticker.animated = (type.mime.indexOf('gif') !== -1 || type.mime.indexOf('apng') !== -1);
+                                    sticker.save(function (err, sticker) {
+                                        callback(null);
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+                async.parallel(subcalls, function (err, results) {
+                    callback(err ? err : null);
+                });
+            });
+        });
         // Make sticker array for each tag full of unique elements
         // Do the same for tags in each sticker
         calls.push(function (callback) {

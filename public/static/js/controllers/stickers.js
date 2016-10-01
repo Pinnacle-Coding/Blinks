@@ -56,11 +56,13 @@ app.controller('StickersController', function($scope, $http, $state, $stateParam
             page: $scope.page_current,
             count: 9
         };
-        if (init && $stateParams.tag) {
+        if ($stateParams.tag) {
             params.tag = $stateParams.tag;
-            params.page = 1;
-            $scope.page_current = 1;
-            $scope.adjustPagination();
+            if (init) {
+                params.page = 1;
+                $scope.page_current = 1;
+                $scope.adjustPagination();
+            }
         }
         $http({
             method: 'GET',

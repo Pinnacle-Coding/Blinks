@@ -18,7 +18,8 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
-        // Make stickers listed in each tag unique
+        // Make sticker array for each tag full of unique elements
+        // Do the same for tags in each sticker
         calls.push(function (callback) {
             Tag.find().exec(function (err, tags) {
                 var subcalls = [];
@@ -33,7 +34,22 @@ module.exports = {
                     });
                 }
                 async.parallel(subcalls, function (err, results) {
-                    callback(err ? err : null);
+                    Sticker.find().exec(function (err, stickers) {
+                        var subcalls = [];
+                        if (!err && stickers) {
+                            stickers.forEach(function (sticker) {
+                                subcalls.push(function (callback) {
+                                    sticker.tags = uniq(sticker.tags);
+                                    sticker.save(function (err, sticker) {
+                                        callback(null);
+                                    });
+                                });
+                            });
+                        }
+                        async.parallel(subcalls, function (err, results) {
+                            callback(err ? err : null);
+                        });
+                    });
                 });
             });
         });

@@ -1,5 +1,20 @@
 var mongoose = require('mongoose');
 
+var timestamps = function (next) {
+    if (this.isNew) {
+        this.createdAt = Date.now();
+        this.createdAtTimestamp = this.createdAt.getTime();
+    }
+    if (!this.noUpdate) {
+        this.updatedAt = Date.now();
+        this.updatedAtTimestamp = this.updatedAt.getTime();
+    }
+    else {
+        this.noUpdate = false;
+    }
+    next();
+};
+
 var AuthorSchema = new mongoose.Schema({
     name: String,
     username: String,
@@ -35,24 +50,12 @@ var AuthorSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
+    createdAt: Date,
     updatedAt: Date,
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
 });
-AuthorSchema.pre('save', function (next) {
-    if (!this.noUpdate) {
-        this.updatedAt = Date.now();
-        this.updatedAtTimestamp = this.updatedAt.getTime();
-    }
-    else {
-        this.noUpdate = false;
-    }
-    next();
-});
+AuthorSchema.pre('save', timestamps);
 mongoose.model('Author', AuthorSchema);
 
 var PackSchema = new mongoose.Schema({
@@ -87,24 +90,12 @@ var PackSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
+    createdAt: Date,
     updatedAt: Date,
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
 });
-PackSchema.pre('save', function (next) {
-    if (!this.noUpdate) {
-        this.updatedAt = Date.now();
-        this.updatedAtTimestamp = this.updatedAt.getTime();
-    }
-    else {
-        this.noUpdate = false;
-    }
-    next();
-});
+PackSchema.pre('save', timestamps);
 mongoose.model('Pack', PackSchema);
 
 var StickerSchema = new mongoose.Schema({
@@ -148,24 +139,12 @@ var StickerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
+    createdAt: Date,
     updatedAt: Date,
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
 });
-StickerSchema.pre('save', function (next) {
-    if (!this.noUpdate) {
-        this.updatedAt = Date.now();
-        this.updatedAtTimestamp = this.updatedAt.getTime();
-    }
-    else {
-        this.noUpdate = false;
-    }
-    next();
-});
+StickerSchema.pre('save', timestamps);
 mongoose.model('Sticker', StickerSchema);
 
 var TagSchema = new mongoose.Schema({
@@ -196,24 +175,12 @@ var TagSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
+    createdAt: Date,
     updatedAt: Date,
     createdAtTimestamp: Number,
     updatedAtTimestamp: Number
 });
-TagSchema.pre('save', function (next) {
-    if (!this.noUpdate) {
-        this.updatedAt = Date.now();
-        this.updatedAtTimestamp = this.updatedAt.getTime();
-    }
-    else {
-        this.noUpdate = false;
-    }
-    next();
-});
+TagSchema.pre('save', timestamps);
 mongoose.model('Tag', TagSchema);
 
 mongoose.model('Metrics', new mongoose.Schema({

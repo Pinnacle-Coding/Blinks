@@ -21,7 +21,7 @@ module.exports = {
             }
             Pack.findOne(query).populate({
                 path: 'stickers',
-                select: 'name image updatedAtTimestamp createdAtTimestamp'
+                select: 'name image updatedAtTimestamp createdAtTimestamp animated'
             }).populate({
                 path: 'author',
                 select: 'name location image'
@@ -76,7 +76,7 @@ module.exports = {
             var count = req.query.count ? req.query.count : 20;
             Pack.find().populate({
                 path: 'stickers',
-                select: 'name image updatedAtTimestamp createdAtTimestamp'
+                select: 'name image updatedAtTimestamp createdAtTimestamp animated'
             }).populate({
                 path: 'author',
                 select: 'name location image'
@@ -141,8 +141,7 @@ module.exports = {
                                 var new_pack = new Pack({
                                     name: req.body.name,
                                     author: author._id,
-                                    stickers: [],
-                                    createdAtTimestamp: new Date().getTime()
+                                    stickers: []
                                 });
                                 new_pack.save(function(err, pack) {
                                     if (err) {

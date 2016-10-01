@@ -356,8 +356,7 @@ module.exports = {
                                         } else {
                                             var new_tag = new Tag({
                                                 name: tag_string,
-                                                stickers: [],
-                                                createdAtTimestamp: new Date().getTime()
+                                                stickers: []
                                             });
                                             new_tag.save(function(err, new_tag) {
                                                 if (!err) {
@@ -380,8 +379,7 @@ module.exports = {
                                 var sticker = new Sticker({
                                     author: pack.author,
                                     pack: pack._id,
-                                    tags: tag_ids,
-                                    createdAtTimestamp: new Date().getTime()
+                                    tags: tag_ids
                                 });
                                 var key = require('path').join('stickers', sticker._id.toString());
                                 var params = {
@@ -565,8 +563,7 @@ module.exports = {
                                                     callback(err);
                                                 } else if (!tag) {
                                                     tag = new Tag({
-                                                        name: tag_name,
-                                                        createdAtTimestamp: new Date().getTime()
+                                                        name: tag_name
                                                     });
                                                 }
                                                 tag.save(function(err, tag) {

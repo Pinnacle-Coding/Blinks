@@ -6,7 +6,8 @@ var Tag = mongoose.model('Tag');
 var Pack = mongoose.model('Pack');
 var Author = mongoose.model('Author');
 var s3 = require('s3');
-var levenshtein = require('fast-levenshtein');
+var path = require('path');
+var TagCtrl = require(path.join(__base, 'controllers/tags.js'));
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
 // e.g. [String] or [int]
@@ -222,79 +223,18 @@ module.exports = {
 
             if (req.query.tag) {
                 req.query.tag = req.query.tag.replaceAll('_', ' ');
-                var tag_ids = {};
                 var tags = [];
                 var subcalls = [];
                 subcalls.push(function(callback) {
-                    Tag.find({
-                        $or: [{
-                            name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
-                        }, {
-                            name: new RegExp(req.query.tag, 'i')
-                        }]
-                    }).populate({
-                        path: 'stickers',
-                        select: 'image animated'
-                    }).exec(function(err, tags_contained) {
+                    req.query.contains = req.query.tag;
+                    req.query.page = 1;
+                    req.query.count = 20;
+                    TagCtrl.getTags(req, function (err, results) {
                         if (err) {
                             callback(err);
                         }
                         else {
-                            tags_contained.forEach(function (tag) {
-                                var keywords = tag.name.split(' ');
-                                if (keywords.length > 1) {
-                                    keywords.push(tag.name);
-                                }
-                                var tag_score = 10000000;
-                                for (var i in keywords) {
-                                    var keyword = keywords[i];
-                                    tag_score = Math.min(tag_score, 0.25 * Math.abs(keyword.length - req.query.tag.length));
-                                }
-                                var tag_id = tag._id.toString();
-                                if (!(tag_id in tag_ids)) {
-                                    tags.push(tag);
-                                    tag_ids[tag_id] = tag_score;
-                                }
-                            });
-                            callback(null);
-                        }
-                    });
-                });
-                subcalls.push(function(callback) {
-                    Tag.find().populate({
-                        path: 'stickers',
-                        select: 'image animated'
-                    }).exec(function (err, all_tags) {
-                        if (err) {
-                            callback(err);
-                        }
-                        else {
-                            all_tags.forEach(function (tag) {
-                                var keywords = tag.name.split(' ');
-                                if (keywords.length > 1) {
-                                    keywords.push(tag.name);
-                                }
-                                var tag_score = -1;
-                                for (var i in keywords) {
-                                    var keyword = keywords[i];
-                                    var max_lev_dist = 1 + Math.floor(req.query.tag.length / 5);
-                                    var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.tag.toLowerCase());
-                                    if (lev_dist <= max_lev_dist) {
-                                        tag_score = lev_dist;
-                                        break;
-                                    }
-                                }
-                                if (tag_score > -1) {
-                                    var tag_id = tag._id.toString();
-                                    if (!(tag_id in tag_ids)) {
-                                        tags.push(tag);
-                                        tag_ids[tag_id] = tag_score;
-                                    }
-                                    else if (tag_score < tag_ids[tag_id]) {
-                                        tag_ids[tag_id] = tag_score;
-                                    }
-                                }
-                            });
+                            tags = results.tags;
                             callback(null);
                         }
                     });
@@ -311,9 +251,6 @@ module.exports = {
                         });
                     } else {
                         var stickers = [];
-                        tags.sort(function (atag, btag) {
-                            return tag_ids[atag._id.toString()] - tag_ids[btag._id.toString()];
-                        });
                         tags.forEach(function(tag) {
                             stickers = stickers.concat(tag.stickers);
                         });

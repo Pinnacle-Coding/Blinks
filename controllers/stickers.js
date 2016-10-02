@@ -248,7 +248,7 @@ module.exports = {
                                 var tag_score = 10000000;
                                 for (var i in keywords) {
                                     var keyword = keywords[i];
-                                    tag_score = Math.min(tag_score, Math.abs(keyword.length - req.query.tag.length));
+                                    tag_score = Math.min(tag_score, 0.25 * Math.abs(keyword.length - req.query.tag.length));
                                 }
                                 var tag_id = tag._id.toString();
                                 if (!(tag_id in tag_ids)) {

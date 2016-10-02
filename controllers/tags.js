@@ -109,6 +109,7 @@ module.exports = {
                         name: new RegExp('\\b' + req.query.contains.slice(i, i + 2) + '\\w+', 'i')
                     });
                 }
+                console.log(variations);
                 if (variations.$or.length === 0) {
                     variations = {
                         name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')

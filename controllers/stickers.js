@@ -223,84 +223,75 @@ module.exports = {
 
             if (req.query.tag) {
                 req.query.tag = req.query.tag.replaceAll('_', ' ');
-                var tags = [];
-                var subcalls = [];
-                subcalls.push(function(callback) {
-                    req.query.contains = req.query.tag;
-                    req.query.page = 1;
-                    req.query.count = 20;
-                    TagCtrl.getTags.handler(req, function (err, results) {
-                        if (err) {
-                            callback(err);
-                        }
-                        else {
-                            tags = results.tags;
-                            callback(null);
-                        }
-                    });
-                });
-                async.series(subcalls, function(err, results) {
+                req.query.contains = req.query.tag;
+                req.query.page = 1;
+                req.query.count = 20;
+                TagCtrl.getTags.handler(req, function (err, results) {
                     if (err) {
                         done(err, {
                             message: err.message
                         });
-                    } else if (!(tags && tags.length)) {
-                        done(false, {
-                            message: 'Stickers not found',
-                            stickers: []
-                        });
-                    } else {
-                        var stickers = [];
-                        tags.forEach(function(tag) {
-                            stickers = stickers.concat(tag.stickers);
-                        });
-                        var sliceBegin = (page - 1) * count;
-                        var sliceEnd = page * count;
-                        if (sliceBegin >= stickers.length) {
-                            stickers = [];
-                        } else if (sliceEnd > stickers.length) {
-                            stickers = stickers.slice(sliceBegin, stickers.length);
+                    }
+                    else {
+                        var tags = results.tags;
+                        if (!(tags && tags.length)) {
+                            done(false, {
+                                message: 'Stickers not found',
+                                stickers: []
+                            });
                         } else {
-                            stickers = stickers.slice(sliceBegin, sliceEnd);
-                        }
-                        var stickerIds = {};
-                        var stickersDone = [];
-                        var tasks = [];
-                        stickers.forEach(function(sticker) {
-                            tasks.push(function(callback) {
-                                Sticker.findOne({
-                                    _id: sticker._id
-                                }).populate({
-                                    path: 'tags',
-                                    select: 'name'
-                                }).populate({
-                                    path: 'pack',
-                                    select: 'name'
-                                }).populate({
-                                    path: 'author',
-                                    select: 'name location'
-                                }).exec(function(err, sticker) {
-                                    var stringId = sticker._id.toString();
-                                    if (!(stringId in stickerIds)) {
-                                        stickersDone.push(sticker);
-                                        stickerIds[stringId] = '';
-                                    }
-                                    callback(null);
+                            var stickers = [];
+                            tags.forEach(function(tag) {
+                                stickers = stickers.concat(tag.stickers);
+                            });
+                            var sliceBegin = (page - 1) * count;
+                            var sliceEnd = page * count;
+                            if (sliceBegin >= stickers.length) {
+                                stickers = [];
+                            } else if (sliceEnd > stickers.length) {
+                                stickers = stickers.slice(sliceBegin, stickers.length);
+                            } else {
+                                stickers = stickers.slice(sliceBegin, sliceEnd);
+                            }
+                            var stickerIds = {};
+                            var stickersDone = [];
+                            var tasks = [];
+                            stickers.forEach(function(sticker) {
+                                tasks.push(function(callback) {
+                                    Sticker.findOne({
+                                        _id: sticker._id
+                                    }).populate({
+                                        path: 'tags',
+                                        select: 'name'
+                                    }).populate({
+                                        path: 'pack',
+                                        select: 'name'
+                                    }).populate({
+                                        path: 'author',
+                                        select: 'name location'
+                                    }).exec(function(err, sticker) {
+                                        var stringId = sticker._id.toString();
+                                        if (!(stringId in stickerIds)) {
+                                            stickersDone.push(sticker);
+                                            stickerIds[stringId] = '';
+                                        }
+                                        callback(null);
+                                    });
                                 });
                             });
-                        });
-                        async.series(tasks, function(err, results) {
-                            if (err) {
-                                done(true, {
-                                    message: err.message
-                                });
-                            } else {
-                                done(false, {
-                                    message: stickersDone.length ? 'Stickers found' : 'Stickers not found',
-                                    stickers: stickersDone
-                                });
-                            }
-                        });
+                            async.series(tasks, function(err, results) {
+                                if (err) {
+                                    done(true, {
+                                        message: err.message
+                                    });
+                                } else {
+                                    done(false, {
+                                        message: stickersDone.length ? 'Stickers found' : 'Stickers not found',
+                                        stickers: stickersDone
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
             } else {

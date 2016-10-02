@@ -101,6 +101,7 @@ module.exports = {
                 var tag_ids = {};
                 var tags = [];
                 var subcalls = [];
+                /*
                 subcalls.push(function(callback) {
                     Tag.find({
                         $or: [{
@@ -136,6 +137,7 @@ module.exports = {
                         }
                     });
                 });
+                */
                 subcalls.push(function(callback) {
                     Tag.find().populate({
                         path: 'stickers',

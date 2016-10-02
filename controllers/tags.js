@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var async = require('async');
 var Tag = mongoose.model('Tag');
 var levenshtein = require('fast-levenshtein');
+var metaphone = require('metaphone');
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -135,6 +136,13 @@ module.exports = {
                                     var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.contains.toLowerCase());
                                     if (lev_dist <= max_lev_dist) {
                                         tag_score = lev_dist;
+                                        var contains_pronunciation = metaphone(req.query.contains);
+                                        var keyword_pronunciation = metaphone(keyword);
+                                        var pronunciation_dist = levenshtein.get(contains_pronunciation, keyword_pronunciation);
+                                        if (pronunciation_dist < 3) {
+                                            var scalar = 0.25 * (pronunciation_dist + 1);
+                                            tag_score *= scalar;
+                                        }
                                         break;
                                     }
                                 }

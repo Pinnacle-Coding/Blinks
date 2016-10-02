@@ -241,10 +241,19 @@ module.exports = {
                         }
                         else {
                             tags_contained.forEach(function (tag) {
+                                var keywords = tag.name.split(' ');
+                                if (keywords.length > 1) {
+                                    keywords.push(tag.name);
+                                }
+                                var tag_score = 10000000;
+                                for (var i in keywords) {
+                                    var keyword = keywords[i];
+                                    tag_score = Math.min(tag_score, Math.abs(keyword.length - req.query.tag.length));
+                                }
                                 var tag_id = tag._id.toString();
                                 if (!(tag_id in tag_ids)) {
                                     tags.push(tag);
-                                    tag_ids[tag_id] = 1;
+                                    tag_ids[tag_id] = tag_score;
                                 }
                             });
                             callback(null);

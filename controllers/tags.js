@@ -106,7 +106,7 @@ module.exports = {
                 };
                 for (var i = 0; i < req.query.contains.length - 1; i++) {
                     variations.$or.push({
-                        name: new RegExp('\\b' + req.query.contains.slice(i, i + 2) + '\\w+', 'i')
+                        name: new RegExp(req.query.contains.slice(i, i + 2) + '\\w+', 'i')
                     });
                 }
                 console.log(variations);

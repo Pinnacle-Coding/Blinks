@@ -101,45 +101,16 @@ module.exports = {
                 var tag_ids = {};
                 var tags = [];
                 var subcalls = [];
-                /*
-                subcalls.push(function(callback) {
-                    Tag.find({
-                        $or: [{
-                            name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
-                        }, {
-                            name: new RegExp(req.query.contains, 'i')
-                        }]
-                    }).populate({
-                        path: 'stickers',
-                        select: 'image animated'
-                    }).exec(function(err, tags_contained) {
-                        if (err) {
-                            callback(err);
-                        }
-                        else {
-                            tags_contained.forEach(function (tag) {
-                                var keywords = tag.name.split(' ');
-                                if (keywords.length > 1) {
-                                    keywords.push(tag.name);
-                                }
-                                var tag_score = 10000000;
-                                for (var i in keywords) {
-                                    var keyword = keywords[i];
-                                    tag_score = Math.min(tag_score, 0.33 * Math.abs(keyword.length - req.query.contains.length));
-                                }
-                                var tag_id = tag._id.toString();
-                                if (!(tag_id in tag_ids)) {
-                                    tags.push(tag);
-                                    tag_ids[tag_id] = tag_score;
-                                }
-                            });
-                            callback(null);
-                        }
+                var variations = {
+                    $or: []
+                };
+                for (var i = 0; i < req.query.contains.length - 2; i++) {
+                    variations.$or.push({
+                        name: new RegExp('\\b' + req.query.contains.slice(0, i + 2) + '\\w+', 'i')
                     });
-                });
-                */
+                }
                 subcalls.push(function(callback) {
-                    Tag.find().populate({
+                    Tag.find(variations).populate({
                         path: 'stickers',
                         select: 'image animated'
                     }).exec(function (err, all_tags) {

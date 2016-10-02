@@ -268,7 +268,7 @@ module.exports = {
                                 var add_tag = false;
                                 for (var i in keywords) {
                                     var keyword = keywords[i];
-                                    var max_lev_dist = Math.floor(req.query.length / 5);
+                                    var max_lev_dist = 1 + Math.floor(req.query.length / 5);
                                     var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.tag.toLowerCase());
                                     if (lev_dist <= max_lev_dist) {
                                         add_tag = true;

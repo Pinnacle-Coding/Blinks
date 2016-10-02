@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
+var async = require('async');
 var Tag = mongoose.model('Tag');
+var levenshtein = require('fast-levenshtein');
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -43,17 +45,6 @@ module.exports = {
         path: '/tags',
         method: 'GET',
         handler: function(req, done) {
-            var query = {};
-            if (req.query.contains) {
-                req.query.contains = req.query.contains.replaceAll('_', ' ');
-                query = {
-                    $or: [{
-                        name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
-                    }, {
-                        name: new RegExp(req.query.contains, 'i')
-                    }]
-                };
-            }
             var sort = {};
             if (req.query.type) {
                 if (req.query.type === 'trending') {
@@ -104,21 +95,134 @@ module.exports = {
                 count = parseInt(count, 10);
             }
 
-            Tag.find(query).populate({
-                path: 'stickers',
-                select: 'name image'
-            }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, tags) {
-                if (err) {
-                    done(true, {
-                        message: err.message
+            var query = {};
+            if (req.query.contains) {
+                req.query.contains = req.query.contains.replaceAll('_', ' ');
+                var tag_ids = {};
+                var tags = [];
+                var subcalls = [];
+                subcalls.push(function(callback) {
+                    Tag.find({
+                        $or: [{
+                            name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
+                        }, {
+                            name: new RegExp(req.query.contains, 'i')
+                        }]
+                    }).populate({
+                        path: 'stickers',
+                        select: 'image animated'
+                    }).exec(function(err, tags_contained) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            tags_contained.forEach(function (tag) {
+                                var keywords = tag.name.split(' ');
+                                if (keywords.length > 1) {
+                                    keywords.push(tag.name);
+                                }
+                                var tag_score = 10000000;
+                                for (var i in keywords) {
+                                    var keyword = keywords[i];
+                                    tag_score = Math.min(tag_score, 0.33 * Math.abs(keyword.length - req.query.contains.length));
+                                }
+                                var tag_id = tag._id.toString();
+                                if (!(tag_id in tag_ids)) {
+                                    tags.push(tag);
+                                    tag_ids[tag_id] = tag_score;
+                                }
+                            });
+                            callback(null);
+                        }
                     });
-                } else {
-                    done(false, {
-                        message: (tags && tags.length) ? 'Tags found' : 'No tags found',
-                        tags: tags
+                });
+                subcalls.push(function(callback) {
+                    Tag.find().populate({
+                        path: 'stickers',
+                        select: 'image animated'
+                    }).exec(function (err, all_tags) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            all_tags.forEach(function (tag) {
+                                var keywords = tag.name.split(' ');
+                                if (keywords.length > 1) {
+                                    keywords.push(tag.name);
+                                }
+                                var tag_score = -1;
+                                for (var i in keywords) {
+                                    var keyword = keywords[i];
+                                    var max_lev_dist = 1 + Math.floor(req.query.contains.length / 5);
+                                    var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.contains.toLowerCase());
+                                    if (lev_dist <= max_lev_dist) {
+                                        tag_score = lev_dist;
+                                        break;
+                                    }
+                                }
+                                if (tag_score > -1) {
+                                    var tag_id = tag._id.toString();
+                                    if (!(tag_id in tag_ids)) {
+                                        tags.push(tag);
+                                        tag_ids[tag_id] = tag_score;
+                                    }
+                                    else if (tag_score < tag_ids[tag_id]) {
+                                        tag_ids[tag_id] = tag_score;
+                                    }
+                                }
+                            });
+                            callback(null);
+                        }
                     });
-                }
-            });
+                });
+                async.series(subcalls, function (err, results) {
+                    if (err) {
+                        done(err, {
+                            message: err.message
+                        });
+                    } else if (!(tags && tags.length)) {
+                        done(false, {
+                            message: 'Tags not found',
+                            tags: []
+                        });
+                    }
+                    else {
+                        tags.sort(function (atag, btag) {
+                            return tag_ids[atag._id.toString()] - tag_ids[btag._id.toString()];
+                        });
+                        var sliceBegin = (page - 1) * count;
+                        var sliceEnd = page * count;
+                        if (sliceBegin >= tags.length) {
+                            tags = [];
+                        } else if (sliceEnd > tags.length) {
+                            tags = tags.slice(sliceBegin, tags.length);
+                        } else {
+                            tags = tags.slice(sliceBegin, sliceEnd);
+                        }
+                        done(false, {
+                            message: tags.length ? 'Tags found' : 'Tags not found',
+                            tags: tags
+                        });
+                    }
+                });
+            }
+            else {
+                Tag.find(query).populate({
+                    path: 'stickers',
+                    select: 'name image'
+                }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, tags) {
+                    if (err) {
+                        done(true, {
+                            message: err.message
+                        });
+                    } else {
+                        done(false, {
+                            message: (tags && tags.length) ? 'Tags found' : 'No tags found',
+                            tags: tags
+                        });
+                    }
+                });
+            }
         }
     }
 };

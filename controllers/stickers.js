@@ -256,26 +256,32 @@ module.exports = {
                         path: 'stickers',
                         select: 'image animated'
                     }).exec(function (err, all_tags) {
-                        all_tags.forEach(function (tag) {
-                            var max_lev_dist = 1;
-                            if (req.query.tag.length > 4) {
-                                max_lev_dist = 2;
-                            }
-                            else if (req.query.tag.length > 7) {
-                                max_lev_dist = 3;
-                            }
-                            else if (req.query.tag.length > 10) {
-                                max_lev_dist = 4;
-                            }
-                            var lev_dist = levenshtein.get(tag.name, req.query.tag);
-                            if (lev_dist <= max_lev_dist) {
-                                var tag_id = tag._id.toString();
-                                if (!(tag_id in tag_ids)) {
-                                    tags.push(tag);
-                                    tag_ids.push(tag_id);
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            all_tags.forEach(function (tag) {
+                                var max_lev_dist = 1;
+                                if (req.query.tag.length > 4) {
+                                    max_lev_dist = 2;
                                 }
-                            }
-                        });
+                                else if (req.query.tag.length > 7) {
+                                    max_lev_dist = 3;
+                                }
+                                else if (req.query.tag.length > 10) {
+                                    max_lev_dist = 4;
+                                }
+                                var lev_dist = levenshtein.get(tag.name, req.query.tag);
+                                if (lev_dist <= max_lev_dist) {
+                                    var tag_id = tag._id.toString();
+                                    if (!(tag_id in tag_ids)) {
+                                        tags.push(tag);
+                                        tag_ids.push(tag_id);
+                                    }
+                                }
+                            });
+                            callback(null);
+                        }
                     });
                 });
                 async.series(subcalls, function(err, results) {

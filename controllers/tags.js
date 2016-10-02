@@ -104,7 +104,7 @@ module.exports = {
                 var variations = {
                     $or: []
                 };
-                for (var i = 0; i < req.query.contains.length - 2; i++) {
+                for (var i = 0; i < req.query.contains.length - 1; i++) {
                     variations.$or.push({
                         name: new RegExp('\\b' + req.query.contains.slice(0, i + 2) + '\\w+', 'i')
                     });

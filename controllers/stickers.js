@@ -229,7 +229,7 @@ module.exports = {
                     req.query.contains = req.query.tag;
                     req.query.page = 1;
                     req.query.count = 20;
-                    TagCtrl.getTags(req, function (err, results) {
+                    TagCtrl.getTags.handler(req, function (err, results) {
                         if (err) {
                             callback(err);
                         }

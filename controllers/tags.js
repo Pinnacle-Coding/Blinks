@@ -135,7 +135,7 @@ module.exports = {
                                     var phoentic_score = levenshtein.get(metaphone(req.query.contains), metaphone(keyword));
                                     var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
                                     var score = phoentic_score + raw_score * 0.5;
-                                    if (score < 1 + Math.floor(req.query.contains.length / 5)) {
+                                    if (score < 3 * Math.log(req.query.contains.length + 1) + 1) {
                                         tag_score = score;
                                         break;
                                     }

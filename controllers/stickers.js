@@ -222,7 +222,7 @@ module.exports = {
 
             if (req.query.tag) {
                 req.query.tag = req.query.tag.replaceAll('_', ' ');
-                var tag_ids = [];
+                var tag_ids = {};
                 var tags = [];
                 var subcalls = [];
                 subcalls.push(function(callback) {
@@ -244,7 +244,7 @@ module.exports = {
                                 var tag_id = tag._id.toString();
                                 if (!(tag_id in tag_ids)) {
                                     tags.push(tag);
-                                    tag_ids.push(tag_id);
+                                    tag_ids[tag_id] = 1;
                                 }
                             });
                             callback(null);
@@ -265,21 +265,24 @@ module.exports = {
                                 if (keywords.length > 1) {
                                     keywords.push(tag.name);
                                 }
-                                var add_tag = false;
+                                var tag_score = -1;
                                 for (var i in keywords) {
                                     var keyword = keywords[i];
                                     var max_lev_dist = 1 + Math.floor(req.query.length / 5);
                                     var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.tag.toLowerCase());
                                     if (lev_dist <= max_lev_dist) {
-                                        add_tag = true;
+                                        tag_score = lev_dist;
                                         break;
                                     }
                                 }
-                                if (add_tag) {
+                                if (tag_score > -1) {
                                     var tag_id = tag._id.toString();
                                     if (!(tag_id in tag_ids)) {
                                         tags.push(tag);
-                                        tag_ids.push(tag_id);
+                                        tag_ids[tag_id] = tag_score;
+                                    }
+                                    else if (tag_score < tag_ids[tag_id]) {
+                                        tag_ids[tag_id] = tag_score;
                                     }
                                 }
                             });
@@ -299,6 +302,9 @@ module.exports = {
                         });
                     } else {
                         var stickers = [];
+                        tags.sort(function (atag, btag) {
+                            return tag_ids[atag._id.toString()] - tag_ids[btag._id.toString()];
+                        });
                         tags.forEach(function(tag) {
                             stickers = stickers.concat(tag.stickers);
                         });

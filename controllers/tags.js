@@ -139,21 +139,6 @@ module.exports = {
                                         tag_score = score;
                                         break;
                                     }
-                                    /*
-                                    var max_lev_dist = 1 + Math.floor(req.query.contains.length / 5);
-                                    var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.contains.toLowerCase());
-                                    if (lev_dist <= max_lev_dist) {
-                                        tag_score = lev_dist;
-                                        var contains_pronunciation = metaphone(req.query.contains);
-                                        var keyword_pronunciation = metaphone(keyword);
-                                        var pronunciation_dist = levenshtein.get(contains_pronunciation, keyword_pronunciation);
-                                        if (pronunciation_dist < 3) {
-                                            var scalar = 0.25 * (pronunciation_dist + 1);
-                                            tag_score *= scalar;
-                                        }
-                                        break;
-                                    }
-                                    */
                                 }
                                 if (tag_score > -1) {
                                     var tag_id = tag._id.toString();

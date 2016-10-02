@@ -6,6 +6,7 @@ var Tag = mongoose.model('Tag');
 var Pack = mongoose.model('Pack');
 var Author = mongoose.model('Author');
 var s3 = require('s3');
+var levenshtein = require('fast-levenshtein');
 
 // Use only with arrays of a SINGLE, PRIMITIVE type
 // e.g. [String] or [int]
@@ -221,16 +222,63 @@ module.exports = {
 
             if (req.query.tag) {
                 req.query.tag = req.query.tag.replaceAll('_', ' ');
-                Tag.find({
-                    $or: [{
-                        name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
-                    }, {
-                        name: new RegExp(req.query.tag, 'i')
-                    }]
-                }).populate({
-                    path: 'stickers',
-                    select: 'image'
-                }).exec(function(err, tags) {
+                var tag_ids = [];
+                var tags = [];
+                var subcalls = [];
+                subcalls.push(function(callback) {
+                    Tag.find({
+                        $or: [{
+                            name: new RegExp('\\b' + req.query.tag + '\\w+', 'i')
+                        }, {
+                            name: new RegExp(req.query.tag, 'i')
+                        }]
+                    }).populate({
+                        path: 'stickers',
+                        select: 'image animated'
+                    }).exec(function(err, tags_contained) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            tags_contained.forEach(function (tag) {
+                                var tag_id = tag._id.toString();
+                                if (!(tag_id in tag_ids)) {
+                                    tags.push(tag);
+                                    tag_ids.push(tag_id);
+                                }
+                            });
+                            callback(null);
+                        }
+                    });
+                });
+                subcalls.push(function(callback) {
+                    Tag.find().populate({
+                        path: 'stickers',
+                        select: 'image animated'
+                    }).exec(function (err, all_tags) {
+                        all_tags.forEach(function (tag) {
+                            var max_lev_dist = 1;
+                            if (req.query.tag.length > 4) {
+                                max_lev_dist = 2;
+                            }
+                            else if (req.query.tag.length > 7) {
+                                max_lev_dist = 3;
+                            }
+                            else if (req.query.tag.length > 10) {
+                                max_lev_dist = 4;
+                            }
+                            var lev_dist = levenshtein.get(tag.name, req.query.tag);
+                            if (lev_dist <= max_lev_dist) {
+                                var tag_id = tag._id.toString();
+                                if (!(tag_id in tag_ids)) {
+                                    tags.push(tag);
+                                    tag_ids.push(tag_id);
+                                }
+                            }
+                        });
+                    });
+                });
+                async.series(subcalls, function(err, results) {
                     if (err) {
                         done(err, {
                             message: err.message

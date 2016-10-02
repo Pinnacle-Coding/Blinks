@@ -261,18 +261,24 @@ module.exports = {
                         }
                         else {
                             all_tags.forEach(function (tag) {
-                                var max_lev_dist = 1;
-                                if (req.query.tag.length > 4) {
-                                    max_lev_dist = 2;
+                                var keywords = tag.name.split(' ');
+                                if (keywords.length > 1) {
+                                    keywords.push(tag.name);
                                 }
-                                else if (req.query.tag.length > 7) {
-                                    max_lev_dist = 3;
+                                var add_tag = false;
+                                for (var i in keywords) {
+                                    var keyword = keywords[i];
+                                    var max_lev_dist = 1;
+                                    if (keyword.length > 4) {
+                                        max_lev_dist = 2;
+                                    }
+                                    var lev_dist = levenshtein.get(keyword, req.query.tag);
+                                    if (lev_dist <= max_lev_dist) {
+                                        add_tag = true;
+                                        break;
+                                    }
                                 }
-                                else if (req.query.tag.length > 10) {
-                                    max_lev_dist = 4;
-                                }
-                                var lev_dist = levenshtein.get(tag.name, req.query.tag);
-                                if (lev_dist <= max_lev_dist) {
+                                if (add_tag) {
                                     var tag_id = tag._id.toString();
                                     if (!(tag_id in tag_ids)) {
                                         tags.push(tag);

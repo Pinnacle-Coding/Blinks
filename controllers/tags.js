@@ -109,6 +109,11 @@ module.exports = {
                         name: new RegExp('\\b' + req.query.contains.slice(0, i + 2) + '\\w+', 'i')
                     });
                 }
+                if (variations.$or.length === 0) {
+                    variations = {
+                        name: new RegExp('\\b' + req.query.contains + '\\w+', 'i')
+                    };
+                }
                 subcalls.push(function(callback) {
                     Tag.find(variations).populate({
                         path: 'stickers',

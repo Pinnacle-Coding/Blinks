@@ -132,6 +132,14 @@ module.exports = {
                                 var tag_score = -1;
                                 for (var i in keywords) {
                                     var keyword = keywords[i];
+                                    var phoentic_score = levenshtein.get(metaphone(req.query.contains), metaphone(keyword));
+                                    var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
+                                    var score = phoentic_score + raw_score * 0.5;
+                                    if (score < 1 + Math.floor(req.query.contains.length / 5)) {
+                                        tag_score = score;
+                                        break;
+                                    }
+                                    /*
                                     var max_lev_dist = 1 + Math.floor(req.query.contains.length / 5);
                                     var lev_dist = levenshtein.get(keyword.toLowerCase(), req.query.contains.toLowerCase());
                                     if (lev_dist <= max_lev_dist) {
@@ -145,6 +153,7 @@ module.exports = {
                                         }
                                         break;
                                     }
+                                    */
                                 }
                                 if (tag_score > -1) {
                                     var tag_id = tag._id.toString();

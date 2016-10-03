@@ -132,7 +132,12 @@ module.exports = {
                                 var tag_score = -1;
                                 for (var i in keywords) {
                                     var keyword = keywords[i];
-                                    var phoentic_score = levenshtein.get(metaphone(req.query.contains), metaphone(keyword));
+                                    var phoentic_keyword = metaphone(keyword);
+                                    var phoentic_query = metaphone(req.query.contains);
+                                    var phoentic_score = levenshtein.get(phoentic_query, phoentic_keyword);
+                                    if (phoentic_keyword.includes(phoentic_query) && phoentic_score > 2) {
+                                        phoentic_score *= 0.5;
+                                    }
                                     var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
                                     var score = phoentic_score + raw_score * 0.5;
                                     if (score < 1 + req.query.contains.length / 5) {

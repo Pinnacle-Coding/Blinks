@@ -135,11 +135,11 @@ module.exports = {
                                     var phoentic_keyword = metaphone(keyword);
                                     var phoentic_query = metaphone(req.query.contains);
                                     var phoentic_score = levenshtein.get(phoentic_query, phoentic_keyword);
-                                    if (phoentic_keyword.includes(phoentic_query) && phoentic_score > 2) {
-                                        phoentic_score *= 0.5;
-                                    }
                                     var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
                                     var score = phoentic_score + raw_score * 0.5;
+                                    if (phoentic_keyword.includes(phoentic_query) && raw_score > 2) {
+                                        score *= 0.6;
+                                    }
                                     if (score < 1 + req.query.contains.length / 5) {
                                         tag_score = score;
                                         break;

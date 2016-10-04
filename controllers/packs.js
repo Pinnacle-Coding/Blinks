@@ -21,7 +21,15 @@ module.exports = {
             }
             Pack.findOne(query).populate({
                 path: 'stickers',
-                select: 'name image updatedAtTimestamp createdAtTimestamp animated'
+                select: 'image animated updatedAtTimestamp createdAtTimestamp',
+                options: {
+                    sort: {
+                        'hits.daily': -1,
+                        'hits.weekly': -1,
+                        'hits.monthly': -1,
+                        'hits.total': -1
+                    }
+                }
             }).populate({
                 path: 'author',
                 select: 'name location image'
@@ -95,7 +103,15 @@ module.exports = {
 
             Pack.find().populate({
                 path: 'stickers',
-                select: 'name image updatedAtTimestamp createdAtTimestamp animated'
+                select: 'image animated updatedAtTimestamp createdAtTimestamp',
+                options: {
+                    sort: {
+                        'hits.daily': -1,
+                        'hits.weekly': -1,
+                        'hits.monthly': -1,
+                        'hits.total': -1
+                    }
+                }
             }).populate({
                 path: 'author',
                 select: 'name location image'

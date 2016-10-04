@@ -27,7 +27,15 @@ module.exports = {
             }
             Tag.findOne(query).populate({
                 path: 'stickers',
-                select: 'name image'
+                select: 'image animated updatedAtTimestamp createdAtTimestamp',
+                options: {
+                    sort: {
+                        'hits.daily': -1,
+                        'hits.weekly': -1,
+                        'hits.monthly': -1,
+                        'hits.total': -1
+                    }
+                }
             }).exec(function(err, tag) {
                 if (err) {
                     done(true, {
@@ -118,7 +126,15 @@ module.exports = {
                 subcalls.push(function(callback) {
                     Tag.find(variations).populate({
                         path: 'stickers',
-                        select: 'image animated'
+                        select: 'image animated updatedAtTimestamp createdAtTimestamp',
+                        options: {
+                            sort: {
+                                'hits.daily': -1,
+                                'hits.weekly': -1,
+                                'hits.monthly': -1,
+                                'hits.total': -1
+                            }
+                        }
                     }).exec(function (err, all_tags) {
                         if (err) {
                             callback(err);
@@ -191,7 +207,15 @@ module.exports = {
             else {
                 Tag.find(query).populate({
                     path: 'stickers',
-                    select: 'name image'
+                    select: 'image animated updatedAtTimestamp createdAtTimestamp',
+                    options: {
+                        sort: {
+                            'hits.daily': -1,
+                            'hits.weekly': -1,
+                            'hits.monthly': -1,
+                            'hits.total': -1
+                        }
+                    }
                 }).sort(sort).limit(count).skip((page - 1) * count).exec(function(err, tags) {
                     if (err) {
                         done(true, {

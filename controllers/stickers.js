@@ -255,6 +255,7 @@ module.exports = {
                             } else {
                                 stickers = stickers.slice(sliceBegin, sliceEnd);
                             }
+                            console.log(stickers.length);
                             var stickerIds = {};
                             var stickersDone = [];
                             var tasks = [];

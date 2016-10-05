@@ -241,13 +241,19 @@ module.exports = {
                             });
                         } else {
                             var stickers = [];
+                            var stickerIds = {};
                             tags.forEach(function(tag) {
                                 stickers = stickers.concat(tag.stickers);
+                                tag.stickers.forEach(function (sticker) {
+                                    var stringId = sticker._id.toString();
+                                    if (!(stringId in stickerIds)) {
+                                        stickerIds[stringId] = '';
+                                        stickers.push(sticker);
+                                    }
+                                });
                             });
                             var sliceBegin = (page - 1) * count;
                             var sliceEnd = page * count;
-                            console.log("Page = "+page+"; Count = "+count);
-                            console.log(sliceBegin+" "+sliceEnd);
                             if (sliceBegin >= stickers.length) {
                                 stickers = [];
                             } else if (sliceEnd > stickers.length) {
@@ -255,8 +261,9 @@ module.exports = {
                             } else {
                                 stickers = stickers.slice(sliceBegin, sliceEnd);
                             }
+                            console.log("Page = "+page+"; Count = "+count);
+                            console.log(sliceBegin+" "+sliceEnd);
                             console.log(stickers.length);
-                            var stickerIds = {};
                             var stickersDone = [];
                             var tasks = [];
                             stickers.forEach(function(sticker) {
@@ -273,11 +280,7 @@ module.exports = {
                                         path: 'author',
                                         select: 'name location'
                                     }).exec(function(err, sticker) {
-                                        var stringId = sticker._id.toString();
-                                        if (!(stringId in stickerIds)) {
-                                            stickersDone.push(sticker);
-                                            stickerIds[stringId] = '';
-                                        }
+                                        stickersDone.push(sticker);
                                         callback(null);
                                     });
                                 });

@@ -246,6 +246,8 @@ module.exports = {
                             });
                             var sliceBegin = (page - 1) * count;
                             var sliceEnd = page * count;
+                            console.log("Page = "+page+"; Count = "+count);
+                            console.log(sliceBegin+" "+sliceEnd);
                             if (sliceBegin >= stickers.length) {
                                 stickers = [];
                             } else if (sliceEnd > stickers.length) {

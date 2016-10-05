@@ -243,7 +243,6 @@ module.exports = {
                             var stickers = [];
                             var stickerIds = {};
                             tags.forEach(function(tag) {
-                                stickers = stickers.concat(tag.stickers);
                                 tag.stickers.forEach(function (sticker) {
                                     var stringId = sticker._id.toString();
                                     if (!(stringId in stickerIds)) {
@@ -261,9 +260,6 @@ module.exports = {
                             } else {
                                 stickers = stickers.slice(sliceBegin, sliceEnd);
                             }
-                            console.log("Page = "+page+"; Count = "+count);
-                            console.log(sliceBegin+" "+sliceEnd);
-                            console.log(stickers.length);
                             var stickersDone = [];
                             var tasks = [];
                             stickers.forEach(function(sticker) {

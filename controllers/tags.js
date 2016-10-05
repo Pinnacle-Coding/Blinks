@@ -158,7 +158,7 @@ module.exports = {
                                         tag_score = score;
                                         break;
                                     }
-                                    else if (phoentic_keyword.includes(phoentic_query) && phoentic_score < score_limit) {
+                                    else if (phoentic_keyword.includes(phoentic_query) && phoentic_score < score_limit * 2) {
                                         tag_score = score;
                                         break;
                                     }

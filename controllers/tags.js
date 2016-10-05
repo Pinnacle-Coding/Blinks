@@ -152,14 +152,14 @@ module.exports = {
                                     var phoentic_query = metaphone(req.query.contains);
                                     var phoentic_score = levenshtein.get(phoentic_query, phoentic_keyword);
                                     var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
-                                    var score = phoentic_score + raw_score * 0.6;
-                                    var score_limit = 1 + req.query.contains.length / 5;
+                                    var score = phoentic_score + raw_score * 0.5;
+                                    var score_limit = 1 + req.query.contains.length / 5 - keywords.length * 0.1;
                                     if (score < score_limit) {
-                                        tag_score = score;
+                                        tag_score = score + keywords.length * 0.1;
                                         break;
                                     }
                                     else if ((phoentic_keyword.includes(phoentic_query) || keyword.includes(req.query.contains)) && phoentic_score < score_limit * 2) {
-                                        tag_score = score;
+                                        tag_score = score + keywords.length * 0.1;
                                         break;
                                     }
                                 }

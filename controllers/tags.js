@@ -157,6 +157,10 @@ module.exports = {
                                         tag_score = score;
                                         break;
                                     }
+                                    else if (phoentic_keyword.includes(phoentic_query)) {
+                                        tag_score = score;
+                                        break;
+                                    }
                                 }
                                 if (tag_score > -1) {
                                     var tag_id = tag._id.toString();

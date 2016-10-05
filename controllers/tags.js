@@ -153,11 +153,12 @@ module.exports = {
                                     var phoentic_score = levenshtein.get(phoentic_query, phoentic_keyword);
                                     var raw_score = levenshtein.get(req.query.contains.toLowerCase(), keyword.toLowerCase());
                                     var score = phoentic_score + raw_score * 0.5;
-                                    if (score < 1 + req.query.contains.length / 5) {
+                                    var score_limit = 1 + req.query.contains.length / 5;
+                                    if (score < score_limit) {
                                         tag_score = score;
                                         break;
                                     }
-                                    else if (phoentic_keyword.includes(phoentic_query) && phoentic_score < 3 + req.query.contains.length / 5) {
+                                    else if (phoentic_keyword.includes(phoentic_query) && phoentic_score < score_limit) {
                                         tag_score = score;
                                         break;
                                     }

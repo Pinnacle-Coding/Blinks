@@ -73,11 +73,11 @@ module.exports = {
                                     });
                                 } else {
                                     var pack = sticker.pack;
+                                    pack.hits.counts[pack.hits.counts.length - 1] += 1;
                                     pack.hits.score = 0;
                                     for (var i = 0; i < pack.hits.counts.length; i++) {
                                         pack.hits.score += (i + 1) * pack.hits.counts[i];
                                     }
-                                    console.log(pack.hits);
                                     pack.noUpdate = true;
                                     pack.save(function(err, pack) {
                                         if (err) {

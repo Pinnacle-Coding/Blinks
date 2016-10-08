@@ -20,32 +20,6 @@ var uniq = function(a) {
 module.exports = {
     run: function (callback) {
         var calls = [];
-        // Get rid of old hits
-        calls.push(function (callback) {
-            var subcalls = [];
-            [Pack, Sticker, Tag, Author].forEach(function (schema) {
-                subcalls.push(function (callback) {
-                    schema.find().exec(function (err, objs) {
-                        if (!err && objs) {
-                            objs.forEach(function (obj) {
-                                obj.hits.daily = undefined;
-                                obj.hits.monthly = undefined;
-                                obj.hits.weekly = undefined;
-                                obj.hits.total = undefined;
-                                obj.noUpdate = true;
-                                obj.save(function (err, obj) {
-
-                                });
-                            });
-                        }
-                        callback(null);
-                    });
-                });
-            });
-            async.parallel(subcalls, function (err, results) {
-                callback(err ? err : null);
-            });
-        });
         // Animated stickers
         calls.push(function (callback) {
             Sticker.find().exec(function (err, stickers) {
@@ -72,78 +46,6 @@ module.exports = {
                 });
             });
         });
-        /*
-        // Retag stickers
-        calls.push(function(callback) {
-            Sticker.find().exec(function(err, stickers) {
-                if (err) {
-                    callback(err);
-                } else {
-                    var subcalls = [];
-                    stickers.forEach(function(sticker) {
-                        sticker.tags.forEach(function(tag) {
-                            subcalls.push(function(callback) {
-                                Tag.findOne({
-                                    _id: tag
-                                }).exec(function(err, tag) {
-                                    var isInArray = tag.stickers.some(function(tag_sticker) {
-                                        return tag_sticker === sticker._id;
-                                    });
-                                    if (!isInArray) {
-                                        tag.stickers.push(sticker._id);
-                                        tag.save(function (err, tag) {
-                                            callback(null);
-                                        });
-                                    }
-                                    else {
-                                        callback(null);
-                                    }
-                                });
-                            });
-                        });
-                    });
-                    async.series(subcalls, function(err, results) {
-                        callback(null);
-                    });
-                }
-            });
-        });
-        // Make sticker array for each tag full of unique elements
-        // Do the same for tags in each sticker
-        calls.push(function (callback) {
-            Tag.find().exec(function (err, tags) {
-                var subcalls = [];
-                if (!err && tags) {
-                    tags.forEach(function (tag) {
-                        subcalls.push(function (callback) {
-                            tag.stickers = uniq(tag.stickers);
-                            tag.save(function (err, tag) {
-                                callback(null);
-                            });
-                        });
-                    });
-                }
-                async.parallel(subcalls, function (err, results) {
-                    Sticker.find().exec(function (err, stickers) {
-                        var subcalls = [];
-                        if (!err && stickers) {
-                            stickers.forEach(function (sticker) {
-                                subcalls.push(function (callback) {
-                                    sticker.tags = uniq(sticker.tags);
-                                    sticker.save(function (err, sticker) {
-                                        callback(null);
-                                    });
-                                });
-                            });
-                        }
-                        async.parallel(subcalls, function (err, results) {
-                            callback(err ? err : null);
-                        });
-                    });
-                });
-            });
-        });
-        */
         // Fix timestamps
         calls.push(function(callback) {
             var models = [Sticker, Author, Pack, Tag];

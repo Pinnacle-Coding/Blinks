@@ -32,8 +32,9 @@ module.exports = {
                                 obj.hits.monthly = undefined;
                                 obj.hits.weekly = undefined;
                                 obj.hits.total = undefined;
+                                obj.noUpdate = true;
                                 obj.save(function (err, obj) {
-                                    
+
                                 });
                             });
                         }
@@ -57,6 +58,7 @@ module.exports = {
                                     res.destroy();
                                     var type = fileType(chunk);
                                     sticker.animated = (type.mime.indexOf('gif') !== -1 || type.mime.indexOf('apng') !== -1);
+                                    sticker.noUpdate = true;
                                     sticker.save(function (err, sticker) {
                                         callback(null);
                                     });

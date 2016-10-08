@@ -41,6 +41,7 @@ module.exports = {
                                                 obj.hits.score += (j + 1) * obj.hits.counts[j];
                                             }
                                         }
+                                        obj.noUpdate = true;
                                         obj.save(function (err, obj) {
 
                                         });

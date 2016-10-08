@@ -20,6 +20,31 @@ var uniq = function(a) {
 module.exports = {
     run: function (callback) {
         var calls = [];
+        // Get rid of old hits
+        calls.push(function (callback) {
+            var subcalls = [];
+            [Pack, Sticker, Tag, Author].forEach(function (schema) {
+                subcalls.push(function (callback) {
+                    schema.find().exec(function (err, objs) {
+                        if (!err && objs) {
+                            objs.forEach(function (obj) {
+                                obj.hits.daily = undefined;
+                                obj.hits.monthly = undefined;
+                                obj.hits.weekly = undefined;
+                                obj.hits.total = undefined;
+                                obj.save(function (err, obj) {
+                                    
+                                });
+                            });
+                        }
+                        callback(null);
+                    });
+                });
+            });
+            async.parallel(subcalls, function (err, results) {
+                callback(err ? err : null);
+            });
+        });
         // Animated stickers
         calls.push(function (callback) {
             Sticker.find().exec(function (err, stickers) {

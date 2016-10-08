@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 
 var timestamps = function (next) {
+    if (this.hits.counts) {
+        this.markModified('hits.counts');
+    }
     if (this.isNew) {
         this.createdAt = Date.now();
         this.createdAtTimestamp = this.createdAt.getTime();

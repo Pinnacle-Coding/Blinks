@@ -29,22 +29,14 @@ var AuthorSchema = new mongoose.Schema({
         ref: 'Pack'
     }],
     hits: {
-        total: {
+        counts: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        score: {
             type: Number,
             default: 0
         },
-        daily: {
-            type: Number,
-            default: 0
-        },
-        weekly: {
-            type: Number,
-            default: 0
-        },
-        monthly: {
-            type: Number,
-            default: 0
-        }
     },
     noUpdate: {
         type: Boolean,
@@ -69,22 +61,14 @@ var PackSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
-        total: {
+        counts: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        score: {
             type: Number,
             default: 0
         },
-        daily: {
-            type: Number,
-            default: 0
-        },
-        weekly: {
-            type: Number,
-            default: 0
-        },
-        monthly: {
-            type: Number,
-            default: 0
-        }
     },
     noUpdate: {
         type: Boolean,
@@ -118,22 +102,14 @@ var StickerSchema = new mongoose.Schema({
         ref: 'Pack'
     },
     hits: {
-        total: {
+        counts: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        score: {
             type: Number,
             default: 0
         },
-        daily: {
-            type: Number,
-            default: 0
-        },
-        weekly: {
-            type: Number,
-            default: 0
-        },
-        monthly: {
-            type: Number,
-            default: 0
-        }
     },
     noUpdate: {
         type: Boolean,
@@ -154,22 +130,14 @@ var TagSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
-        total: {
+        counts: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        score: {
             type: Number,
             default: 0
         },
-        daily: {
-            type: Number,
-            default: 0
-        },
-        weekly: {
-            type: Number,
-            default: 0
-        },
-        monthly: {
-            type: Number,
-            default: 0
-        }
     },
     noUpdate: {
         type: Boolean,

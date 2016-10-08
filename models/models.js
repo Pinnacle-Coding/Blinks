@@ -157,14 +157,6 @@ mongoose.model('Metrics', new mongoose.Schema({
         daily: {
             type: Date,
             default: Date.now
-        },
-        weekly: {
-            type: Date,
-            default: Date.now
-        },
-        monthly: {
-            type: Date,
-            default: Date.now
         }
     }
 }));

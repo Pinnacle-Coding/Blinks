@@ -47,10 +47,11 @@ module.exports = {
                         message: err.message
                     });
                 } else {
-                    sticker.hits.total += 1;
-                    sticker.hits.daily += 1;
-                    sticker.hits.weekly += 1;
-                    sticker.hits.monthly += 1;
+                    sticker.hits.counts[sticker.hits.counts.length - 1] += 1;
+                    sticker.hits.trending = 0;
+                    for (var i = 0; i < sticker.hits.counts.length; i++) {
+                        sticker.hits.trending += (i + 1) * sticker.hits.counts[i];
+                    }
                     sticker.noUpdate = true;
                     sticker.save(function(err, sticker) {
                         if (err) {
@@ -59,10 +60,11 @@ module.exports = {
                             });
                         } else {
                             var author = sticker.author;
-                            author.hits.total += 1;
-                            author.hits.daily += 1;
-                            author.hits.weekly += 1;
-                            author.hits.monthly += 1;
+                            author.hits.counts[author.hits.counts.length - 1] += 1;
+                            author.hits.trending = 0;
+                            for (var i = 0; i < author.hits.counts.length; i++) {
+                                author.hits.trending += (i + 1) * author.hits.counts[i];
+                            }
                             author.noUpdate = true;
                             author.save(function(err, author) {
                                 if (err) {
@@ -71,10 +73,10 @@ module.exports = {
                                     });
                                 } else {
                                     var pack = sticker.pack;
-                                    pack.hits.total += 1;
-                                    pack.hits.daily += 1;
-                                    pack.hits.weekly += 1;
-                                    pack.hits.monthly += 1;
+                                    pack.hits.trending = 0;
+                                    for (var i = 0; i < pack.hits.counts.length; i++) {
+                                        pack.hits.trending += (i + 1) * pack.hits.counts[i];
+                                    }
                                     pack.noUpdate = true;
                                     pack.save(function(err, pack) {
                                         if (err) {
@@ -85,10 +87,11 @@ module.exports = {
                                             var calls = [];
                                             sticker.tags.forEach(function(tag) {
                                                 calls.push(function(callback) {
-                                                    tag.hits.total += 1;
-                                                    tag.hits.daily += 1;
-                                                    tag.hits.weekly += 1;
-                                                    tag.hits.monthly += 1;
+                                                    tag.hits.counts[tag.hits.counts.length - 1] += 1;
+                                                    tag.hits.trending = 0;
+                                                    for (var i = 0; i < tag.hits.counts.length; i++) {
+                                                        tag.hits.trending += (i + 1) * tag.hits.counts[i];
+                                                    }
                                                     tag.noUpdate = true;
                                                     tag.save(function(err, tag) {
                                                         callback(null);
@@ -175,10 +178,7 @@ module.exports = {
             if (req.query.type) {
                 if (req.query.type === 'trending') {
                     sort = {
-                        'hits.daily': -1,
-                        'hits.weekly': -1,
-                        'hits.monthly': -1,
-                        'hits.total': -1
+                        'hits.trending': -1
                     };
                 }
                 if (req.query.type === 'new') {

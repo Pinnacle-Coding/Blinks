@@ -58,10 +58,7 @@ module.exports = {
             if (req.query.type) {
                 if (req.query.type === 'trending') {
                     sort = {
-                        'hits.daily': -1,
-                        'hits.weekly': -1,
-                        'hits.monthly': -1,
-                        'hits.total': -1
+                        'hits.trending': -1
                     };
                 }
                 if (req.query.type === 'new') {

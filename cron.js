@@ -23,94 +23,31 @@ module.exports = {
                         });
                     }
                     var last_daily_update = metrics.hits.daily;
-                    var last_weekly_update = metrics.hits.weekly;
-                    var last_monthly_update = metrics.hits.monthly;
                     var daily_update = last_daily_update <= today;
-                    var weekly_update = last_weekly_update <= today;
-                    var monthly_update = last_monthly_update <= today;
                     var subcalls = [];
-                    subcalls.push(function(callback) {
-                        Author.find().exec(function(err, authors) {
-                            if (!err && authors) {
-                                authors.forEach(function(author) {
-                                    if (daily_update) {
-                                        author.hits.daily = 0;
-                                    }
-                                    if (weekly_update) {
-                                        author.hits.weekly = 0;
-                                    }
-                                    if (monthly_update) {
-                                        author.hits.monthly = 0;
-                                    }
-                                    author.save(function(err, author) {
+                    [Pack, Author, Sticker, Tag].forEach(function (schema) {
+                        subcalls.push(function (callback) {
+                            schema.find().exec(function (err, objs) {
+                                if (!err && objs) {
+                                    objs.forEach(function (obj) {
+                                        if (daily_update) {
+                                            var days_tracking = obj.hits.counts.length;
+                                            for (var i = 1; i < days_tracking; i++) {
+                                                obj.hits.counts[i - 1] = obj.hits.counts[i];
+                                            }
+                                            obj.hits.counts[days_tracking - 1] = 0;
+                                            obj.hits.trending = 0;
+                                            for (var j = 0; j < days_tracking; j++) {
+                                                obj.hits.trending += (j + 1) * obj.hits.counts[j];
+                                            }
+                                        }
+                                        obj.save(function (err, obj) {
 
+                                        });
                                     });
-                                });
-                            }
-                            callback(null);
-                        });
-                    });
-                    subcalls.push(function(callback) {
-                        Pack.find().exec(function(err, packs) {
-                            if (!err && packs) {
-                                packs.forEach(function(pack) {
-                                    if (daily_update) {
-                                        pack.hits.daily = 0;
-                                    }
-                                    if (weekly_update) {
-                                        pack.hits.weekly = 0;
-                                    }
-                                    if (monthly_update) {
-                                        pack.hits.monthly = 0;
-                                    }
-                                    pack.save(function(err, pack) {
-
-                                    });
-                                });
-                            }
-                            callback(null);
-                        });
-                    });
-                    subcalls.push(function(callback) {
-                        Sticker.find().exec(function(err, stickers) {
-                            if (!err && stickers) {
-                                stickers.forEach(function(sticker) {
-                                    if (daily_update) {
-                                        sticker.hits.daily = 0;
-                                    }
-                                    if (weekly_update) {
-                                        sticker.hits.weekly = 0;
-                                    }
-                                    if (monthly_update) {
-                                        sticker.hits.monthly = 0;
-                                    }
-                                    sticker.save(function(err, sticker) {
-
-                                    });
-                                });
-                            }
-                            callback(null);
-                        });
-                    });
-                    subcalls.push(function(callback) {
-                        Tag.find().exec(function(err, tags) {
-                            if (!err && tags) {
-                                tags.forEach(function(tag) {
-                                    if (daily_update) {
-                                        tag.hits.daily = 0;
-                                    }
-                                    if (weekly_update) {
-                                        tag.hits.weekly = 0;
-                                    }
-                                    if (monthly_update) {
-                                        tag.hits.monthly = 0;
-                                    }
-                                    tag.save(function(err, tag) {
-
-                                    });
-                                });
-                            }
-                            callback(null);
+                                }
+                                callback(null);
+                            });
                         });
                     });
                     async.parallel(subcalls, function(err, results) {
@@ -118,16 +55,6 @@ module.exports = {
                             var daily_future = new Date();
                             daily_future.setDate(daily_future.getDate() + 1);
                             metrics.hits.daily = daily_future;
-                        }
-                        if (weekly_update) {
-                            var weekly_future = new Date();
-                            weekly_future.setDate(weekly_future.getDate() + 7);
-                            metrics.hits.weekly = weekly_future;
-                        }
-                        if (monthly_update) {
-                            var monthly_future = new Date();
-                            monthly_future.setMonth(monthly_future.getMonth() + 1);
-                            metrics.hits.monthly = monthly_future;
                         }
                         metrics.save(function(err, metrics) {
                             if (err) {

@@ -77,6 +77,7 @@ module.exports = {
                                     for (var i = 0; i < pack.hits.counts.length; i++) {
                                         pack.hits.score += (i + 1) * pack.hits.counts[i];
                                     }
+                                    console.log(pack.hits);
                                     pack.noUpdate = true;
                                     pack.save(function(err, pack) {
                                         if (err) {

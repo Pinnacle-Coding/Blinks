@@ -25,7 +25,7 @@ module.exports = {
             if (req.query.type) {
                 if (req.query.type === 'trending') {
                     sort = {
-                        'hits.trending': -1
+                        'hits.score': -1
                     };
                 }
                 if (req.query.type === 'new') {

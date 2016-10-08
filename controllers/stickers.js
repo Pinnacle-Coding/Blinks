@@ -48,9 +48,9 @@ module.exports = {
                     });
                 } else {
                     sticker.hits.counts[sticker.hits.counts.length - 1] += 1;
-                    sticker.hits.trending = 0;
+                    sticker.hits.score = 0;
                     for (var i = 0; i < sticker.hits.counts.length; i++) {
-                        sticker.hits.trending += (i + 1) * sticker.hits.counts[i];
+                        sticker.hits.score += (i + 1) * sticker.hits.counts[i];
                     }
                     sticker.noUpdate = true;
                     sticker.save(function(err, sticker) {
@@ -61,9 +61,9 @@ module.exports = {
                         } else {
                             var author = sticker.author;
                             author.hits.counts[author.hits.counts.length - 1] += 1;
-                            author.hits.trending = 0;
+                            author.hits.score = 0;
                             for (var i = 0; i < author.hits.counts.length; i++) {
-                                author.hits.trending += (i + 1) * author.hits.counts[i];
+                                author.hits.score += (i + 1) * author.hits.counts[i];
                             }
                             author.noUpdate = true;
                             author.save(function(err, author) {
@@ -73,9 +73,9 @@ module.exports = {
                                     });
                                 } else {
                                     var pack = sticker.pack;
-                                    pack.hits.trending = 0;
+                                    pack.hits.score = 0;
                                     for (var i = 0; i < pack.hits.counts.length; i++) {
-                                        pack.hits.trending += (i + 1) * pack.hits.counts[i];
+                                        pack.hits.score += (i + 1) * pack.hits.counts[i];
                                     }
                                     pack.noUpdate = true;
                                     pack.save(function(err, pack) {
@@ -88,9 +88,9 @@ module.exports = {
                                             sticker.tags.forEach(function(tag) {
                                                 calls.push(function(callback) {
                                                     tag.hits.counts[tag.hits.counts.length - 1] += 1;
-                                                    tag.hits.trending = 0;
+                                                    tag.hits.score = 0;
                                                     for (var i = 0; i < tag.hits.counts.length; i++) {
-                                                        tag.hits.trending += (i + 1) * tag.hits.counts[i];
+                                                        tag.hits.score += (i + 1) * tag.hits.counts[i];
                                                     }
                                                     tag.noUpdate = true;
                                                     tag.save(function(err, tag) {
@@ -178,7 +178,7 @@ module.exports = {
             if (req.query.type) {
                 if (req.query.type === 'trending') {
                     sort = {
-                        'hits.trending': -1
+                        'hits.score': -1
                     };
                 }
                 if (req.query.type === 'new') {

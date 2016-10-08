@@ -36,9 +36,9 @@ module.exports = {
                                                 obj.hits.counts[i - 1] = obj.hits.counts[i];
                                             }
                                             obj.hits.counts[days_tracking - 1] = 0;
-                                            obj.hits.trending = 0;
+                                            obj.hits.score = 0;
                                             for (var j = 0; j < days_tracking; j++) {
-                                                obj.hits.trending += (j + 1) * obj.hits.counts[j];
+                                                obj.hits.score += (j + 1) * obj.hits.counts[j];
                                             }
                                         }
                                         obj.save(function (err, obj) {

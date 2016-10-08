@@ -32,6 +32,12 @@ var AuthorSchema = new mongoose.Schema({
         ref: 'Pack'
     }],
     hits: {
+        // Legacy trending
+        daily: Number,
+        weekly: Number,
+        monthly: Number,
+        total: Number,
+        // New trending
         counts: {
             type: [Number],
             default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -64,6 +70,12 @@ var PackSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
+        // Legacy trending
+        daily: Number,
+        weekly: Number,
+        monthly: Number,
+        total: Number,
+        // New trending
         counts: {
             type: [Number],
             default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -105,6 +117,12 @@ var StickerSchema = new mongoose.Schema({
         ref: 'Pack'
     },
     hits: {
+        // Legacy trending
+        daily: Number,
+        weekly: Number,
+        monthly: Number,
+        total: Number,
+        // New trending
         counts: {
             type: [Number],
             default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -133,6 +151,12 @@ var TagSchema = new mongoose.Schema({
         ref: 'Sticker'
     }],
     hits: {
+        // Legacy trending
+        daily: Number,
+        weekly: Number,
+        monthly: Number,
+        total: Number,
+        // New trending
         counts: {
             type: [Number],
             default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

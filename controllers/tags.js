@@ -174,7 +174,7 @@ module.exports = {
                     ].indexOf(query_tag_word) !== -1);
                 });
                 if (banned) {
-                    done (true, {
+                    done (false, {
                         message: 'Search contained explicit terms.',
                         stickers: []
                     });

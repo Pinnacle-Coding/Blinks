@@ -104,6 +104,83 @@ module.exports = {
             var query = {};
             if (req.query.contains) {
                 req.query.contains = req.query.contains.replaceAll('_', ' ');
+                var query_tag_split = req.query.tag.split(' ');
+                var banned = false;
+                query_tag_split.forEach(function (query_tag_word) {
+                    banned = banned || ([
+                        'ass',
+                        'asshole',
+                        'assholes',
+                        'bastard',
+                        'bastards',
+                        'bitch',
+                        'bitches',
+                        'bitchy',
+                        'bullshit',
+                        'cock',
+                        'cocks',
+                        'crap',
+                        'crappy',
+                        'cum',
+                        'cunt',
+                        'cunts',
+                        'dammit',
+                        'damn',
+                        'dick',
+                        'dicks',
+                        'fag',
+                        'fags',
+                        'faggot',
+                        'faggots',
+                        'fuck',
+                        'fucks',
+                        'fucked',
+                        'fucker',
+                        'fucking',
+                        'goddamn',
+                        'jackass',
+                        'masturbate',
+                        'masturbates',
+                        'masturbating',
+                        'masturbation',
+                        'motherfucker',
+                        'motherfuckers',
+                        'motherfucking',
+                        'nigger',
+                        'niggers',
+                        'penis',
+                        'pussy',
+                        'pussies',
+                        'queer',
+                        'queers',
+                        'retard',
+                        'retarded',
+                        'retards',
+                        'sex',
+                        'sexual',
+                        'shit',
+                        'shits',
+                        'shitty',
+                        'slut',
+                        'sluts',
+                        'slutty',
+                        'vag',
+                        'vagina',
+                        'vaginas',
+                        'weiner',
+                        'weiners',
+                        'whore',
+                        'whores'
+                    ].indexOf(query_tag_word) !== -1);
+                });
+                if (banned) {
+                    done (true, {
+                        message: 'Search contained explicit terms.',
+                        stickers: []
+                    });
+                    return;
+                }
+
                 var tag_ids = {};
                 var tags = [];
                 var subcalls = [];

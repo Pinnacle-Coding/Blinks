@@ -104,7 +104,7 @@ module.exports = {
             var query = {};
             if (req.query.contains) {
                 req.query.contains = req.query.contains.replaceAll('_', ' ');
-                var query_tag_split = req.query.tag.split(' ');
+                var query_tag_split = req.query.contains.split(' ');
                 var banned = false;
                 query_tag_split.forEach(function (query_tag_word) {
                     banned = banned || ([

@@ -176,7 +176,7 @@ module.exports = {
                 if (banned) {
                     done (false, {
                         message: 'Search contained explicit terms.',
-                        stickers: []
+                        tags: []
                     });
                     return;
                 }

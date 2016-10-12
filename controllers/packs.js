@@ -24,10 +24,7 @@ module.exports = {
                 select: 'image animated updatedAtTimestamp createdAtTimestamp',
                 options: {
                     sort: {
-                        'hits.daily': -1,
-                        'hits.weekly': -1,
-                        'hits.monthly': -1,
-                        'hits.total': -1
+                        'hits.score': -1
                     }
                 }
             }).populate({
@@ -103,10 +100,7 @@ module.exports = {
                 select: 'image animated updatedAtTimestamp createdAtTimestamp',
                 options: {
                     sort: {
-                        'hits.daily': -1,
-                        'hits.weekly': -1,
-                        'hits.monthly': -1,
-                        'hits.total': -1
+                        'hits.score': -1
                     }
                 }
             }).populate({

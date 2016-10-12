@@ -97,4 +97,6 @@ var timeoutCallback = function() {
         cron.run(timeoutCallback);
     }, 1000 * 60 * 60);
 };
-init.run(timeoutCallback);
+init.run(function () {
+    cron.run(timeoutCallback);
+});

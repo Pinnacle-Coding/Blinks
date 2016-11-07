@@ -44,6 +44,7 @@ module.exports = {
                         });
                     }
                 });
+                console.log(subcalls.length);
                 async.parallel(subcalls, function(err, results) {
                     callback(null);
                 });

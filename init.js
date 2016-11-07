@@ -18,61 +18,51 @@ var uniq = function(a) {
 };
 
 module.exports = {
-    run: function (callback) {
+    run: function(callback) {
         var calls = [];
         // Remove authors/stickers/packs
-        calls.push(function (callback) {
-            var bad_authors = ['57c6f601c3bc1b0300622e2f', '57d24cbdbdfa7503002883b5']
-            var subcalls = [];
-            bad_authors.forEach(function (bad_author) {
-                baid = mongoose.Types.ObjectId(bad_author);
-                subcalls.push(function (callback) {
-                    Pack.find({
-                        author: baid
-                    }).exec(function (err, packs) {
-                        var subsubcalls = [];
-                        packs.forEach(function (pack) {
-                            pack.stickers.forEach(function (sticker) {
-                                subsubcalls.push(function (callback) {
-                                    Sticker.remove({
-                                        _id: sticker
-                                    }).exec(function (err) {
-                                        callback(null);
-                                    });
-                                });
-                            });
-                            subsubcalls.push(function (callback) {
-                                Pack.remove({
-                                    _id: pack._id
-                                }).exec(function (err) {
+        calls.push(function(callback) {
+            Pack.exec(function(err, packs) {
+                var subcalls = [];
+                packs.forEach(function(pack) {
+                    if (pack.author === undefined || pack.author === null) {
+                        pack.stickers.forEach(function(sticker) {
+                            subcalls.push(function(callback) {
+                                Sticker.remove({
+                                    _id: sticker
+                                }).exec(function(err) {
                                     callback(null);
                                 });
                             });
                         });
-                        async.parallel(subsubcalls, function (err, results) {
-                            callback(null);
+                        subcalls.push(function(callback) {
+                            Pack.remove({
+                                _id: pack._id
+                            }).exec(function(err) {
+                                callback(null);
+                            });
                         });
-                    });
+                    }
                 });
-            });
-            async.parallel(subcalls, function (err, results) {
-                callback(null);
+                async.parallel(subcalls, function(err, results) {
+                    callback(null);
+                });
             });
         });
         // Animated stickers
-        calls.push(function (callback) {
-            Sticker.find().exec(function (err, stickers) {
+        calls.push(function(callback) {
+            Sticker.find().exec(function(err, stickers) {
                 var subcalls = [];
                 if (!err && stickers) {
-                    stickers.forEach(function (sticker) {
-                        subcalls.push(function (callback) {
+                    stickers.forEach(function(sticker) {
+                        subcalls.push(function(callback) {
                             https.get(sticker.image, res => {
                                 res.once('data', chunk => {
                                     res.destroy();
                                     var type = fileType(chunk);
                                     sticker.animated = (type.mime.indexOf('gif') !== -1 || type.mime.indexOf('apng') !== -1);
                                     sticker.noUpdate = true;
-                                    sticker.save(function (err, sticker) {
+                                    sticker.save(function(err, sticker) {
                                         callback(null);
                                     });
                                 });
@@ -80,7 +70,7 @@ module.exports = {
                         });
                     });
                 }
-                async.parallel(subcalls, function (err, results) {
+                async.parallel(subcalls, function(err, results) {
                     callback(err ? err : null);
                 });
             });
@@ -118,7 +108,7 @@ module.exports = {
                 });
             });
         });
-        async.series(calls, function (err, results) {
+        async.series(calls, function(err, results) {
             console.log("Init done.");
             callback();
         });

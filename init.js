@@ -22,7 +22,7 @@ module.exports = {
         var calls = [];
         // Remove authors/stickers/packs
         calls.push(function(callback) {
-            Pack.exec(function(err, packs) {
+            Pack.find().exec(function(err, packs) {
                 var subcalls = [];
                 packs.forEach(function(pack) {
                     if (pack.author === undefined || pack.author === null) {

@@ -20,37 +20,6 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
-        // Remove authors/stickers/packs
-        calls.push(function(callback) {
-            Pack.find().exec(function(err, packs) {
-                var subcalls = [];
-                packs.forEach(function(pack) {
-                    console.log(pack.author);
-                    if (pack.author === undefined || pack.author === null || pack.author.equals(mongoose.Types.ObjectId('57c6f601c3bc1b0300622e2f')) || pack.author.equals(mongoose.Types.ObjectId('57d24cbdbdfa7503002883b5'))) {
-                        pack.stickers.forEach(function(sticker) {
-                            subcalls.push(function(callback) {
-                                Sticker.remove({
-                                    _id: sticker
-                                }).exec(function(err) {
-                                    callback(null);
-                                });
-                            });
-                        });
-                        subcalls.push(function(callback) {
-                            Pack.remove({
-                                _id: pack._id
-                            }).exec(function(err) {
-                                callback(null);
-                            });
-                        });
-                    }
-                });
-                console.log(subcalls.length);
-                async.parallel(subcalls, function(err, results) {
-                    callback(null);
-                });
-            });
-        });
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {

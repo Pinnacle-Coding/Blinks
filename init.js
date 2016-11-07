@@ -26,7 +26,7 @@ module.exports = {
                 var subcalls = [];
                 packs.forEach(function(pack) {
                     console.log(pack.author);
-                    if (pack.author === undefined || pack.author === null || pack.author === mongoose.Types.ObjectId('57c6f601c3bc1b0300622e2f') || pack.author === mongoose.Types.ObjectId('57d24cbdbdfa7503002883b5')) {
+                    if (pack.author === undefined || pack.author === null || pack.author.equals(mongoose.Types.ObjectId('57c6f601c3bc1b0300622e2f')) || pack.author.equals(mongoose.Types.ObjectId('57d24cbdbdfa7503002883b5'))) {
                         pack.stickers.forEach(function(sticker) {
                             subcalls.push(function(callback) {
                                 Sticker.remove({

@@ -25,6 +25,7 @@ module.exports = {
             Pack.find().exec(function(err, packs) {
                 var subcalls = [];
                 packs.forEach(function(pack) {
+                    console.log(pack.author);
                     if (pack.author === undefined || pack.author === null) {
                         pack.stickers.forEach(function(sticker) {
                             subcalls.push(function(callback) {

@@ -29,16 +29,15 @@ TODO:
 
 global.__base = __dirname + '/';
 
-if (process.env.BLINKS_NODE_ENV === 'production') {
-    global.__bucket = 'blinks';
-    global.__cloudfront = 'dyhd59svym94q';
-} else {
-    global.__bucket = 'blinks-dev';
+global.__bucket = process.env.BLINKS_AWS_BUCKET;
+if (process.env.BLINKS_CLOUDFRONT_PREFIX === 'undefined') {
     global.__cloudfront = undefined;
 }
+else {
+    global.__cloudfront = process.env.BLINKS_CLOUDFRONT_PREFIX;
+}
 
-// Temporary until admin accounts are made
-global.__password = new Buffer('V29vZGxha2U4MDU=', 'base64').toString();
+global.__password = process.env.BLINKS_PASSWORD;
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -52,11 +51,7 @@ var Text = mongoose.model('Text', new mongoose.Schema({
     hash: String
 }));
 
-if (process.env.BLINKS_NODE_ENV === 'production') {
-    mongoose.connect('mongodb://blinks:insaneMembrane1@ds027356-a0.mlab.com:27356,ds027356-a1.mlab.com:27356/blinks?replicaSet=rs-ds027356');
-} else {
-    mongoose.connect('mongodb://blinks:insaneMembrane1@ds035786.mlab.com:35786/blinks-staging');
-}
+mongoose.connect(process.env.BLINKS_MONGODB);
 
 require('./models/models.js');
 

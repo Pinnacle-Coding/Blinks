@@ -1,0 +1,57 @@
+<div class="container" ng-show="loading">
+    <div class="row center">
+        <div class="col s12">
+            <div class="preloader-wrapper big active loading-indicator" ng-show="loading">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row center">
+        <ul class="pagination">
+            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
+            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
+            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col s12 m6" ng-repeat="author in authors" ng-show="authors && authors.length">
+            <div class="card cursor-pointer hoverable" ng-click="goToAuthor(author)">
+                <div class="card-content blue-text text-darken-2 center">
+                    <img ng-src="{{author.image}}" class="circle profile-image">
+                    <br>
+                    <span class="card-title center-align">{{author.name}}</span>
+                    <p ng-show="author.location">{{author.location}}</p>
+                    <p ng-hide="author.location">Location not specified</p>
+                    <br>
+                    <p><b>{{author.packs.length}} packs</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12" ng-hide="authors && authors.length">
+            <div class="card">
+                <div class="card-content red-text text-darken-2 center">
+                    <span class="card-title center-align">No more authors!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row center">
+        <ul class="pagination">
+            <li ng-class="{disabled: (page_current === 1), 'waves-effect': (page_current !== 1)}"><a href="#!" ng-click="previousPage()"><i class="material-icons">chevron_left</i></a></li>
+            <li ng-repeat="page in pagination" ng-class="{active: (page_current === page), 'waves-effect': (page_current !== page)}"><a href="#!" ng-click="setPage(page)">{{page}}</a></li>
+            <li class="waves-effect"><a href="#!" ng-click="nextPage()"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
+</div>

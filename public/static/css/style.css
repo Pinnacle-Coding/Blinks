@@ -1,0 +1,45 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+body {
+    background-color: #bbdefb;
+}
+
+@media (min-width:961px) {
+    .blinks-logo {
+        margin-left: 1em;
+    }
+}
+
+.top-container {
+    margin-top: 3em;
+}
+
+.pack-inline-image {
+    display: inline;
+    max-width: 60px;
+    height: auto;
+}
+
+.profile-image {
+    max-width: 120px;
+    height: auto;
+}
+
+.sticker-image {
+    max-width: 90px;
+    height: auto;
+}
+
+.loading-indicator {
+    margin-top: 3em;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.sticker-card {
+    min-height: 380px;
+}

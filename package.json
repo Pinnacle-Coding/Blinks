@@ -1,0 +1,29 @@
+{
+    "name": "blinks-app",
+    "version": "1.0.0",
+    "description": "Backend for blinks.io",
+    "engines": {
+        "node": "5.9.1"
+    },
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "ejs": "2.4.1",
+        "express": "4.13.3",
+        "mongoose": "^4.5.0",
+        "body-parser": "^1.15.1",
+        "async": "2.0.1",
+        "s3": "4.4.0",
+        "multer": "1.2.0",
+        "file-type": "3.8.0",
+        "fast-levenshtein": "2.0.5",
+        "metaphone": "1.0.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Pinnacle-Coding/Blinks"
+    },
+    "keywords": ["node", "heroku", "express", "blinks", "stickers"]
+}

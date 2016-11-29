@@ -1,0 +1,107 @@
+<div class="container" ng-show="loading">
+    <div class="row center">
+        <div class="col s12">
+            <div class="preloader-wrapper big active loading-indicator" ng-show="loading">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container top-container" ng-cloak ng-hide="loading">
+    <div class="row">
+        <div class="col s12" ng-show="author">
+            <div class="card">
+                <div class="card-content blue-text text-darken-2 center">
+                    <div class="col s12">
+                        <a class="btn left waves-effect waves-light blue darken-4" ui-sref="blinks.authors">Go back</a>
+                    </div>
+                    <img ng-src="{{author.image}}" class="circle profile-image">
+                    <br>
+                    <span class="card-title center-align">{{author.name}}</span>
+                    <p ng-show="author.location">{{author.location}}</p>
+                    <p ng-hide="author.location">Location not specified</p>
+                    <br>
+                    <p><b>{{author.packs.length}} packs</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12" ng-hide="author">
+            <div class="card">
+                <div class="card-content red-text text-darken-2 center">
+                    <span class="card-title center-align">Author not found.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="author">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content blue-text text-darken-2 center">
+                    <span class="card-title">Edit Author</span>
+                    <form ng-submit="editAuthor()">
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <label for="authorName" id="authorNameLabel">Name</label>
+                                <input type="text" ng-model="authorEdit.name" id="authorName">
+                            </div>
+                            <div class="input-field col m12">
+                                <label for="authorLocation" id="authorLocationLabel">Location</label>
+                                <input type="text" ng-model="authorEdit.location" id="authorLocation">
+                            </div>
+                            <div class="file-field input-field col m12">
+                                <div class="btn blue darken-4">
+                                    <span>Profile Image</span>
+                                    <input type="file" ng-model="authorEdit.avatar" ngf-select ngf-accept="'image/*'" ngf-pattern="'image/*'">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+                            <div class="input-field col m12">
+                                <label for="authorPassword">Password</label>
+                                <input type="password" ng-model="authorEdit.password" id="authorPassword" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col m12">
+                                <button type="submit" class="waves-effect waves-light btn blue darken-4" ng-disabled="uploading">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="author">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content red-text text-darken-1 center">
+                    <span class="card-title">Delete Author</span>
+                    <form ng-submit="deleteAuthor()">
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <label for="authorDeletePassword">Password</label>
+                                <input type="password" ng-model="authorDelete.password" id="authorDeletePassword" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col m12">
+                                <button type="submit" class="btn red darken-1 waves-effect">Do it</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

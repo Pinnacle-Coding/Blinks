@@ -1,0 +1,20 @@
+<div class="navbar-fixed">
+    <nav class="blue darken-1">
+        <div class="nav-wrapper">
+            <a ui-sref="blinks.dashboard" class="brand-logo blinks-logo">Blinks Dashboard</a>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a ui-sref="blinks.packs" ui-sref-active="active blue darken-2">Packs</a></li>
+                <li><a ui-sref="blinks.authors" ui-sref-active="active blue darken-2">Authors</a></li>
+                <li><a ui-sref="blinks.stickers" ui-sref-active="active blue darken-2">Stickers</a></li>
+            </ul>
+            <ul class="side-nav" id="nav-mobile">
+                <li><a ui-sref="blinks.dashboard" ui-sref-active="active">Home</a></li>
+                <li><a ui-sref="blinks.packs" ui-sref-active="active">Packs</a></li>
+                <li><a ui-sref="blinks.authors" ui-sref-active="active">Authors</a></li>
+                <li><a ui-sref="blinks.stickers" ui-sref-active="active">Stickers</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div ui-view="content"></div>

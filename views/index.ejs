@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="Blinks">
+
+<head>
+    <base href="/">
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stickers say it best">
+    <meta name="keywords" content="Blinks, sticker, pack, author, tag">
+    <meta name="author" content="Pinnacle Coding">
+
+    <!-- Don't cache anything -->
+    <meta name="robots" content="noarchive">
+
+    <!--- Theme color on mobile --->
+    <meta name="theme-color" content="#03A9F4">
+    <meta name="msapplication-navbutton-color" content="#03A9F4">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#03A9F4">
+
+    <!-- Title -->
+    <title ng-bind="($title || 'Home') + ' &middot Blinks'">Blinks</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Playfair+Display" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+    <!-- Angular -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+    <script src="/static/lib/angular-ui-router-title.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.5/ng-file-upload.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.5/ng-file-upload-shim.min.js"></script>
+    <script src="/static/js/blinks.js"></script>
+    <script src="/static/js/controllers/dashboard.js"></script>
+    <script src="/static/js/controllers/stickers.js"></script>
+    <script src="/static/js/controllers/packs.js"></script>
+    <script src="/static/js/controllers/authors.js"></script>
+</head>
+
+<body>
+    <div ui-view="body"></div>
+    <script>
+        $(document).ready(function() {
+            $(".button-collapse").sideNav();
+        });
+    </script>
+</body>
+
+</html>

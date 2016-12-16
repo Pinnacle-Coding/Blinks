@@ -20,6 +20,7 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
+        /*
         calls.push(function (callback) {
             Sticker.find().exec(function (err, stickers) {
                 if (!err && stickers) {
@@ -34,6 +35,7 @@ module.exports = {
                 }
             });
         });
+        */
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {

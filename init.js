@@ -24,7 +24,7 @@ module.exports = {
             Sticker.find().exec(function (err, stickers) {
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {
-                        if (!sticker.author || sticker.author === null || sticker.author === undefined) {
+                        if (sticker._id.equals(new mongoose.Types.ObjectId('57d868857079c70300dcc608')) || !sticker.author || sticker.author === null || sticker.author === undefined) {
                             sticker.remove(function (err) {
 
                             });

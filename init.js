@@ -20,6 +20,20 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
+        calls.push(function (callback) {
+            Sticker.find().exec(function (err, stickers) {
+                if (!err && stickers) {
+                    stickers.forEach(function (sticker) {
+                        if (sticker.author === undefined || sticker.author === null) {
+                            sticker.remove(function (err) {
+
+                            });
+                        }
+                    });
+                }
+                callback(null);
+            });
+        });
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {

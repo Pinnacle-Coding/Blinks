@@ -24,8 +24,10 @@ module.exports = {
             Sticker.find().exec(function (err, stickers) {
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {
-                        if (sticker.author === undefined || sticker.author === null) {
-                            console.log(JSON.stringify(sticker.tags));
+                        var isInArray = sticker.tags.some(function (tag) {
+                            return tag.equals(new mongoose.Types.ObjectId('57d7444056ce5503003d227b'));
+                        });
+                        if (isInArray) {
                             sticker.remove(function (err) {
 
                             });

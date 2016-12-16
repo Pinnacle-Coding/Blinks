@@ -25,6 +25,7 @@ module.exports = {
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {
                         if (sticker.author === undefined || sticker.author === null) {
+                            console.log(JSON.stringify(sticker.tags));
                             sticker.remove(function (err) {
 
                             });

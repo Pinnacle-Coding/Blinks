@@ -20,23 +20,6 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
-        calls.push(function (callback) {
-            Sticker.find().exec(function (err, stickers) {
-                if (!err && stickers) {
-                    stickers.forEach(function (sticker) {
-                        var isInArray = sticker.tags.some(function (tag) {
-                            return tag.equals(new mongoose.Types.ObjectId('57d7444056ce5503003d227b'));
-                        });
-                        if (isInArray) {
-                            sticker.remove(function (err) {
-
-                            });
-                        }
-                    });
-                }
-                callback(null);
-            });
-        });
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {

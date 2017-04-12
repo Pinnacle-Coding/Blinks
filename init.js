@@ -20,12 +20,14 @@ var uniq = function(a) {
 module.exports = {
     run: function(callback) {
         var calls = [];
-        /*
         calls.push(function (callback) {
-            Sticker.find().exec(function (err, stickers) {
+            Sticker.find().populate({
+                path: 'author',
+                select: 'name'
+            }).exec(function (err, stickers) {
                 if (!err && stickers) {
                     stickers.forEach(function (sticker) {
-                        if (sticker._id.equals(new mongoose.Types.ObjectId('57d868857079c70300dcc608')) || !sticker.author || sticker.author === null || sticker.author === undefined) {
+                        if (sticker.author.name === 'Charlo Frade') {
                             sticker.remove(function (err) {
 
                             });
@@ -35,7 +37,6 @@ module.exports = {
                 }
             });
         });
-        */
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {

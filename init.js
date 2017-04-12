@@ -39,45 +39,6 @@ module.exports = {
             });
         });
         */
-        calls.push(function (callback) {
-            Pack.findById("57feae6e97941f03002a53a6").exec(function (err, pack) {
-                if (!err && pack) {
-                    pack.remove(function (err) {
-                        callback(null);
-                    });
-                }
-                else {
-                    callback(null);
-                }
-            });
-        });
-        calls.push(function (callback) {
-            Pack.findById("57feae6e97941f03002a53a6").exec(function (err, pack) {
-                if (!err && pack) {
-                    pack.remove(function (err) {
-                        callback(null);
-                    });
-                }
-                else {
-                    callback(null);
-                }
-            });
-        });
-        calls.push(function (callback) {
-            Author.findOne({
-                name: "Charlo Frade"
-            }).exec(function (err, author) {
-                if (!err && author) {
-                    author.packs = [];
-                    author.save(function (err) {
-                        callback(null);
-                    });
-                }
-                else {
-                    callback(null);
-                }
-            });
-        });
         // Animated stickers
         calls.push(function(callback) {
             Sticker.find().exec(function(err, stickers) {
